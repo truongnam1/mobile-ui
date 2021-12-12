@@ -1,0 +1,13 @@
+@import '../../assets/scss/base/variables.module',
+'../../assets/scss/base/mixins.module',
+'../../assets/scss/base/placeholders.module';
+.image-start {
+    @extend %center-flex;
+    img {
+        width: 50%;
+    }
+}
+
+.btn-start {
+    bottom: 1px;
+}

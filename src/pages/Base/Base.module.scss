@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700&display=swap');
+@import '../../assets/scss/base/variables.module',
+'../../assets/scss/base/mixins.module',
+'../../assets/scss/base/placeholders.module';
+:root {
+    --bg-body: #fff1d9;
+    --bg-main: #f6be8f;
+    --bg-button: #77552f;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.test {
+    @extend %center-flex;
+}
+
+.center-flex {
+    @extend %center-flex;
+}
+
+.between-flex {
+    @extend %between-flex;
+}
+
+body {
+    background-color: rgb(36, 36, 36);
+    font-family: 'Roboto', sans-serif !important;
+}
+
+.bg-button {
+    background-color: $bg-color-button-primary;
+}
+
+.bg-main {
+    background-color: $bg-color-box-primary;
+}
+
+.bg-body {
+    background-color: $bg-color-body;
+}
+
+.box-shadow {
+    // box-shadow: 1px 1px 8px 1px hsla(0, 0%, 91%, 0.92);
+    // border: 1px #F2F4F5 solid;
+}
+
+.main {
+    height: 99vh;
+    position: relative;
+    background-color: $bg-color-body;
+    padding: 0;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@media (min-width: 575.98px) {
+    .main {
+        width: 575.98px !important;
+    }
+}
+
+
+/* top*/
+
+.main-top {
+    position: relative;
+}
+
+.container-back_button {
+    position: absolute;
+    top: 0;
+    // left: 0;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.container-back_button i {
+    font-size: 1.2rem;
+    color: rgb(0, 0, 0);
+}
+
+.container-home-and-question {
+    margin-top: 0.5rem;
+    padding: 0 1rem;
+    i {
+        @include circle(50px);
+        text-align: center;
+        background: white;
+        font-size: 30px;
+        cursor: pointer;
+    }
+}
+
+
+/* button */
+
+.btn-mobile {
+    background-color: $bg-color-button-primary;
+    border-radius: $radius-button;
+    color: $color-text-button;
+    &:hover {
+        color: $color-text-button;
+        background-color: $bg-color-button-hover-primary;
+    }
+}
+
+.btn-scan {
+    color: $color-text-button;
+}
+
+.btn-custom {
+    color: $color-text-button;
+}
+
+
+/* body*/
+
+.main-body {
+    margin-top: 1rem;
+    padding: 0 1rem;
+}
+
+
+/* overlay main*/
+
+.overlay-main {
+    position: absolute;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+    cursor: pointer;
+}
+
+
+/* guide */
+
+.guide {
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+    position: absolute;
+    bottom: 1px;
+    .image-guide {}
+    .text-box-guide {
+        border-radius: $radius-box;
+        padding: 0.5rem;
+    }
+    .icon-item-guide {
+        background-color: white;
+        color: black;
+        border-radius: 50%;
+        text-align: center;
+    }
+}

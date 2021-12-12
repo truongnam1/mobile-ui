@@ -1,0 +1,15 @@
+@mixin square($length) {
+    width: $length;
+    height: $length;
+}
+
+@mixin circle($length) {
+    width: $length;
+    height: $length;
+    border-radius: 50%;
+}
+
+@mixin box-shadow {
+    box-shadow: 1px 1px 8px 1px rgb(231 231 231 / 92%);
+    border: 1px #F1F2F6 solid;
+}

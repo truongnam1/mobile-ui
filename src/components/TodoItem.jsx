@@ -1,16 +1,11 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class TodoItem extends Component {
-    render() {
-        return (
-            <React.Fragment>
-
-            <div className='todo-item'>
-                <p>{this.props.title}</p>
-            </div>
-            </React.Fragment>
-        );
-    }
+function TodoItem(props) {
+    return (
+        <div>
+            
+        </div>
+    );
 }
 
 export default TodoItem;
