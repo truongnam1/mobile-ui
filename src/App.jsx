@@ -12,9 +12,9 @@ function App() {
       <BrowserRouter>
         <Routes>
           {
-             routes.map(({path, element}) => {
+             routes.map(({path, element},index) => {
               return (
-                <Route path={path} element={element} />
+                <Route path={path} element={element} key={index}/>
             )})
           }
         </Routes>

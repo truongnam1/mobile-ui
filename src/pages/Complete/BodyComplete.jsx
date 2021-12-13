@@ -2,8 +2,11 @@ import React from 'react';
 import styleComplete from './Complete.module.scss';
 import styleBase from '../Base/Base.module.scss';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 
 function BodyComplete(props) {
+
+    const navigate = useNavigate();
     return (
         <>
             <div className={clsx('row', styleComplete['container-winner-content'])} >
@@ -26,7 +29,10 @@ function BodyComplete(props) {
                 </div>
 
                 <div className="row d-flex align-items-center justify-content-center mt-2 ">
-                    <div className={clsx('col-4', 'btn', styleBase['btn-mobile'], styleBase['bg-button'])}>
+                    <div 
+                    onClick={() => navigate('/start')}
+                    className={clsx('col-4', 'btn', styleBase['btn-mobile'], styleBase['bg-button'])}
+                    >
                         CHIA SẺ
                     </div>
                 </div>

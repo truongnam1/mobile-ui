@@ -1,0 +1,32 @@
+@import '../../assets/scss/base/variables.module',
+'../../assets/scss/base/mixins.module',
+'../../assets/scss/base/placeholders.module';
+.camera {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    margin-top: 0;
+    padding: 0;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 99vh;
+}
+
+.view-camera {
+    background-color: black;
+    min-height: 50vh;
+}
+
+.control-camera {
+    background-color: black;
+    display: none;
+    .item-control-camera {
+        @extend %center-flex;
+        i {
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+        }
+    }
+}

@@ -12,10 +12,11 @@ import Overlay from './Overlay';
 function Base({ header = '', body = '', overlay = '', ...props }) {
     // console.log(`styleBase`, styleBase);
     console.log(props);
+    const {propsHeader, propsBody, propsOverlay} = props;
     return (
         <>
             <div className={clsx('container-sm', 'border', styleBase.main)}>
-                <Header>
+                <Header {...propsHeader}>
                     {header}
                 </Header>
                 <Body>

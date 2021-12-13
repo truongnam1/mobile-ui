@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from 'react-slick';
 
 import styleQuestion from './Question.module.scss';
+import { useNavigate } from 'react-router-dom';
 function BodyStart(props) {
     const settings = {
         className: styleQuestion['artifacts'],
@@ -13,6 +14,9 @@ function BodyStart(props) {
         slidesToShow: 4,
         variableWidth: true,
     };
+
+    const navigate = useNavigate();
+
     return (
         <>
             <div className={clsx('row', 'gx-0')}>
@@ -55,6 +59,7 @@ function BodyStart(props) {
                 className={clsx('row', 'align-items-center', 'justify-content-center')}
             >
                 <div
+                    onClick={() => navigate('/scan')}
                     className={clsx('col-3', 'btn', styleQuestion['btn-mobile'], styleQuestion['btn-scan'])}
                 >
                     QUÉT

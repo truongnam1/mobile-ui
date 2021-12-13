@@ -1,12 +1,13 @@
 import {Base} from "./Base";
 import Complete from "./Complete/Complete";
 import { Question } from "./Question";
+import Scan from "./Scan/Scan";
 import { Start } from "./Start";
 
 export default [
     {
         path : '/',
-        element : <Base/>,
+        element : <Start/>,
         name : 'Home'
     }, {
         path : '/start',
@@ -21,5 +22,10 @@ export default [
         path : '/complete',
         element : <Complete/>,
         name : 'Complete'
+    },
+    {
+        path : '/scan',
+        element : <Scan/>,
+        name : 'scan'
     }
 ]
