@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React from 'react';
+import React, {useEffect} from 'react';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -7,6 +7,7 @@ import Slider from 'react-slick';
 
 import styleQuestion from './Question.module.scss';
 import { useNavigate } from 'react-router-dom';
+import Artifacts from './Artifacts';
 function BodyStart(props) {
     const settings = {
         className: styleQuestion['artifacts'],
@@ -15,40 +16,19 @@ function BodyStart(props) {
         variableWidth: true,
     };
 
+    // useEffect(() => {
+    //     fetch('https://api.npoint.io/658232b33eb69c8bddc7')
+    //         .then(response => response.json())
+    //         .then(data => console.log(data));
+    // }, [])
+
     const navigate = useNavigate();
 
     return (
         <>
             <div className={clsx('row', 'gx-0')}>
                 {/* <div className={clsx(styleQuestion['artifacts'])}> */}
-                <Slider {...settings}>
-                    <div className={clsx(styleQuestion['mySlides-artifacts'])}>
-                        <div className={clsx(styleQuestion['mySlides-artifacts--item'])}></div>
-                    </div>
-                    <div className={clsx(styleQuestion['mySlides-artifacts'])}>
-                        <div className={clsx(styleQuestion['mySlides-artifacts--item'])}></div>
-                    </div>
-                    <div className={clsx(styleQuestion['mySlides-artifacts'])}>
-                        <div className={clsx(styleQuestion['mySlides-artifacts--item'], styleQuestion['icon-choice'])}></div>
-                    </div>
-                    <div className={clsx(styleQuestion['mySlides-artifacts'])}>
-                        <div className={clsx(styleQuestion['mySlides-artifacts--item'])}></div>
-                    </div>
-                    <div className={clsx(styleQuestion['mySlides-artifacts'])}>
-                        <div className={clsx(styleQuestion['mySlides-artifacts--item'])}></div>
-                    </div>
-                    <div className={clsx(styleQuestion['mySlides-artifacts'])}>
-                        <div className={clsx(styleQuestion['mySlides-artifacts--item'])}></div>
-                    </div>
-                    <div className={clsx(styleQuestion['mySlides-artifacts'])}>
-                        <div className={clsx(styleQuestion['mySlides-artifacts--item'])}></div>
-                    </div>
-                    <div className={clsx(styleQuestion['mySlides-artifacts'])}>
-                        <div className={clsx(styleQuestion['mySlides-artifacts--item'])}></div>
-                    </div>
-                   
-
-                </Slider>
+              <Artifacts></Artifacts>
                 {/* </div> */}
             </div>
 

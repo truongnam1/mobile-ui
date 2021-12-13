@@ -20,7 +20,7 @@ ScanQr.prototype._start = function() {
         if (devices && devices.length) {
             this.arrDeviceCamera = devices;
             // console.log(this.arrDeviceCamera);
-            this._displayCamera(this.arrDeviceCamera[1].id);
+            this._displayCamera(this.arrDeviceCamera[0].id);
             console.log('ok camera');
         }
     }).catch(err => {
