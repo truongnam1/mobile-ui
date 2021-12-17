@@ -2,6 +2,7 @@ import {Base} from "./Base";
 import Complete from "./Complete/Complete";
 import { Question } from "./Question";
 import Scan from "./Scan/Scan";
+import MapComponent from './Map'
 import { Start } from "./Start";
 
 export default [
@@ -27,5 +28,10 @@ export default [
         path : '/scan',
         element : <Scan/>,
         name : 'scan'
-    }
+    },
+    {
+        path : '/map',
+        element : <MapComponent/>,
+        name : 'map'
+    },
 ]
