@@ -11,7 +11,7 @@ import Overlay from './Overlay';
 
 function Base({ header = '', body = '', overlay = '', ...props }) {
     // console.log(`styleBase`, styleBase);
-    console.log(props);
+    
     const {propsHeader, propsBody, propsOverlay} = props;
     return (
         <>
