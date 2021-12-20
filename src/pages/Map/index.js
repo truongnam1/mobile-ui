@@ -4,24 +4,30 @@ import clsx from 'clsx';
 import styleBase from '../Base/Base.module.scss';
 import Base from '../Base/Base'
 import _ from 'lodash';
+import Dice from './dice';
+import BodyQuestion from '../Question/BodyQuestion';
 function MapComponent(props) {
     const imageE = useRef();
     const canvasRef = useRef();
     const [codebeautty, setCodebeauty] = useState({});
     const [listPicture, setListPicture] = useState([]);
     const [map, setMap] = useState([]);
-    // const [charactor, setCharactor] = useState([]);
+    const [onDice, setOnDice] = useState(false);
     const charactor = useRef();
     const currentPoint = useRef(0);
-   
-
+    const randomDice = useRef();
+    const [isDice, setIsDice] = useState(false);
+    const [showQuestion, setShowQuestion] = useState(false);
     const getCoords = (e) => {
         
     }
     const handleMove = () => {
         const dice = Math.floor(Math.random() * 6) + 1;
+        randomDice.current = dice;
         if(currentPoint.current+dice != (_.size(map)-1)) {
             const a = map[(currentPoint.current+dice) > (_.size(map)-1) ? (_.size(map)-1) : currentPoint.current+dice];
+            setOnDice(!onDice);
+            setIsDice(true);
             currentPoint.current = currentPoint.current+dice
             const pictureCha = Object.values(charactor.current);
             const newCha = {
@@ -31,8 +37,16 @@ function MapComponent(props) {
             }
             listPicture.splice(listPicture.length - 1)
             const pewpew = [...listPicture];
-            console.log(pewpew);
-            setListPicture([...pewpew, newCha])
+            const timeOut = setTimeout(() => {
+                setListPicture([...pewpew, newCha]);
+                setIsDice(false);
+                clearTimeout(timeOut);
+            }, 2000)
+            const timeShowQues = setTimeout(() => {
+                setShowQuestion(true);
+                clearTimeout(timeShowQues);
+            }, 2200)
+           
         }
        
     }
@@ -121,12 +135,27 @@ function MapComponent(props) {
             });
          });
     }
+    const PopupQuestion = () => {
+        const turnOffModal = setTimeout(() => {
+            setShowQuestion(false);
+            clearTimeout(turnOffModal);
+        }, 5000)
+        return (
+            <div style={{position: 'fixed', right: 0,left: 0, top: '22%', margin: '17px', background: 'white'}}>
+                <BodyQuestion/>
+            </div>
+            
+        )
+    }
     return (
         <Base body={
             <>
+            {isDice &&  <Dice status={onDice} randomAngle={randomDice.current} isDice={isDice}/>}
+           
             <button onClick={handleMove}>DICE</button>
             <canvas style={{width: '100%', height: '100%'}} ref={canvasRef} width={codebeautty?.maps?.nam_ngang?.width*codebeautty?.maps?.nam_ngang?.mapWidth/10} height={codebeautty?.maps?.nam_ngang?.height*codebeautty?.maps?.nam_ngang?.mapHeight/10}></canvas>
             <img ref={imageE} hidden/>
+            {showQuestion && PopupQuestion()}
             </>
             
         }/>

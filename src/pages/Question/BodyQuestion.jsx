@@ -8,7 +8,7 @@ import Slider from 'react-slick';
 import styleQuestion from './Question.module.scss';
 import { useNavigate } from 'react-router-dom';
 import Artifacts from './Artifacts';
-function BodyStart(props) {
+function BodyQuestion(props) {
     const settings = {
         className: styleQuestion['artifacts'],
         slidesToScroll: 1,
@@ -31,7 +31,7 @@ function BodyStart(props) {
               <Artifacts></Artifacts>
                 {/* </div> */}
             </div>
-
+            
             <div className={clsx('row', 'gx-0', styleQuestion['container-decription-history'])}>
                 <p>Đây là bộ sưu tập thời đại Hùng Vương và giai đoạn văn hóa Phùng Nguyên, Phú Thọ ok</p>
             </div>
@@ -50,4 +50,4 @@ function BodyStart(props) {
     );
 }
 
-export default BodyStart;
+export default BodyQuestion;
