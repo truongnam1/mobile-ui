@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 
-function CountTime({firstValue}) {
+function CountTime({firstValue, onClearTime}) {
     const [count, setCount] = useState(firstValue);
     const time = useRef();
     useEffect(() => {
@@ -12,7 +12,8 @@ function CountTime({firstValue}) {
     },[])
     useEffect(() => {
         if(count == 0) {
-            clearInterval(time.current)
+            clearInterval(time.current);
+            onClearTime();
         }
     }, [count])
     return (

@@ -21,13 +21,15 @@ function MapComponent(props) {
     const [showQuestion, setShowQuestion] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const navigation = useNavigate();
-    const getCoords = (e) => {
-        
-    }
+    const listQuestion = useRef([]);
+    const previousStep = useRef();
+    const [countWrong, setCountWrong] = useState([1,2,3]);
+
     const handleMove = () => {
         const dice = Math.floor(Math.random() * 6) + 1;
         randomDice.current = dice;
         if(currentPoint.current+dice < (_.size(map)-1)) {
+            previousStep.current = currentPoint.current;
             const a = map[(currentPoint.current+dice) > (_.size(map)-1) ? (_.size(map)-1) : currentPoint.current+dice];
             setOnDice(!onDice);
             setIsDice(true);
@@ -54,6 +56,29 @@ function MapComponent(props) {
             navigation('/complete')
         }
        
+    }
+    //quay lai o cu
+    const backToPreviousStep = () => {
+        if(countWrong == 1) {
+            navigation('/')
+        } else {
+            const a = map[(previousStep.current) > (_.size(map)-1) ? (_.size(map)-1) : previousStep.current];
+            currentPoint.current = previousStep.current
+            const pictureCha = Object.values(charactor.current);
+            const newCha = {
+                [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
+                [a]: pictureCha[1],
+    
+            }
+            listPicture.splice(listPicture.length - 1)
+            const pewpew = [...listPicture];
+            setCountWrong(countWrong.filter(item => item != countWrong[_.size(countWrong) -1]))
+            const timeOut = setTimeout(() => {
+                setListPicture([...pewpew, newCha]);
+                clearTimeout(timeOut);
+            }, 2000)
+        }
+        
     }
     const findFirtPoint = (arr) => {
         const arrPoint = arr.filter(item => item.split('-')[1] == (codebeautty?.maps?.nam_ngang.mapHeight-1));
@@ -95,6 +120,7 @@ function MapComponent(props) {
             setListPicture(data?.maps?.nam_ngang?.layers.map(item => {
                 return item?.tiles
             }))
+            listQuestion.current = data?.questions;
             charactor.current = data?.maps?.nam_ngang?.layers[4].tiles;
             setIsLoading(false);
         })
@@ -141,24 +167,41 @@ function MapComponent(props) {
             });
          });
     }
+    const handleCloseModal = () => {
+        setShowQuestion(false);
+    }
     const PopupQuestion = () => {
-        const turnOffModal = setTimeout(() => {
-            setShowQuestion(false);
-            clearTimeout(turnOffModal);
-        }, 5000)
+        // const turnOffModal = setTimeout(() => {
+        //     setShowQuestion(false);
+        //     clearTimeout(turnOffModal);
+        // }, 5000)
         return (
-            <div style={{position: 'fixed', right: 0,left: 0, top: 0, width: '100%', height: '100%', background: 'white'}} className='container-sm Base_main__3GwWY'>
-                <BodyQuestion/>
+            <div style={{position: 'fixed', right: 0,left: 0, top: 0, width: '100%', height: '100%', background: 'white', zIndex: '2000'}} className='container-sm Base_main__3GwWY'>
+                <BodyQuestion 
+                    questions={listQuestion.current} 
+                    onCloseModal={handleCloseModal}
+                    onBackToPrev={backToPreviousStep}
+                    randomAngle={randomDice.current}
+                />
             </div>
             
         )
+    }
+    const showCountWrong = () => {
+       return countWrong.map(item => {
+            return (
+                <img src="https://img.icons8.com/stickers/20/000000/like.png"/>
+                ) 
+        })
+        
     }
     return (
         <Base body={
             <>
             {isDice &&  <Dice status={onDice} randomAngle={randomDice.current} isDice={isDice}/>}
-           
+            
             <button onClick={handleMove}>DICE</button>
+            <div style={{position: 'absolute', right: '20px'}}>{showCountWrong()}</div>
             <canvas style={{width: '100%', height: '100%'}} ref={canvasRef} width={codebeautty?.maps?.nam_ngang?.width*codebeautty?.maps?.nam_ngang?.mapWidth/10} height={codebeautty?.maps?.nam_ngang?.height*codebeautty?.maps?.nam_ngang?.mapHeight/10}></canvas>
             <img ref={imageE} hidden/>
             {showQuestion && PopupQuestion()}

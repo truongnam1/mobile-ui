@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -9,7 +9,10 @@ import styleQuestion from './Question.module.scss';
 import { useNavigate } from 'react-router-dom';
 import Artifacts from './Artifacts';
 import CountTime from '../../components/CountTime';
-function BodyQuestion(props) {
+import TracNghiem from './TracNghiem';
+import XepHinh from './XepHinh';
+function BodyQuestion({questions, onCloseModal, onBackToPrev, randomAngle}) {
+    const [typeQuestion, setTypeQuestion] = useState(questions[randomAngle%3]);
     const settings = {
         className: styleQuestion['artifacts'],
         slidesToScroll: 1,
@@ -25,28 +28,19 @@ function BodyQuestion(props) {
 
     
     const navigate = useNavigate();
-
+    console.log(randomAngle%3);
     return (
         <>
             <div className={clsx('row', 'gx-0')}>
-                {/* <div className={clsx(styleQuestion['artifacts'])}> */}
-              <Artifacts></Artifacts>
-                {/* </div> */}
-            </div>
-           <CountTime firstValue={5}/>
-            <div className={clsx('row', 'gx-0', styleQuestion['container-decription-history'])}>
-                <p>Đây là bộ sưu tập thời đại Hùng Vương và giai đoạn văn hóa Phùng Nguyên, Phú Thọ ok</p>
-            </div>
-            <div
-                className={clsx('row', 'align-items-center', 'justify-content-center')}
-            >
-                <div
-                    onClick={() => navigate('/scan')}
-                    className={clsx('col-3', 'btn', styleQuestion['btn-mobile'], styleQuestion['btn-scan'])}
-                >
-                    QUÉT
-                </div>
-
+                {typeQuestion?.type == 'trac_nghiem' ? <TracNghiem onCloseModal={onCloseModal} questions={typeQuestion} onBackToPrev={onBackToPrev}/>
+                : typeQuestion?.type == 'xep_hinh' ? <XepHinh onCloseModal={onCloseModal} questions={questions[0]} onBackToPrev={onBackToPrev}/> 
+                : <></>
+                
+            
+            
+            }
+               
+               
             </div>
         </>
     );
