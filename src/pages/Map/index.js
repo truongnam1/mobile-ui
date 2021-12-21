@@ -34,7 +34,7 @@ function MapComponent(props) {
             currentPoint.current = currentPoint.current+dice
             const pictureCha = Object.values(charactor.current);
             const newCha = {
-                [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],
+                [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
                 [a]: pictureCha[1],
     
             }
