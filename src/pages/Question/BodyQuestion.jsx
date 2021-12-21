@@ -8,6 +8,7 @@ import Slider from 'react-slick';
 import styleQuestion from './Question.module.scss';
 import { useNavigate } from 'react-router-dom';
 import Artifacts from './Artifacts';
+import CountTime from '../../components/CountTime';
 function BodyQuestion(props) {
     const settings = {
         className: styleQuestion['artifacts'],
@@ -22,6 +23,7 @@ function BodyQuestion(props) {
     //         .then(data => console.log(data));
     // }, [])
 
+    
     const navigate = useNavigate();
 
     return (
@@ -31,7 +33,7 @@ function BodyQuestion(props) {
               <Artifacts></Artifacts>
                 {/* </div> */}
             </div>
-            
+           <CountTime firstValue={5}/>
             <div className={clsx('row', 'gx-0', styleQuestion['container-decription-history'])}>
                 <p>Đây là bộ sưu tập thời đại Hùng Vương và giai đoạn văn hóa Phùng Nguyên, Phú Thọ ok</p>
             </div>
