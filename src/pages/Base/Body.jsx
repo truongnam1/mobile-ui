@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import styleBase from './Base.module.scss';
 
-import React from 'react';
+import React, { useRef,useEffect } from 'react';
 
 function Body({children,isLoading, ...props}) {
     console.log(`props`, props);
