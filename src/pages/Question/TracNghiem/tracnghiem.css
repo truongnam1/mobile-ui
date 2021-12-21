@@ -1,0 +1,27 @@
+.blink-text {
+  color: #000;
+  animation: blinkingText 0.5s infinite;
+}
+.choose {
+  background-color: #e7810c !important;
+}
+.wrong {
+  background-color: red !important;
+}
+@keyframes blinkingText {
+  0% {
+    background-color: pink;
+  }
+  25% {
+    background-color: #25e70c;
+  }
+  50% {
+    background-color: pink;
+  }
+  75% {
+    background-color: #25e70c;
+  }
+  100% {
+    background-color: pink;
+  }
+}
