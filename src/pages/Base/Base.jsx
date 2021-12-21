@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect,useLayoutEffect,useMemo,useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import styleBase from './Base.module.scss';
@@ -12,11 +12,30 @@ import Overlay from './Overlay';
 function Base({ header = '', body = '', overlay = '',isLoading, ...props }) {
     // console.log(`styleBase`, styleBase);
     
-    const {propsHeader, propsBody, propsOverlay} = props;
+    var {propsHeader, propsBody, propsOverlay} = props;
+    const elMain = useRef();
+   
+    const [visibleTopMain,setVisibleTopMain] = useState(false);
+
+    useEffect(() => {
+        elMain.current.addEventListener('scroll', () => {
+            // isVisible = true;s
+            // console.log('dang scroll');
+            setVisibleTopMain(true);
+        })
+
+    }, [])
+
+    if (visibleTopMain) {
+        setTimeout(() => {
+            setVisibleTopMain(false);
+        },22000)
+    }
+
     return (
         <>
-            <div className={clsx('container-sm', 'border', styleBase.main)}>
-                <Header {...propsHeader}>
+            <div ref={elMain} className={clsx('container-sm', 'border', styleBase.main)}>
+                <Header {...propsHeader } visibleTopMain={visibleTopMain}>
                     {header}
                 </Header>
                 <Body isLoading={isLoading}>

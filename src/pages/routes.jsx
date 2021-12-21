@@ -1,4 +1,4 @@
-import {Base} from "./Base";
+// import {Base} from "./Base";
 import Complete from "./Complete/Complete";
 import { Question } from "./Question";
 import Scan from "./Scan/Scan";

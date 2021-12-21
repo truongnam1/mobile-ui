@@ -1,135 +1,150 @@
-body {
-  background: #f0f0f0;
-}
 .containerByT {
-  /* perspective: 1000px; */
-  /* perspective-origin: 50% 50%; */
-  font-family: "fontawesome";
-  position: fixed;
-  top: 50%;
-  right: 45%;
+    /* perspective: 1000px; */
+    /* perspective-origin: 50% 50%; */
+    font-family: "fontawesome";
+    position: fixed;
+    top: 50%;
+    right: 45%;
+    /* height: 100vh;s */
+}
 
-  /* height: 100vh;s */
-}
 .containerByT .cube {
-  position: relative;
-  left: 45%;
-  top: 40%;
-  height: 50px;
-  width: 50px;
-  transform-style: preserve-3d;
-  cursor: pointer;
-  transform: rotateX(135deg) rotateY(-217deg) rotateZ(-88deg);
+    position: relative;
+    left: 45%;
+    top: 40%;
+    height: 50px;
+    width: 50px;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    transform: rotateX(135deg) rotateY(-217deg) rotateZ(-88deg);
 }
+
 .containerByT .cube div {
-  position: absolute;
-  box-sizing: border-box;
-  padding: 10px;
-  height: 100%;
-  width: 100%;
-  border: 2px solid #eee;
-  color: #fff;
+    position: absolute;
+    box-sizing: border-box;
+    padding: 10px;
+    height: 100%;
+    width: 100%;
+    border: 2px solid #eee;
+    color: #fff;
 }
+
 .containerByT .cube div span {
-  font-size: 8px;
-  font-family: "fontawesome";
+    font-size: 8px;
+    font-family: "fontawesome";
 }
+
 .containerByT .cube .front {
-  background: #000;
-  transform: translateZ(-51px);
+    background: #000;
+    transform: translateZ(-51px);
 }
+
 .containerByT .cube .back {
-  background: #000;
-  transform: translateZ(-100px) rotateY(180deg);
+    background: #000;
+    transform: translateZ(-100px) rotateY(180deg);
 }
+
 .containerByT .cube .right {
-  background: #000;
-  transform-origin: top right;
-  transform: rotateY(-270deg) translateX(100px);
+    background: #000;
+    transform-origin: top right;
+    transform: rotateY(-270deg) translateX(100px);
 }
+
 .containerByT .cube .left {
-  background: #000;
-  transform-origin: center left;
-  transform: rotateY(270deg) translateX(-100px);
+    background: #000;
+    transform-origin: center left;
+    transform: rotateY(270deg) translateX(-100px);
 }
+
 .containerByT .cube .top {
-  background: #000;
-  transform-origin: top center;
-  transform: rotateX(-270deg) translateY(-100px);
+    background: #000;
+    transform-origin: top center;
+    transform: rotateX(-270deg) translateY(-100px);
 }
+
 .containerByT .cube .bottom {
-  background: #000;
-  transform-origin: bottom center;
-  transform: rotateX(270deg) translateY(100px);
+    background: #000;
+    transform-origin: bottom center;
+    transform: rotateX(270deg) translateY(100px);
 }
+
 
 /*DOT ALIGNMENT */
+
 .containerByT .cube .front span,
 .containerByT .cube .left span:nth-child(1),
 .containerByT .cube .right span:nth-child(1) {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
+
 .containerByT .cube .top span:nth-child(1),
 .containerByT .cube .left span:nth-child(2),
 .containerByT .cube .right span:nth-child(2),
 .containerByT .cube .bottom span:nth-child(1) {
-  position: absolute;
-  top: 35px;
-  left: 35px;
+    position: absolute;
+    top: 35px;
+    left: 35px;
 }
+
 .containerByT .cube .top span:nth-child(2),
 .containerByT .cube .left span:nth-child(3),
 .containerByT .cube .right span:nth-child(3),
 .containerByT .cube .bottom span:nth-child(2) {
-  position: absolute;
-  bottom: 35px;
-  right: 35px;
+    position: absolute;
+    bottom: 35px;
+    right: 35px;
 }
+
 .containerByT .cube .right span:nth-child(4),
 .containerByT .cube .bottom span:nth-child(3) {
-  position: absolute;
-  top: 35px;
-  right: 35px;
+    position: absolute;
+    top: 35px;
+    right: 35px;
 }
+
 .containerByT .cube .right span:nth-child(5),
 .containerByT .cube .bottom span:nth-child(4) {
-  position: absolute;
-  bottom: 35px;
-  left: 35px;
+    position: absolute;
+    bottom: 35px;
+    left: 35px;
 }
+
 .containerByT .cube .back pre {
-  font-size: 8px;
-  font-family: "fontawesome";
-  margin: 0;
+    font-size: 8px;
+    font-family: "fontawesome";
+    margin: 0;
 }
+
 .containerByT .cube .back .firstPre {
-  position: absolute;
-  top: 29px;
-  left: 7px;
+    position: absolute;
+    top: 29px;
+    left: 7px;
 }
+
 .containerByT .cube .back .secondPre {
-  position: absolute;
-  bottom: 27px;
-  right: 3px;
+    position: absolute;
+    bottom: 27px;
+    right: 3px;
 }
+
 @keyframes animate {
-  25% {
-    transform: rotateX(45deg) rotateY(65deg) rotateZ(35deg);
-    top: 0%;
-  }
-  50% {
-    transform: rotateX(145deg) rotateY(165deg) rotateZ(135deg);
-    top: 30%;
-  }
-  75% {
-    transform: rotateX(276deg) rotateY(256deg) rotateZ(246deg);
-    top: 45%;
-  }
-  100% {
-    transform: rotateX(376deg) rotateY(356deg) rotateZ(346deg);
-    top: 60%;
-  }
+    25% {
+        transform: rotateX(45deg) rotateY(65deg) rotateZ(35deg);
+        top: 0%;
+    }
+    50% {
+        transform: rotateX(145deg) rotateY(165deg) rotateZ(135deg);
+        top: 30%;
+    }
+    75% {
+        transform: rotateX(276deg) rotateY(256deg) rotateZ(246deg);
+        top: 45%;
+    }
+    100% {
+        transform: rotateX(376deg) rotateY(356deg) rotateZ(346deg);
+        top: 60%;
+    }
 }
