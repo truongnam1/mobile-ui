@@ -6,6 +6,7 @@ import Base from '../Base/Base'
 import _ from 'lodash';
 import Dice from './dice';
 import BodyQuestion from '../Question/BodyQuestion';
+import {useNavigate} from 'react-router-dom'
 function MapComponent(props) {
     const imageE = useRef();
     const canvasRef = useRef();
@@ -18,13 +19,15 @@ function MapComponent(props) {
     const randomDice = useRef();
     const [isDice, setIsDice] = useState(false);
     const [showQuestion, setShowQuestion] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigation = useNavigate();
     const getCoords = (e) => {
         
     }
     const handleMove = () => {
         const dice = Math.floor(Math.random() * 6) + 1;
         randomDice.current = dice;
-        if(currentPoint.current+dice != (_.size(map)-1)) {
+        if(currentPoint.current+dice < (_.size(map)-1)) {
             const a = map[(currentPoint.current+dice) > (_.size(map)-1) ? (_.size(map)-1) : currentPoint.current+dice];
             setOnDice(!onDice);
             setIsDice(true);
@@ -45,14 +48,15 @@ function MapComponent(props) {
             const timeShowQues = setTimeout(() => {
                 setShowQuestion(true);
                 clearTimeout(timeShowQues);
-            }, 2200)
+            }, 2400)
            
+        } else {
+            navigation('/complete')
         }
        
     }
     const findFirtPoint = (arr) => {
         const arrPoint = arr.filter(item => item.split('-')[1] == (codebeautty?.maps?.nam_ngang.mapHeight-1));
-        console.log(arrPoint);
         if(arr.includes((arrPoint[0].split('-')[0] + '-' + (arrPoint[0].split('-')[1]-1)))) return arrPoint[_.size(arrPoint)-1];
         else return arrPoint[0];
     }
@@ -83,6 +87,7 @@ function MapComponent(props) {
        
     }
     useEffect(() => {
+        setIsLoading(true);
         fetch('https://api.npoint.io/6a4c897196b39197353e?fbclid=IwAR0eWYwumHoPbOdQn1lYAoEakvdPhud6htJYU-J-g7FmvMiMdoudcxAP-d4')
         .then(jsonData => jsonData.json())
         .then(data => {
@@ -91,6 +96,7 @@ function MapComponent(props) {
                 return item?.tiles
             }))
             charactor.current = data?.maps?.nam_ngang?.layers[4].tiles;
+            setIsLoading(false);
         })
     },[])
     useEffect(() => {
@@ -141,7 +147,7 @@ function MapComponent(props) {
             clearTimeout(turnOffModal);
         }, 5000)
         return (
-            <div style={{position: 'fixed', right: 0,left: 0, top: '22%', margin: '17px', background: 'white'}}>
+            <div style={{position: 'fixed', right: 0,left: 0, top: 0, width: '100%', height: '100%', background: 'white'}} className='container-sm Base_main__3GwWY'>
                 <BodyQuestion/>
             </div>
             
@@ -158,7 +164,7 @@ function MapComponent(props) {
             {showQuestion && PopupQuestion()}
             </>
             
-        }/>
+        } isLoading={isLoading}/>
             
         
     );

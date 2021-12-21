@@ -9,7 +9,7 @@ import Overlay from './Overlay';
 
 
 
-function Base({ header = '', body = '', overlay = '', ...props }) {
+function Base({ header = '', body = '', overlay = '',isLoading, ...props }) {
     // console.log(`styleBase`, styleBase);
     
     const {propsHeader, propsBody, propsOverlay} = props;
@@ -19,7 +19,7 @@ function Base({ header = '', body = '', overlay = '', ...props }) {
                 <Header {...propsHeader}>
                     {header}
                 </Header>
-                <Body>
+                <Body isLoading={isLoading}>
                     {body}
                 </Body>
                 <Overlay>
