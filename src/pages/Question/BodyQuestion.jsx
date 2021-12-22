@@ -11,6 +11,7 @@ import Artifacts from './Artifacts';
 import CountTime from '../../components/CountTime';
 import TracNghiem from './TracNghiem';
 import XepHinh from './XepHinh';
+import Dice from '../Map/dice';
 function BodyQuestion({questions, onCloseModal, onBackToPrev, randomAngle}) {
     const [typeQuestion, setTypeQuestion] = useState(questions[randomAngle%3]);
     const settings = {
@@ -34,7 +35,9 @@ function BodyQuestion({questions, onCloseModal, onBackToPrev, randomAngle}) {
             <div className={clsx('row', 'gx-0')}>
                 {typeQuestion?.type == 'trac_nghiem' ? <TracNghiem onCloseModal={onCloseModal} questions={typeQuestion} onBackToPrev={onBackToPrev}/>
                 : typeQuestion?.type == 'xep_hinh' ? <XepHinh onCloseModal={onCloseModal} questions={questions[0]} onBackToPrev={onBackToPrev}/> 
-                : <></>
+                : <>
+                    <CountTime firstValue={4} onClearTime={onCloseModal}/>
+                </>
                 
             
             

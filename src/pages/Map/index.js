@@ -53,7 +53,28 @@ function MapComponent(props) {
             }, 2400)
            
         } else {
-            navigation('/complete')
+            const a = map[(_.size(map)-1)];
+            const pictureCha = Object.values(charactor.current);
+            setOnDice(!onDice);
+            setIsDice(true);
+            const newCha = {
+                [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
+                [a]: pictureCha[1],
+    
+            }
+            listPicture.splice(listPicture.length - 1)
+                const pewpew = [...listPicture];
+             
+                const timeOut = setTimeout(() => {
+                    setListPicture([...pewpew, newCha]);
+                    setIsDice(false);
+                    clearTimeout(timeOut);
+                }, 1500)
+                const timeOut2 = setTimeout(() => {
+                    navigation('/complete')
+                    clearTimeout(timeOut2);
+                }, 3500)
+            
         }
        
     }
@@ -199,15 +220,25 @@ function MapComponent(props) {
         <Base body={
             <>
             {isDice &&  <Dice status={onDice} randomAngle={randomDice.current} isDice={isDice}/>}
+            {!_.isEmpty(map) &&
+            <>
+                {/* <button onClick={handleMove}> */}
+                    <img src='https://play-lh.googleusercontent.com/0sj3K5n2ztdSK2Pnl795XFBcthqGhMJX1BCCciwZivfGJthuT1j_dJ33KrkIo1iCd9U'
+                        style={{ backgroundImage: 'tra', height: '20px', width: '20px', position: 'fixed', zIndex: 4000 }}
+                        onClick={handleMove}
+                        
+                    />
+                {/* </button> */}
+                <div style={{position: 'absolute', right: '20px'}}>{showCountWrong()}</div>
+                <canvas style={{width: '100%', height: '100%'}} ref={canvasRef} width={codebeautty?.maps?.nam_ngang?.width*codebeautty?.maps?.nam_ngang?.mapWidth/10} height={codebeautty?.maps?.nam_ngang?.height*codebeautty?.maps?.nam_ngang?.mapHeight/10}></canvas>
+            </>
+            }
             
-            <button onClick={handleMove}>DICE</button>
-            <div style={{position: 'absolute', right: '20px'}}>{showCountWrong()}</div>
-            <canvas style={{width: '100%', height: '100%'}} ref={canvasRef} width={codebeautty?.maps?.nam_ngang?.width*codebeautty?.maps?.nam_ngang?.mapWidth/10} height={codebeautty?.maps?.nam_ngang?.height*codebeautty?.maps?.nam_ngang?.mapHeight/10}></canvas>
             <img ref={imageE} hidden/>
             {showQuestion && PopupQuestion()}
             </>
             
-        } isLoading={isLoading}/>
+        } isLoading={isLoading} text={"Đang tải bản đồ"}/>
             
         
     );

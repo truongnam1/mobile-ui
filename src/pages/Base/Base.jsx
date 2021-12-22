@@ -38,7 +38,7 @@ function Base({ header = '', body = '', overlay = '',isLoading, ...props }) {
                 <Header {...propsHeader } visibleTopMain={visibleTopMain}>
                     {header}
                 </Header>
-                <Body isLoading={isLoading}>
+                <Body isLoading={isLoading} {...props}>
                     {body}
                 </Body>
                 <Overlay>

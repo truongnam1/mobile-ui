@@ -1,8 +1,12 @@
 import React from 'react';
 import Puzzle from 'react-image-puzzle';
+import CountTime from '../../../components/CountTime';
 function XepHinh({onCloseModal,questions, onBackToPrev}) {
     return (
         <div className="row">
+            <div className="col-sm-2">
+                <CountTime firstValue={60} onClearTime={onCloseModal}/>
+            </div>
             <div className="col-5-sm" style={{margin: '15px auto', textAlign: 'center'}}>
                 <span>Trò chơi ghép hình</span>
                 
@@ -13,7 +17,7 @@ function XepHinh({onCloseModal,questions, onBackToPrev}) {
                     onDone={() => {
                         onCloseModal();
                     }}
-                    level={3}
+                    level={2}
                     className="asd"
                     style={{margin: 'auto'}}
                 />

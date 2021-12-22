@@ -11,9 +11,13 @@ function Body({children,isLoading, ...props}) {
             <div className={clsx(styleBase['main-body'])} >
                 {children}
                 {isLoading && 
-                     <div className="spinner-border text-primary" role="status" style={{position: 'fixed', top: '50%', right: '50%'}}>
-                        <span class="sr-only">Loading...</span>
-                    </div>
+                    <>
+                        <div className="spinner-border text-primary" role="status" style={{position: 'fixed', top: '50%', right: '50%'}}>
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                        <span style={{position: 'fixed', top: '50%', right: '45%', zIndex: 3000}}>{props?.text}</span>
+                    </>
+                    
                 }
                
             </div>
