@@ -9,10 +9,11 @@ import Overlay from './Overlay';
 
 
 
-function Base({ header = '', body = '', overlay = '',isLoading, ...props }) {
+function Base({ isLoading, ...props }) {
     // console.log(`styleBase`, styleBase);
     
     var {propsHeader, propsBody, propsOverlay} = props;
+    var {top ,header, headerBody, body, overlay} = props;
     const elMain = useRef();
    
     const [visibleTopMain,setVisibleTopMain] = useState(false);
@@ -35,9 +36,11 @@ function Base({ header = '', body = '', overlay = '',isLoading, ...props }) {
     return (
         <>
             <div ref={elMain} className={clsx('container-sm', 'border', styleBase.main)}>
+                {top}
                 <Header {...propsHeader } visibleTopMain={visibleTopMain}>
                     {header}
                 </Header>
+                {headerBody}
                 <Body isLoading={isLoading} {...props}>
                     {body}
                 </Body>
