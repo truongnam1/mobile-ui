@@ -36,7 +36,7 @@ function BodyQuestion({questions, onCloseModal, onBackToPrev, randomAngle}) {
                 {typeQuestion?.type == 'trac_nghiem' ? <TracNghiem onCloseModal={onCloseModal} questions={typeQuestion} onBackToPrev={onBackToPrev}/>
                 : typeQuestion?.type == 'xep_hinh' ? <XepHinh onCloseModal={onCloseModal} questions={questions[0]} onBackToPrev={onBackToPrev}/> 
                 : <>
-                    <CountTime firstValue={4} onClearTime={onCloseModal}/>
+                    <CountTime firstValue={4} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
                 </>
                 
             

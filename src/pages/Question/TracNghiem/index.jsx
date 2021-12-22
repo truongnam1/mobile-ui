@@ -47,7 +47,7 @@ function TracNghiem({onCloseModal,questions, onBackToPrev}) {
     return (
         <div className="row">
                     <div className="col-sm-2" style={{marginLeft: 'auto', textAlign: 'left'}}>
-                        <CountTime firstValue={50} onClearTime={onCloseModal}/>
+                        <CountTime firstValue={50} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
                     </div>
                     <div className="col-sm-11"  style={{margin: '15px auto', padding: '10px', background: 'pink', borderRadius: '20px'}}>
                         <p style={{wordBreak: 'break-all'}}>Câu hỏi: {questions?.question}</p>

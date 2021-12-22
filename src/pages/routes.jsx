@@ -4,6 +4,7 @@ import { Question } from "./Question";
 import Scan from "./Scan/Scan";
 import MapComponent from './Map'
 import { Start } from "./Start";
+import Lose from "./lose";
 
 export default [
     {
@@ -33,5 +34,10 @@ export default [
         path : '/map',
         element : <MapComponent/>,
         name : 'map'
+    },
+    {
+        path : '/lose',
+        element : <Lose/>,
+        name : 'lose'
     },
 ]

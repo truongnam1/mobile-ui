@@ -24,7 +24,8 @@ function MapComponent(props) {
     const listQuestion = useRef([]);
     const previousStep = useRef();
     const [countWrong, setCountWrong] = useState([1,2,3]);
-
+    const itemRoad = useRef([]);
+    const eventOfRoad = useRef([]);
     const handleMove = () => {
         const dice = Math.floor(Math.random() * 6) + 1;
         randomDice.current = dice;
@@ -46,11 +47,29 @@ function MapComponent(props) {
                 setListPicture([...pewpew, newCha]);
                 setIsDice(false);
                 clearTimeout(timeOut);
-            }, 2000)
-            const timeShowQues = setTimeout(() => {
-                setShowQuestion(true);
-                clearTimeout(timeShowQues);
-            }, 2400)
+            }, 2000);
+            if(validateStep(map[currentPoint.current]) !== false) {
+                currentPoint.current = currentPoint.current+validateStep(map[currentPoint.current]);
+                const pictureCha = Object.values(charactor.current);
+                const a = map[currentPoint.current];
+                const newCha = {
+                    [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
+                    [a]: pictureCha[1],
+        
+                }
+                
+                const timeOut = setTimeout(() => {
+                    const pewpew = [...listPicture];
+                    setListPicture([...pewpew, newCha]);
+                    clearTimeout(timeOut);
+                }, 3000);
+            } else {
+                const timeShowQues = setTimeout(() => {
+                    setShowQuestion(true);
+                    clearTimeout(timeShowQues);
+                }, 2400)
+            }
+            
            
         } else {
             const a = map[(_.size(map)-1)];
@@ -81,7 +100,7 @@ function MapComponent(props) {
     //quay lai o cu
     const backToPreviousStep = () => {
         if(countWrong == 1) {
-            navigation('/')
+            navigation('/lose')
         } else {
             const a = map[(previousStep.current) > (_.size(map)-1) ? (_.size(map)-1) : previousStep.current];
             currentPoint.current = previousStep.current
@@ -132,6 +151,7 @@ function MapComponent(props) {
         } else return [];
        
     }
+    //lay thong tin cua ban do
     useEffect(() => {
         setIsLoading(true);
         fetch('https://api.npoint.io/6a4c897196b39197353e?fbclid=IwAR0eWYwumHoPbOdQn1lYAoEakvdPhud6htJYU-J-g7FmvMiMdoudcxAP-d4')
@@ -141,11 +161,30 @@ function MapComponent(props) {
             setListPicture(data?.maps?.nam_ngang?.layers.map(item => {
                 return item?.tiles
             }))
+            itemRoad.current =  data?.maps?.nam_ngang?.layers.reduce((arr,item) => {
+                if(item?.name == 'item-road') return arr = item?.tiles;
+                else return arr;
+            },[]);
+            eventOfRoad.current = data?.define_item_map;
             listQuestion.current = data?.questions;
             charactor.current = data?.maps?.nam_ngang?.layers[4].tiles;
             setIsLoading(false);
         })
-    },[])
+    },[]);
+
+    //kiem tra xem co boom
+    const validateStep = (toado) => {
+        if(_.isEmpty(itemRoad.current[toado])) return false;
+        else {
+            const typeEvent = eventOfRoad.current.reduce((object, item) => {
+                if(item?.tileSymbol == itemRoad.current[toado]?.tileSymbol) return item;
+                else return object;
+            }, {})
+            if(typeEvent?.effect.split(' ')[0] == 'back_forward') return -typeEvent?.effect.split(' ')[1];
+            else if(typeEvent?.effect.split(' ')[0] == 'forward') return typeEvent?.effect.split(' ')[1];
+            else return false;
+        }
+    }
     useEffect(() => {
         
        
@@ -216,6 +255,10 @@ function MapComponent(props) {
         })
         
     }
+    //excuter event road
+    const excuterEventRoad = () => {
+
+    }
     return (
         <Base body={
             <>
@@ -224,7 +267,7 @@ function MapComponent(props) {
             <>
                 {/* <button onClick={handleMove}> */}
                     <img src='https://play-lh.googleusercontent.com/0sj3K5n2ztdSK2Pnl795XFBcthqGhMJX1BCCciwZivfGJthuT1j_dJ33KrkIo1iCd9U'
-                        style={{ backgroundImage: 'tra', height: '20px', width: '20px', position: 'fixed', zIndex: 4000 }}
+                        style={{ backgroundImage: 'tra', height: '20px', width: '20px', position: 'fixed', zIndex: 2000 }}
                         onClick={handleMove}
                         
                     />

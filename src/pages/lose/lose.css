@@ -1,0 +1,36 @@
+.game_over {
+  position: absolute;
+  top: 30%;
+  right: 25%;
+  font-size: 50px;
+  color: orange;
+  font-family: cursive;
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0.2;
+  }
+}
+.play_again {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  border: none;
+  background: transparent;
+  font-family: cursive;
+  color: orange;
+  font-size: 30px;
+}
+.exit_game {
+  position: absolute;
+  top: 50%;
+  right: 29%;
+  font-family: cursive;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: orange;
+  font-size: 30px;
+}
