@@ -23,11 +23,12 @@ function MapComponent(props) {
     const navigation = useNavigate();
     const listQuestion = useRef([]);
     const previousStep = useRef();
-    const [countWrong, setCountWrong] = useState([1,2,3]);
+    const [countWrong, setCountWrong] = useState([1,2,3,4,5]);
     const itemRoad = useRef([]);
     const eventOfRoad = useRef([]);
     const handleMove = () => {
-        const dice = Math.floor(Math.random() * 6) + 1;
+        try {
+            const dice = Math.floor(Math.random() * 6) + 1;
         randomDice.current = dice;
         if(currentPoint.current+dice < (_.size(map)-1)) {
             previousStep.current = currentPoint.current;
@@ -48,10 +49,13 @@ function MapComponent(props) {
                 setIsDice(false);
                 clearTimeout(timeOut);
             }, 2000);
+
             if(validateStep(map[currentPoint.current]) !== false) {
-                currentPoint.current = currentPoint.current+validateStep(map[currentPoint.current]);
+                console.log(validateStep(map[currentPoint.current]));
+                currentPoint.current = currentPoint.current+ validateStep(map[currentPoint.current]);
                 const pictureCha = Object.values(charactor.current);
                 const a = map[currentPoint.current];
+                console.log(currentPoint.current);
                 const newCha = {
                     [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
                     [a]: pictureCha[1],
@@ -95,6 +99,10 @@ function MapComponent(props) {
                 }, 3500)
             
         }
+        } catch(err) {
+            console.log(err);
+        }
+        
        
     }
     //quay lai o cu
@@ -180,8 +188,8 @@ function MapComponent(props) {
                 if(item?.tileSymbol == itemRoad.current[toado]?.tileSymbol) return item;
                 else return object;
             }, {})
-            if(typeEvent?.effect.split(' ')[0] == 'back_forward') return -typeEvent?.effect.split(' ')[1];
-            else if(typeEvent?.effect.split(' ')[0] == 'forward') return typeEvent?.effect.split(' ')[1];
+            if(typeEvent?.effect.split(' ')[0] == 'back_forward') return -Number(typeEvent?.effect.split(' ')[1]);
+            else if(typeEvent?.effect.split(' ')[0] == 'forward') return Number(typeEvent?.effect.split(' ')[1]);
             else return false;
         }
     }
