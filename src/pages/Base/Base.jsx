@@ -29,7 +29,7 @@ function Base({ header = '', body = '', overlay = '',isLoading, ...props }) {
     if (visibleTopMain) {
         setTimeout(() => {
             setVisibleTopMain(false);
-        },22000)
+        },2000)
     }
 
     return (
