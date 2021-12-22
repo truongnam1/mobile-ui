@@ -2,7 +2,7 @@
 import Complete from "./Complete/Complete";
 import { Question } from "./Question";
 import Scan from "./Scan/Scan";
-import MapComponent from './Map'
+import MapComponent from './Map/index'
 import { Start } from "./Start";
 import Lose from "./lose";
 

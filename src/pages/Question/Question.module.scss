@@ -2,6 +2,21 @@
 // '../../assets/scss/base/mixins.module',
 // '../../assets/scss/base/placeholders.module';
 @import '../Base/Base.module.scss';
+@media (min-width: 575.98px) {
+    .main-question {
+        width: 575.98px !important;
+    }
+}
+
+.main-question {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    background-color: #E0E7FF;
+}
+
 .clock-goiy {
     position: absolute;
     bottom: -19px;

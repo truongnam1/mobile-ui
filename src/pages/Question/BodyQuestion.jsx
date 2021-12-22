@@ -14,25 +14,14 @@ import XepHinh from './XepHinh';
 import Dice from '../Map/dice';
 function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
     const [typeQuestion, setTypeQuestion] = useState(questions[randomAngle % 3]);
-    const settings = {
-        className: styleQuestion['artifacts'],
-        slidesToScroll: 1,
-        slidesToShow: 4,
-        variableWidth: true,
-    };
+    // const [typeQuestion, setTypeQuestion] = useState(questions[1]);
 
-    // useEffect(() => {
-    //     fetch('https://api.npoint.io/658232b33eb69c8bddc7')
-    //         .then(response => response.json())
-    //         .then(data => console.log(data));
-    // }, [])
-
-
+    
     const navigate = useNavigate();
     console.log(randomAngle % 3);
     return (
         <>
-            <div className={clsx('row', 'gx-0')}>
+            <div className={clsx(styleQuestion['main-question'])}>
                 {typeQuestion?.type == 'trac_nghiem' ? 
                 <TracNghiem onCloseModal={onCloseModal} questions={typeQuestion} onBackToPrev={onBackToPrev} />
                     : typeQuestion?.type == 'xep_hinh' ? <XepHinh onCloseModal={onCloseModal} questions={questions[0]} onBackToPrev={onBackToPrev} />

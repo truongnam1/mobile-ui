@@ -5,7 +5,7 @@ function XepHinh({onCloseModal,questions, onBackToPrev}) {
     return (
         <div className="row">
             <div className="col-sm-2">
-                <CountTime firstValue={11160} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
+                <CountTime firstValue={40} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
             </div>
             <div className="col-5-sm" style={{margin: '15px auto', textAlign: 'center'}}>
                 <span>Trò chơi ghép hình</span>
