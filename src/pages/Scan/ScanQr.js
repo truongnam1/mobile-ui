@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
 import { Html5Qrcode } from 'html5-qrcode';
 import styleScan from './Scan.module.scss';
-
+import FetchData from '../../assets/js/fetchData';
 
 const ScanQr = function() {
     this.arrDeviceCamera = null;
     this.currentCameraId = null;
     this.html5QrCode = null;
+    this.callbackCorrect = {};
     // this._start();
     // this._changeCamera();
     // this._displayCamera();
@@ -14,17 +14,19 @@ const ScanQr = function() {
 
 }
 
-ScanQr.prototype._start = function() {
+ScanQr.prototype._start = function(callbackStartDone = {}) {
     Html5Qrcode.getCameras().then(devices => {
         console.log(devices);
         if (devices && devices.length) {
             this.arrDeviceCamera = devices;
             // console.log(this.arrDeviceCamera);
-            this._displayCamera(this.arrDeviceCamera[0].id);
+            // this._displayCamera(this.arrDeviceCamera[0].id);
+            // this._checkIn(this.arrDeviceCamera[0].id);
             console.log('ok camera');
+            callbackStartDone();
         }
     }).catch(err => {
-        // handle err
+        alert('Người dùng không cấp quyền truy cập');
     });
 }
 
@@ -50,6 +52,7 @@ ScanQr.prototype._displayCamera = function(cameraId) {
     const html5QrCode = new Html5Qrcode( /* element id */ "reader");
     this.html5QrCode = html5QrCode;
     this.currentCameraId = cameraId;
+    var tempTextRes = '';
 
     html5QrCode.start(
             cameraId, {
@@ -60,8 +63,12 @@ ScanQr.prototype._displayCamera = function(cameraId) {
                 // do something when code is read
                 console.log(`decodedText`, decodedText);
                 console.log(`decodedResult`, decodedResult);
+                this.callbackCorrect({ decodedText, tempTextRes });
+                tempTextRes = decodedText;
+
                 if (decodedText === '123456') {
-                    // toastr.success('Đáp án chính xác');
+
+
                     setTimeout(function() {
                         // window.location.href = './done.html'     
                     }, 2000);
@@ -79,6 +86,45 @@ ScanQr.prototype._displayCamera = function(cameraId) {
             console.log('loi khoi tao camera');
         });
 }
+
+
+ScanQr.prototype._checkIn = function() {
+    console.log('check in');
+
+    this._start(() => {
+        this.callbackCorrect = function(resQr) {
+
+            console.log('getDataMuseum');
+            if (resQr.tempTextRes != resQr.decodedText) {
+                console.log('ok');
+                FetchData.dataMuseum(resQr.decodedText, (data) => {
+                    console.log(data);
+                });
+            }
+        }
+        if (this.arrDeviceCamera) {
+            this._displayCamera(this.arrDeviceCamera[0].id);
+        }
+
+    })
+}
+ScanQr.prototype.question = function(answer, cbCorrect = {}) {
+    console.log('scan dap an queston');
+    this._start(() => {
+        this.callbackCorrect = function(resQr) {
+            if (resQr.tempTextRes != resQr.decodedText && answer === resQr.decodedText) {
+                // console.log('ok');
+                console.log('dap an chinh xac');
+                cbCorrect();
+            }
+        }
+        if (this.arrDeviceCamera) {
+            this._displayCamera(this.arrDeviceCamera[0].id);
+        }
+    })
+}
+
+
 ScanQr.prototype._stopCamera = function() {
     this.html5QrCode.stop().then((ignore) => {
         console.log('stop camera');

@@ -9,8 +9,8 @@ import TracNghiem from './TracNghiem';
 import XepHinh from './XepHinh';
 import Scan from '../Scan/Scan';
 function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
-    // const [typeQuestion, setTypeQuestion] = useState(questions[randomAngle % questions.length]);
-    const [typeQuestion, setTypeQuestion] = useState(questions[2]);
+    const [typeQuestion, setTypeQuestion] = useState(questions[randomAngle % questions.length]);
+    // const [typeQuestion, setTypeQuestion] = useState(questions[2]);
 
     console.log(randomAngle);
     const navigate = useNavigate();
@@ -32,7 +32,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
                 console.log('xep_hinh');
                 return (<XepHinh
                     onCloseModal={onCloseModal}
-                    questions={questions[0]}
+                    questions={typeQuestion}
                     onBackToPrev={onBackToPrev}
                 />)
                 break;
