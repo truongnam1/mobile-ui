@@ -1,7 +1,7 @@
 // @import '../../assets/scss/base/variables.module',
 // '../../assets/scss/base/mixins.module',
 // '../../assets/scss/base/placeholders.module';
-@import '../Base/Base.module.scss';
+@import "../Base/Base.module.scss";
 @media (min-width: 575.98px) {
     .main-question {
         width: 575.98px !important;
@@ -14,7 +14,7 @@
     position: absolute;
     // z-index: 999;
     top: 0;
-    background-color: #E0E7FF;
+    background-color: #e0e7ff;
 }
 
 .clock-goiy {
@@ -45,7 +45,7 @@
     @include square(60px);
     height: 60px;
     border-radius: $radius-box;
-    background-color: #E0E7FF;
+    background-color: #e0e7ff;
     margin: 0 2rem;
     position: relative;
     z-index: 1;
