@@ -7,11 +7,11 @@ import styleBase from './Base.module.scss';
 
 function Header({ children, visibleTopMain, ...props }) {
     let navigate = useNavigate();
-    console.log(`propsHeader`, props);
+    // console.log(`propsHeader`, props);
     const { RemoveHQ, removeBack } = props;
 
     const elTop = useRef();
-    console.log(`visibleTopMain`, visibleTopMain);
+    // console.log(`visibleTopMain`, visibleTopMain);
 
     return (
         <div

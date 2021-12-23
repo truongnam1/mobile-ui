@@ -158,7 +158,7 @@ function MapComponent(props) {
     //lay thong tin cua ban do
     useEffect(() => {
         setIsLoading(true);
-        fetch('https://api.npoint.io/6a4c897196b39197353e?fbclid=IwAR0eWYwumHoPbOdQn1lYAoEakvdPhud6htJYU-J-g7FmvMiMdoudcxAP-d4')
+        fetch('https://api.npoint.io/6a4c897196b39197353e')
         .then(jsonData => jsonData.json())
         .then(data => {
             setCodebeauty(data);
@@ -240,6 +240,7 @@ function MapComponent(props) {
         //     setShowQuestion(false);
         //     clearTimeout(turnOffModal);
         // }, 5000)
+        console.log('show question');
         return (
 
                 <BodyQuestion 

@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import styleScan from './Scan.module.scss';
 import ScanQr from './ScanQr.js';
 

@@ -1,10 +1,4 @@
 import clsx from 'clsx';
-import React from 'react';
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-import Slider from 'react-slick';
-
 import styleStart from './Start.module.scss';
 import styleBase from '../Base/Base.module.scss';
 import { useNavigate } from 'react-router-dom';

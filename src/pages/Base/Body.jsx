@@ -4,8 +4,8 @@ import styleBase from './Base.module.scss';
 import React, { useRef,useEffect } from 'react';
 
 function Body({children,isLoading, ...props}) {
-    console.log(`props`, props);
-    console.log(`children`, children);
+    // console.log(`props`, props);
+    // console.log(`children`, children);
     return (
         <>
             <div className={clsx(styleBase['main-body'])} >

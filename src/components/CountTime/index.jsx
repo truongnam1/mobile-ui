@@ -13,8 +13,8 @@ function CountTime({firstValue, onClearTime, onBackToPrev}) {
     useEffect(() => {
         if(count == 0) {
             clearInterval(time.current);
-            onBackToPrev();
-            onClearTime();
+            onBackToPrev && onBackToPrev();
+            onClearTime && onClearTime();
         }
     }, [count])
     return (
