@@ -26,7 +26,9 @@ function MapComponent(props) {
     const [countWrong, setCountWrong] = useState([1,2,3]);
     const itemRoad = useRef([]);
     const eventOfRoad = useRef([]);
+    const allowToDice = useRef(true);
     const handleMove = () => {
+        allowToDice.current = false;
         const dice = Math.floor(Math.random() * 6) + 1;
         randomDice.current = dice;
         if(currentPoint.current+dice < (_.size(map)-1)) {
@@ -45,6 +47,7 @@ function MapComponent(props) {
             const pewpew = [...listPicture];
             const timeOut = setTimeout(() => {
                 setListPicture([...pewpew, newCha]);
+                
                 setIsDice(false);
                 clearTimeout(timeOut);
             }, 2000);
@@ -60,6 +63,7 @@ function MapComponent(props) {
                 
                 const timeOut = setTimeout(() => {
                     const pewpew = [...listPicture];
+                    allowToDice.current = true;
                     setListPicture([...pewpew, newCha]);
                     clearTimeout(timeOut);
                 }, 3000);
@@ -228,6 +232,7 @@ function MapComponent(props) {
          });
     }
     const handleCloseModal = () => {
+        allowToDice.current = true;
         setShowQuestion(false);
     }
     const PopupQuestion = () => {
@@ -268,7 +273,7 @@ function MapComponent(props) {
                     <img src='https://play-lh.googleusercontent.com/0sj3K5n2ztdSK2Pnl795XFBcthqGhMJX1BCCciwZivfGJthuT1j_dJ33KrkIo1iCd9U'
                         style={{ backgroundImage: 'tra', height: '20px', width: '20px', position: 'fixed', zIndex: 2000 }}
                         onClick={handleMove}
-                        
+                        hidden={!allowToDice.current}
                     />
                 {/* </button> */}
                 <div style={{position: 'absolute', right: '20px'}}>{showCountWrong()}</div>
