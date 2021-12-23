@@ -5,6 +5,7 @@ import Scan from "./Scan/Scan";
 import MapComponent from './Map/index'
 import { Start } from "./Start";
 import Lose from "./lose";
+import Test from "./Test";
 
 export default [
     {
@@ -38,6 +39,10 @@ export default [
     {
         path : '/lose',
         element : <Lose/>,
+        name : 'lose'
+    },  {
+        path : '/test',
+        element : <Test/>,
         name : 'lose'
     },
 ]
