@@ -27,78 +27,91 @@ function MapComponent(props) {
     const itemRoad = useRef([]);
     const eventOfRoad = useRef([]);
     const allowToDice = useRef(true);
-    const handleMove = () => {
-        allowToDice.current = false;
-        const dice = Math.floor(Math.random() * 6) + 1;
-        randomDice.current = dice;
-        if(currentPoint.current+dice < (_.size(map)-1)) {
-            previousStep.current = currentPoint.current;
-            const a = map[(currentPoint.current+dice) > (_.size(map)-1) ? (_.size(map)-1) : currentPoint.current+dice];
-            setOnDice(!onDice);
-            setIsDice(true);
-            currentPoint.current = currentPoint.current+dice
+    const filterEventOfRoad = useRef({});
+    const beforeTypeEvent = useRef();
+
+    const handleValidateMove = (time) => {
+        if(validateStep(map[currentPoint.current]) !== false) {
+            currentPoint.current = currentPoint.current+validateStep(map[currentPoint.current]);
             const pictureCha = Object.values(charactor.current);
+            const a = map[currentPoint.current];
             const newCha = {
                 [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
                 [a]: pictureCha[1],
     
             }
-            listPicture.splice(listPicture.length - 1)
-            const pewpew = [...listPicture];
+            
             const timeOut = setTimeout(() => {
+                const pewpew = [...listPicture];
+                allowToDice.current = true;
                 setListPicture([...pewpew, newCha]);
-                
-                setIsDice(false);
+                if(beforeTypeEvent.current == 'forward') handleValidateMove(1000);
                 clearTimeout(timeOut);
-            }, 2000);
-            if(validateStep(map[currentPoint.current]) !== false) {
-                currentPoint.current = currentPoint.current+validateStep(map[currentPoint.current]);
+            }, time);
+        } else {
+            const timeShowQues = setTimeout(() => {
+                setShowQuestion(true);
+                clearTimeout(timeShowQues);
+            }, 2400)
+        }
+    }
+    const handleMove = () => {
+        try {
+            allowToDice.current = false;
+            const dice = 4;
+            // Math.floor(Math.random() * 6) + 1;
+            randomDice.current = dice;
+            if(currentPoint.current+dice < (_.size(map)-1)) {
+                previousStep.current = currentPoint.current;
+                const a = map[(currentPoint.current+dice) > (_.size(map)-1) ? (_.size(map)-1) : currentPoint.current+dice];
+                setOnDice(!onDice);
+                setIsDice(true);
+                currentPoint.current = currentPoint.current+dice
                 const pictureCha = Object.values(charactor.current);
-                const a = map[currentPoint.current];
                 const newCha = {
                     [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
                     [a]: pictureCha[1],
         
                 }
-                
-                const timeOut = setTimeout(() => {
-                    const pewpew = [...listPicture];
-                    allowToDice.current = true;
-                    setListPicture([...pewpew, newCha]);
-                    clearTimeout(timeOut);
-                }, 3000);
-            } else {
-                const timeShowQues = setTimeout(() => {
-                    setShowQuestion(true);
-                    clearTimeout(timeShowQues);
-                }, 2400)
-            }
-            
-           
-        } else {
-            const a = map[(_.size(map)-1)];
-            const pictureCha = Object.values(charactor.current);
-            setOnDice(!onDice);
-            setIsDice(true);
-            const newCha = {
-                [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
-                [a]: pictureCha[1],
-    
-            }
-            listPicture.splice(listPicture.length - 1)
+                listPicture.splice(listPicture.length - 1)
                 const pewpew = [...listPicture];
-             
                 const timeOut = setTimeout(() => {
                     setListPicture([...pewpew, newCha]);
+                    
                     setIsDice(false);
                     clearTimeout(timeOut);
-                }, 1500)
-                const timeOut2 = setTimeout(() => {
-                    navigation('/complete')
-                    clearTimeout(timeOut2);
-                }, 3500)
-            
+                }, 2000);
+                
+                handleValidateMove(3000);
+               
+            } else {
+                const a = map[(_.size(map)-1)];
+                const pictureCha = Object.values(charactor.current);
+                setOnDice(!onDice);
+                setIsDice(true);
+                const newCha = {
+                    [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
+                    [a]: pictureCha[1],
+        
+                }
+                listPicture.splice(listPicture.length - 1)
+                    const pewpew = [...listPicture];
+                 
+                    const timeOut = setTimeout(() => {
+                        setListPicture([...pewpew, newCha]);
+                        setIsDice(false);
+                        clearTimeout(timeOut);
+                    }, 1500)
+                    const timeOut2 = setTimeout(() => {
+                        navigation('/complete')
+                        clearTimeout(timeOut2);
+                    }, 3500)
+                
+            }
+        } catch(err) {
+            console.log(err);
         }
+       
        
     }
     //quay lai o cu
@@ -165,6 +178,7 @@ function MapComponent(props) {
             setListPicture(data?.maps?.nam_ngang?.layers.map(item => {
                 return item?.tiles
             }))
+            
             itemRoad.current =  data?.maps?.nam_ngang?.layers.reduce((arr,item) => {
                 if(item?.name == 'item-road') return arr = item?.tiles;
                 else return arr;
@@ -172,10 +186,28 @@ function MapComponent(props) {
             eventOfRoad.current = data?.define_item_map;
             listQuestion.current = data?.questions;
             charactor.current = data?.maps?.nam_ngang?.layers[4].tiles;
+            
             setIsLoading(false);
-        })
-    },[]);
+        }).catch(err => {
+            console.log(err);
+        }) 
+    },[])
+    console.log(filterEventOfRoad.current);
+    //filer envent road
 
+    useEffect(() => {
+        if(!_.isEmpty(map) && !_.isEmpty(itemRoad.current)) {
+            console.log(map);
+            filterEventOfRoad.current = map.reduce((object,item) => {
+                if(itemRoad.current[item]) {
+                    const key = itemRoad.current[item]?.x + '-'+itemRoad.current[item]?.y;
+                    object[key] = [...object[key] || [], item];
+                    return object;
+                } else return object;
+                
+            }, {})
+        }
+    }, [map, itemRoad.current])
     //kiem tra xem co boom
     const validateStep = (toado) => {
         if(_.isEmpty(itemRoad.current[toado])) return false;
@@ -184,9 +216,30 @@ function MapComponent(props) {
                 if(item?.tileSymbol == itemRoad.current[toado]?.tileSymbol) return item;
                 else return object;
             }, {})
-            if(typeEvent?.effect.split(' ')[0] == 'back_forward') return -Number(typeEvent?.effect.split(' ')[1]);
-            else if(typeEvent?.effect.split(' ')[0] == 'forward') return Number(typeEvent?.effect.split(' ')[1]);
-            else return false;
+            if(typeEvent?.effect.split(' ')[0] == 'back_forward') {
+                beforeTypeEvent.current = 'forward';
+                return -Number(typeEvent?.effect.split(' ')[1]);
+            }
+            else if(typeEvent?.effect.split(' ')[0] == 'forward') {
+                beforeTypeEvent.current = 'forward';
+                return Number(typeEvent?.effect.split(' ')[1]);
+            }
+            else if(typeEvent?.effect.split(' ')[0] == 'tele') {
+                beforeTypeEvent.current = 'tele';
+                const numberTele =  Number(typeEvent?.effect.split(' ')[1]);
+                const typeFilterEvent = itemRoad.current[toado]?.x + '-' + itemRoad.current[toado]?.y;
+                const currentTele = filterEventOfRoad.current[typeFilterEvent].indexOf(toado);
+                if(currentTele + numberTele > (_.size(filterEventOfRoad.current[typeFilterEvent])-1)) {
+                    const valueTeleToJump = map.indexOf((filterEventOfRoad.current[typeFilterEvent])[_.size(filterEventOfRoad.current[typeFilterEvent])-1]);
+                    return valueTeleToJump - currentPoint.current;
+                } else if(currentTele + numberTele < 0) {
+                    const valueTeleToJump = map.indexOf((filterEventOfRoad.current[typeFilterEvent])[0]);
+                    return valueTeleToJump - currentPoint.current;
+                } else {
+                    const valueTeleToJump = map.indexOf((filterEventOfRoad.current[typeFilterEvent])[currentTele + numberTele]);
+                    return valueTeleToJump - currentPoint.current;
+                }
+            } else return false
         }
     }
     useEffect(() => {
@@ -205,7 +258,13 @@ function MapComponent(props) {
         if(!_.isEmpty(codebeautty)) {   
         setMap(sort([...Object.keys(codebeautty?.maps?.nam_ngang?.layers[2].tiles)])); 
         }   
-    }, [codebeautty])
+    }, [codebeautty]);
+    //filter event road
+    useEffect(() => {
+        if(!_.isEmpty(map)) {
+            
+        }
+    },[map, itemRoad.current])
     const draw = (layers) => {
         let ctx = canvasRef.current.getContext("2d");
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
@@ -236,11 +295,6 @@ function MapComponent(props) {
         setShowQuestion(false);
     }
     const PopupQuestion = () => {
-        // const turnOffModal = setTimeout(() => {
-        //     setShowQuestion(false);
-        //     clearTimeout(turnOffModal);
-        // }, 5000)
-        console.log('show question');
         return (
 
                 <BodyQuestion 

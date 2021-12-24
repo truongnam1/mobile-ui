@@ -9,15 +9,12 @@ import TracNghiem from './TracNghiem';
 import XepHinh from './XepHinh';
 import Scan from '../Scan/Scan';
 function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
-    const [typeQuestion, setTypeQuestion] = useState(questions[randomAngle % questions.length]);
-    // const [typeQuestion, setTypeQuestion] = useState(questions[0]);
+    // const [typeQuestion, setTypeQuestion] = useState(questions[randomAngle % questions.length]);
+    const [typeQuestion, setTypeQuestion] = useState(questions[0]);
 
     console.log(randomAngle);
     const navigate = useNavigate();
-    console.log(questions);
     console.log(`typeQuestion`, typeQuestion);
-
-
     const questionItem = () => {
         switch (typeQuestion.type) {
             case 'trac_nghiem':
@@ -27,14 +24,14 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
                     questions={typeQuestion}
                     onBackToPrev={onBackToPrev}
                 />)
-                break;
 
+            case 'xep_hinh':
                 return (<XepHinh
                     onCloseModal={onCloseModal}
                     questions={questions[0]}
                     onBackToPrev={onBackToPrev}
                 />)
-                break;
+
             case 'scan':
 
                 return (<Scan
@@ -44,7 +41,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
                 ></Scan>)
             default:
                 return <><h2>loi</h2></>
-                break;
+
         }
 
     }

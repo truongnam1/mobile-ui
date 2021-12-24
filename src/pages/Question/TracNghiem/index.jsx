@@ -6,6 +6,7 @@ function TracNghiem({onCloseModal,questions, onBackToPrev}) {
     const toast = useRef();
     const [pick, setPick] = useState(false);
     const answer = useRef();
+    const [stopTime, setStopTime] = useState(false);
     const AreYouSureAboutThat = () => {
         return (
             <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -24,12 +25,13 @@ function TracNghiem({onCloseModal,questions, onBackToPrev}) {
                     answer.current = 5;
                 }}>Hủy</button>
                   <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={() => {
+                     setStopTime(true);
                      const time = setTimeout(() => {
                         setIsChoose(5);
                         
                         clearTimeout(time);
                      },2000);
-                     const timeToOut = setInterval(() => {
+                     const timeToOut = setTimeout(() => {
                          onCloseModal();
                          if(answer.current != questions?.answer) {
                             onBackToPrev();
@@ -47,7 +49,7 @@ function TracNghiem({onCloseModal,questions, onBackToPrev}) {
     return (
         <div className="row">
                     <div className="col-sm-2" style={{marginLeft: 'auto', textAlign: 'left'}}>
-                        <CountTime firstValue={50} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
+                        <CountTime firstValue={50} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime}/>
                     </div>
                     <div className="col-sm-11"  style={{margin: '15px auto', padding: '10px', background: 'pink', borderRadius: '20px'}}>
                         <p style={{wordBreak: 'break-all'}}>Câu hỏi: {questions?.question}</p>
