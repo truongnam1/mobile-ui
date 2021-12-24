@@ -7,16 +7,22 @@ function Scan({onCloseModal,questions, onBackToPrev,...props}) {
 
     const config = {
         propsHeader: { RemoveHQ: true },
-        body: <BodyScan></BodyScan>
+        body: <BodyScan questions={questions}></BodyScan>
     }
+
 
     return (
         <>
-         <CountTime firstValue={15} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
-        <BodyScan></BodyScan>
+        <BodyScan questions={questions} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}>
+
+        </BodyScan>
+         <CountTime firstValue={45} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
         </>
         // <Base {...config} >
+        //     <CountTime firstValue={600} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
         // </Base>
+
+
     );
 }
 
