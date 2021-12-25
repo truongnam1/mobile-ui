@@ -354,6 +354,7 @@ function MapComponent(props) {
             
             <img ref={imageE} hidden/>
             {showQuestion && PopupQuestion()}
+
             </>
             
         } isLoading={isLoading} text={"Đang tải bản đồ"}/>
