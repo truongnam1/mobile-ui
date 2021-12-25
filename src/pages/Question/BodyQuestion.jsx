@@ -46,13 +46,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
 
     // const [typeQuestion, setTypeQuestion] = useState(questions[2]);
 
-    const navigate = useNavigate();
-    console.log(`typeQuestion`, typeQuestion);
-
-
-    const questionItem = useMemo(() => {
-        console.log('type', typeQuestion.type);
-
+    const questionItem = () => {
         switch (typeQuestion.type) {
             case 'trac_nghiem':
                 const rd = Math.random();
@@ -84,46 +78,12 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
         }
 
 
-    },[])
-    // const questionItem = () => {
-    //     console.log('type', typeQuestion.type);
-    //     switch (typeQuestion.type) {
-    //         case 'trac_nghiem':
-    //             const rd = Math.random();
-    //             console.log('rd', rd);
-    //             return (<TracNghiem
-    //                 onCloseModal={onCloseModal}
-    //                 questions={typeQuestion}
-    //                 onBackToPrev={onBackToPrev}
-    //                 rd={rd}
-    //             />)
-
-    //         case 'xep_hinh':
-    //             return (<XepHinh
-    //                 onCloseModal={onCloseModal}
-    //                 questions={typeQuestion}
-    //                 onBackToPrev={onBackToPrev}
-    //             />)
-
-    //         case 'scan':
-
-    //             return (<Scan
-    //                 onCloseModal={onCloseModal}
-    //                 questions={typeQuestion}
-    //                 onBackToPrev={onBackToPrev}
-    //             ></Scan>)
-    //         default:
-    //             return <><h2>loi</h2></>
-
-    //     }
-
-    // }
+    }
     
-
     return (
         <>
             <div className={clsx(styleQuestion['main-question'])}>
-                {questionItem}
+                {questionItem()}
             </div>
         </>
     );
