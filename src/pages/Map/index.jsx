@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import styleBase from '../Base/Base.module.scss';
 import Base from '../Base/Base'
 import _ from 'lodash';
-import Dice from './dice';
+import Dice from './Dice';
 import BodyQuestion from '../Question/BodyQuestion';
 import {useNavigate} from 'react-router-dom'
 function MapComponent(props) {

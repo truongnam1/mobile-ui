@@ -11,18 +11,29 @@ import Scan from '../Scan/Scan';
 function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
 
     var arrIndexQuestion = JSON.parse(sessionStorage.getItem('arrIndexQuestion'));
+    console.log(arrIndexQuestion);
     const indexQuestionRd =  arrIndexQuestion[Math.floor(Math.random()* arrIndexQuestion.length)];
 
     const [typeQuestion, setTypeQuestion] = useState(questions[indexQuestionRd]);
-    arrIndexQuestion =  arrIndexQuestion.filter(indexQuestion => indexQuestion !== indexQuestionRd)
-    sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
+    // arrIndexQuestion =  arrIndexQuestion.filter(indexQuestion => indexQuestion !== indexQuestionRd)
+    // sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
     console.log('set lai index');
+
+    // useEffect(() => {
+    //     var arrIndexQuestion = JSON.parse(sessionStorage.getItem('arrIndexQuestion'));
+    //     const indexQuestionRd =  arrIndexQuestion[Math.floor(Math.random()* arrIndexQuestion.length)];
+    //     const [typeQuestion, setTypeQuestion] = useState(questions[indexQuestionRd]);
+    //     arrIndexQuestion =  arrIndexQuestion.filter(indexQuestion => indexQuestion !== indexQuestionRd)
+    //     sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
+    //     console.log('set lai index');
+    // })
     // const [typeQuestion, setTypeQuestion] = useState(questions[5]);
 
-    console.log(randomAngle);
     const navigate = useNavigate();
     console.log(`typeQuestion`, typeQuestion);
+
     const questionItem = () => {
+        console.log('type', typeQuestion.type);
         switch (typeQuestion.type) {
             case 'trac_nghiem':
 

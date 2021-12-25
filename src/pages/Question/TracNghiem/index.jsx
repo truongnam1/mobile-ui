@@ -45,7 +45,7 @@ function TracNghiem({onCloseModal,questions, onBackToPrev}) {
           </div>
         )
     }
-  
+    console.log('screen trac nghiem');
     return (
         <div className="row">
                     <div className="col-sm-2" style={{marginLeft: 'auto', textAlign: 'left'}}>
@@ -56,7 +56,7 @@ function TracNghiem({onCloseModal,questions, onBackToPrev}) {
                     </div>
                     {questions?.selects.map((item, index) => {
                         return (
-                            <div data-bs-toggle="modal" data-bs-target="#exampleModal" 
+                            <div ref={index} data-bs-toggle="modal" data-bs-target="#exampleModal" 
                             className={`col-sm-7 ${isChoose == index ? 'choose':''} ${ answer.current == index ? answer.current == questions?.answer ? 'blink-text' : 'wrong':''}`} 
                             style={{margin: '10px auto', background: 'pink', borderRadius: '20px', padding: '5px'}}
                             onClick={() => {
