@@ -188,6 +188,16 @@ function MapComponent(props) {
             },[]);
             eventOfRoad.current = data?.define_item_map;
             listQuestion.current = data?.questions;
+
+            var arrIndexQuestion = [];
+            for (const key in listQuestion.current) {
+                arrIndexQuestion.push(key);
+            }
+
+            sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
+            
+
+
             charactor.current = randomMap?.layers.reduce((arr,item) => {
                 if(item?.name == "charater") return  item?.tiles;
                 else return arr;

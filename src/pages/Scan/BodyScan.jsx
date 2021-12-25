@@ -35,7 +35,7 @@ function BodyScan({ ...props }) {
         } else {
             scanQr._checkIn();
         }
-    })
+    },[])
 
 
 

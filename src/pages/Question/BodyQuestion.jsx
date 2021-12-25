@@ -9,8 +9,15 @@ import TracNghiem from './TracNghiem';
 import XepHinh from './XepHinh';
 import Scan from '../Scan/Scan';
 function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
-    const [typeQuestion, setTypeQuestion] = useState(questions[randomAngle % questions.length]);
-    // const [typeQuestion, setTypeQuestion] = useState(questions[2]);
+
+    var arrIndexQuestion = JSON.parse(sessionStorage.getItem('arrIndexQuestion'));
+    const indexQuestionRd =  arrIndexQuestion[Math.floor(Math.random()* arrIndexQuestion.length)];
+
+    const [typeQuestion, setTypeQuestion] = useState(questions[indexQuestionRd]);
+    arrIndexQuestion =  arrIndexQuestion.filter(indexQuestion => indexQuestion !== indexQuestionRd)
+    sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
+    console.log('set lai index');
+    // const [typeQuestion, setTypeQuestion] = useState(questions[5]);
 
     console.log(randomAngle);
     const navigate = useNavigate();

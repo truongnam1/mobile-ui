@@ -23,6 +23,23 @@ class FetchData {
                 }
             });
     }
+    static urlItem(id, callbackDone) {
+        console.log('fect url item');
+
+        fetch(`https://hcloud.trealet.com/apps_dev/btl/nhom08/lib/api/api.php?id=${id}`)
+            .then(response => response.json())
+            .then(data => {
+                // console.log(data);
+                if (data) {
+                    const urlItem = 'https://hcloud.trealet.com' + data.url_full || 'https://hcloud.trealet.com/albums/Nhom00/Data/nhom8/pexels-photo-326055.jpeg';
+                    callbackDone(urlItem);
+                    return true;
+                } else {
+                    callbackDone(false);
+                    return false;
+                }
+            });
+    }
 }
 
 
