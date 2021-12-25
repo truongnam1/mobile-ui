@@ -17,6 +17,7 @@
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
         "react-image-puzzle": "^0.1.1",
+        "react-jigsaw-puzzle": "^1.0.3",
         "react-router-dom": "^6.1.1",
         "react-scripts": "4.0.3",
         "react-slick": "^0.28.1",
