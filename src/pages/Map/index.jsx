@@ -29,7 +29,7 @@ function MapComponent(props) {
     const allowToDice = useRef(true);
     const filterEventOfRoad = useRef({});
     const beforeTypeEvent = useRef();
-
+    const [currentMap, setCurrentMap] = useState({});
     const handleValidateMove = (time) => {
         if(validateStep(map[currentPoint.current]) !== false) {
             currentPoint.current = currentPoint.current+validateStep(map[currentPoint.current]);
@@ -138,7 +138,7 @@ function MapComponent(props) {
         
     }
     const findFirtPoint = (arr) => {
-        const arrPoint = arr.filter(item => item.split('-')[1] == (codebeautty?.maps?.nam_ngang.mapHeight-1));
+        const arrPoint = arr.filter(item => item.split('-')[1] == (currentMap?.mapHeight-1));
         if(arr.includes((arrPoint[0].split('-')[0] + '-' + (arrPoint[0].split('-')[1]-1)))) return arrPoint[_.size(arrPoint)-1];
         else return arrPoint[0];
     }
@@ -146,7 +146,7 @@ function MapComponent(props) {
         return (Math.pow((x-x1), 2) + Math.pow((y-y1), 2)) == 1 ? true : false;
     }
     const sort = (arr) => {
-        if(!_.isEmpty(arr) && !_.isEmpty(codebeautty)) {
+        if(!_.isEmpty(arr) && !_.isEmpty(currentMap)) {
             const firstPoint = findFirtPoint(arr);
             let newArr = [firstPoint];
             _.remove(arr, function(item) {
@@ -175,29 +175,32 @@ function MapComponent(props) {
         .then(jsonData => jsonData.json())
         .then(data => {
             setCodebeauty(data);
-            setListPicture(data?.maps?.nam_ngang?.layers.map(item => {
+            const keyMap = Object.keys(data?.maps);
+            const randomMap = data?.maps[keyMap[Math.floor(Math.random() * (_.size(keyMap)))]];
+            setCurrentMap(randomMap);
+            setListPicture(randomMap?.layers.map(item => {
                 return item?.tiles
             }))
             
-            itemRoad.current =  data?.maps?.nam_ngang?.layers.reduce((arr,item) => {
+            itemRoad.current =  randomMap?.layers.reduce((arr,item) => {
                 if(item?.name == 'item-road') return arr = item?.tiles;
                 else return arr;
             },[]);
             eventOfRoad.current = data?.define_item_map;
             listQuestion.current = data?.questions;
-            charactor.current = data?.maps?.nam_ngang?.layers[4].tiles;
-            
+            charactor.current = randomMap?.layers.reduce((arr,item) => {
+                if(item?.name == "charater") return  item?.tiles;
+                else return arr;
+            }, {});
             setIsLoading(false);
         }).catch(err => {
             console.log(err);
         }) 
     },[])
-    console.log(filterEventOfRoad.current);
     //filer envent road
 
     useEffect(() => {
         if(!_.isEmpty(map) && !_.isEmpty(itemRoad.current)) {
-            console.log(map);
             filterEventOfRoad.current = map.reduce((object,item) => {
                 if(itemRoad.current[item]) {
                     const key = itemRoad.current[item]?.x + '-'+itemRoad.current[item]?.y;
@@ -255,10 +258,10 @@ function MapComponent(props) {
        
     }, [codebeautty,listPicture]);
     useEffect(() => {
-        if(!_.isEmpty(codebeautty)) {   
-        setMap(sort([...Object.keys(codebeautty?.maps?.nam_ngang?.layers[2].tiles)])); 
+        if(!_.isEmpty(currentMap)) {   
+        setMap(sort([...Object.keys(currentMap?.layers[2].tiles)])); 
         }   
-    }, [codebeautty]);
+    }, [currentMap]);
     //filter event road
     useEffect(() => {
         if(!_.isEmpty(map)) {
@@ -332,7 +335,7 @@ function MapComponent(props) {
                     />
                 {/* </button> */}
                 <div style={{position: 'absolute', right: '20px'}}>{showCountWrong()}</div>
-                <canvas style={{width: '100%', height: '100%'}} ref={canvasRef} width={codebeautty?.maps?.nam_ngang?.width*codebeautty?.maps?.nam_ngang?.mapWidth/10} height={codebeautty?.maps?.nam_ngang?.height*codebeautty?.maps?.nam_ngang?.mapHeight/10}></canvas>
+                <canvas style={{width: '100%', height: '100%'}} ref={canvasRef} width={currentMap?.width*currentMap?.mapWidth/10} height={currentMap?.height*currentMap?.mapHeight/10}></canvas>
             </>
             }
             
