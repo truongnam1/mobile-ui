@@ -11,7 +11,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
 
     console.log(arrIndexQuestion);
     const indexQuestionRd =  arrIndexQuestion[Math.floor(Math.random()* arrIndexQuestion.length)];
-    const typeQuestion = questions[indexQuestionRd];
+    const typeQuestion = questions[0];
 
     arrIndexQuestion =  arrIndexQuestion.filter(indexQuestion => indexQuestion !== indexQuestionRd)
     sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);

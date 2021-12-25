@@ -23,7 +23,7 @@ function CountTime({firstValue, onClearTime, onBackToPrev, onChangeStatusTime}) 
         if(count == 0) {
             clearInterval(time.current);
             onBackToPrev && onBackToPrev();
-            onClearTime && onClearTime();
+            onClearTime && onClearTime('timeover');
         }
     }, [count]);
     //dung thoi gian

@@ -33,7 +33,7 @@ function MapComponent(props) {
     const handleValidateMove = (time, dice) => {
         if(validateStep(map[currentPoint.current]) !== false) {
             currentPoint.current = currentPoint.current+validateStep(map[currentPoint.current]);
-            const pictureCha = Object.values(charactor.current);
+            const pictureCha = Object.values(charactor.current?.tiles);
             const a = map[currentPoint.current];
             const newCha = {
                 [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
@@ -42,9 +42,15 @@ function MapComponent(props) {
             }
             
             const timeOut = setTimeout(() => {
-                const pewpew = [...listPicture];
+                // const pewpew = [...listPicture];
                 allowToDice.current = true;
-                setListPicture([...pewpew, newCha]);
+                const newArr = [...listPicture].map(item => {
+                    if(item?.name == 'charater') {
+                        item.tiles = newCha;
+                        return item;
+                    } else return item;
+                })
+                setListPicture(newArr);
                 if(beforeTypeEvent.current == 'forward') handleValidateMove(1000, false);
                 clearTimeout(timeOut);
             }, time);
@@ -70,16 +76,22 @@ function MapComponent(props) {
                 setOnDice(!onDice);
                 setIsDice(true);
                 currentPoint.current = currentPoint.current+dice
-                const pictureCha = Object.values(charactor.current);
+                const pictureCha = Object.values(charactor.current?.tiles);
                 const newCha = {
                     [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
                     [a]: pictureCha[1],
         
                 }
-                listPicture.splice(listPicture.length - 1)
-                const pewpew = [...listPicture];
+                // listPicture.splice(listPicture.length - 1)
+                // const pewpew = [...listPicture];
+                const newArr = [...listPicture].map(item => {
+                    if(item?.name == 'charater') {
+                        item.tiles = newCha;
+                        return item;
+                    } else return item;
+                })
                 const timeOut = setTimeout(() => {
-                    setListPicture([...pewpew, newCha]);
+                    setListPicture(newArr);
                     
                     setIsDice(false);
                     clearTimeout(timeOut);
@@ -89,7 +101,7 @@ function MapComponent(props) {
                
             } else {
                 const a = map[(_.size(map)-1)];
-                const pictureCha = Object.values(charactor.current);
+                const pictureCha = Object.values(charactor.current?.tiles);
                 setOnDice(!onDice);
                 setIsDice(true);
                 const newCha = {
@@ -97,11 +109,16 @@ function MapComponent(props) {
                     [a]: pictureCha[1],
         
                 }
-                listPicture.splice(listPicture.length - 1)
-                    const pewpew = [...listPicture];
-                 
+                // listPicture.splice(listPicture.length - 1)
+                //     const pewpew = [...listPicture];
+                const newArr = [...listPicture].map(item => {
+                    if(item?.name == 'charater') {
+                        item.tiles = newCha;
+                        return item;
+                    } else return item;
+                })
                     const timeOut = setTimeout(() => {
-                        setListPicture([...pewpew, newCha]);
+                        setListPicture(newArr);
                         setIsDice(false);
                         clearTimeout(timeOut);
                     }, 1500)
@@ -124,17 +141,24 @@ function MapComponent(props) {
         } else {
             const a = map[(previousStep.current) > (_.size(map)-1) ? (_.size(map)-1) : previousStep.current];
             currentPoint.current = previousStep.current
-            const pictureCha = Object.values(charactor.current);
+            const pictureCha = Object.values(charactor.current?.tiles);
             const newCha = {
                 [`${a.split('-')[0]}-${a.split('-')[1]-1}`]: pictureCha[0],  
                 [a]: pictureCha[1],
     
             }
-            listPicture.splice(listPicture.length - 1)
-            const pewpew = [...listPicture];
+            // listPicture.splice(listPicture.length - 1)
+            // const pewpew = [...listPicture];
+            const newArr = [...listPicture].map(item => {
+                if(item?.name == 'charater') {
+                    item.tiles = newCha;
+                    return item;
+                } else return item;
+            })
             setCountWrong(countWrong.filter(item => item != countWrong[_.size(countWrong) -1]))
             const timeOut = setTimeout(() => {
-                setListPicture([...pewpew, newCha]);
+                allowToDice.current = true;
+                setListPicture(newArr);
                 clearTimeout(timeOut);
             }, 2000)
         }
@@ -181,9 +205,7 @@ function MapComponent(props) {
             const keyMap = Object.keys(data?.maps);
             const randomMap = data?.maps[keyMap[Math.floor(Math.random() * (_.size(keyMap)))]];
             setCurrentMap(randomMap);
-            setListPicture(randomMap?.layers.map(item => {
-                return item?.tiles
-            }))
+            setListPicture(randomMap?.layers)
             
             itemRoad.current =  randomMap?.layers.reduce((arr,item) => {
                 if(item?.name == 'item-road') return arr = item?.tiles;
@@ -202,7 +224,7 @@ function MapComponent(props) {
 
 
             charactor.current = randomMap?.layers.reduce((arr,item) => {
-                if(item?.name == "charater") return  item?.tiles;
+                if(item?.name == "charater") return  item;
                 else return arr;
             }, {});
             setIsLoading(false);
@@ -282,32 +304,40 @@ function MapComponent(props) {
         }
     },[map, itemRoad.current])
     const draw = (layers) => {
-        let ctx = canvasRef.current.getContext("2d");
-        ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
-        const size_of_crop = 32;
-        layers.forEach((layer) => {
-            Object.keys(layer).forEach((key) => {
-               //Determine x/y position of this placement from key ("3-4" -> x=3, y=4)
-               const positionX = Number(key.split("-")[0]);
-               const positionY = Number(key.split("-")[1]);
-               const tilesheetX = layer[key]?.x;
-                const tilesheetY = layer[key]?.y;
-               ctx.drawImage(
-                  imageE.current,
-                  tilesheetX * 32,
-                  tilesheetY * 32,
-                  size_of_crop,
-                  size_of_crop,
-                  positionX * 32,
-                  positionY * 32,
-                  size_of_crop,
-                  size_of_crop
-               );
-            });
-         });
+        try {
+            let ctx = canvasRef.current.getContext("2d");
+            ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+            const size_of_crop = 32;
+            layers.forEach((layer) => {
+                Object.keys(layer?.tiles).forEach((key) => {
+                   //Determine x/y position of this placement from key ("3-4" -> x=3, y=4)
+                   const positionX = Number(key.split("-")[0]);
+                   const positionY = Number(key.split("-")[1]);
+                   const tilesheetX = layer?.tiles[key]?.x;
+                    const tilesheetY = layer?.tiles[key]?.y;
+                   ctx.drawImage(
+                      imageE.current,
+                      tilesheetX * 32,
+                      tilesheetY * 32,
+                      size_of_crop,
+                      size_of_crop,
+                      positionX * 32,
+                      positionY * 32,
+                      size_of_crop,
+                      size_of_crop
+                   );
+                });
+             });
+        } catch(err) {
+            console.log(err);
+        }
+       
     }
-    const handleCloseModal = () => {
-        allowToDice.current = true;
+    const handleCloseModal = (type) => {
+        if(!type) {
+            allowToDice.current = true;
+        }
+       
         setShowQuestion(false);
     }
     const PopupQuestion = () => {
@@ -330,10 +360,7 @@ function MapComponent(props) {
         })
         
     }
-    //excuter event road
-    const excuterEventRoad = () => {
 
-    }
     return (
         <Base body={
             <>
