@@ -8,6 +8,7 @@ function TracNghiem({onCloseModal,questions, onBackToPrev}) {
     const answer = useRef();
     const [stopTime, setStopTime] = useState(false);
     const AreYouSureAboutThat = () => {
+      console.log('trong trac nghiem', questions);
         return (
             <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div className="modal-dialog">
