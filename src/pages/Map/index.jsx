@@ -30,7 +30,7 @@ function MapComponent(props) {
     const filterEventOfRoad = useRef({});
     const beforeTypeEvent = useRef();
     const [currentMap, setCurrentMap] = useState({});
-    const handleValidateMove = (time) => {
+    const handleValidateMove = (time, dice) => {
         if(validateStep(map[currentPoint.current]) !== false) {
             currentPoint.current = currentPoint.current+validateStep(map[currentPoint.current]);
             const pictureCha = Object.values(charactor.current);
@@ -45,14 +45,17 @@ function MapComponent(props) {
                 const pewpew = [...listPicture];
                 allowToDice.current = true;
                 setListPicture([...pewpew, newCha]);
-                if(beforeTypeEvent.current == 'forward') handleValidateMove(1000);
+                if(beforeTypeEvent.current == 'forward') handleValidateMove(1000, false);
                 clearTimeout(timeOut);
             }, time);
         } else {
-            const timeShowQues = setTimeout(() => {
-                setShowQuestion(true);
-                clearTimeout(timeShowQues);
-            }, 2400)
+            if(dice) {
+                const timeShowQues = setTimeout(() => {
+                    setShowQuestion(true);
+                    clearTimeout(timeShowQues);
+                }, 2400)
+            }
+            
         }
     }
     const handleMove = () => {
@@ -82,7 +85,7 @@ function MapComponent(props) {
                     clearTimeout(timeOut);
                 }, 2000);
                 
-                handleValidateMove(3000);
+                handleValidateMove(3000, true);
                
             } else {
                 const a = map[(_.size(map)-1)];
