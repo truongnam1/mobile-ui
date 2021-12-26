@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 // import codebeautty from './codebeautify.json'
 import styleBase from '../Base/Base.module.scss';
@@ -7,6 +7,7 @@ import _ from 'lodash';
 import Dice from './dice';
 import BodyQuestion from '../Question/BodyQuestion';
 import {useNavigate} from 'react-router-dom'
+import { useGlobalState } from 'state-pool';
 function MapComponent(props) {
     const imageE = useRef();
     const canvasRef = useRef();
@@ -406,7 +407,6 @@ function MapComponent(props) {
             
             {/* <img ref={imageE} hidden/> */}
             {showQuestion && PopupQuestion()}
-
             </>
             
         } isLoading={isLoading} text={"Đang tải bản đồ"}/>

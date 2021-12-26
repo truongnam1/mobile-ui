@@ -25,8 +25,9 @@
         "reactjs-toastr": "^1.1.0",
         "sass": "^1.45.0",
         "slick-carousel": "^1.8.1",
-        "toastr": "^2.1.4",
+        "state-pool": "^0.6.0",
         "three": "^0.136.0",
+        "toastr": "^2.1.4",
         "web-vitals": "^1.0.1"
     },
     "scripts": {
