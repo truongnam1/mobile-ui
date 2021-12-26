@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 // import codebeautty from './codebeautify.json'
 import styleBase from '../Base/Base.module.scss';
@@ -7,6 +7,7 @@ import _ from 'lodash';
 import Dice from './dice';
 import BodyQuestion from '../Question/BodyQuestion';
 import {useNavigate} from 'react-router-dom'
+import { useGlobalState } from 'state-pool';
 function MapComponent(props) {
     const imageE = useRef();
     const canvasRef = useRef();
@@ -262,8 +263,9 @@ function MapComponent(props) {
         
        
         if(!_.isEmpty(codebeautty)) {   
-           
+          
             imageE.current.src='https://i.ibb.co/KzSwmBv/ztwPZOI.png?fbclid=IwAR0gBT_O7lVJ1gHYpvl7fnVG3S5Jyjdpt89lXby4L4CPi08Tqx1eV0SlUMc'
+          
             imageE.current.onload = function() {
                draw(listPicture)
             }
@@ -354,7 +356,6 @@ function MapComponent(props) {
             
             <img ref={imageE} hidden/>
             {showQuestion && PopupQuestion()}
-
             </>
             
         } isLoading={isLoading} text={"Đang tải bản đồ"}/>
