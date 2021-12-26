@@ -356,10 +356,10 @@ function MapComponent(props) {
        
     }
     const handleCloseModal = (type) => {
-        const backDrop = document.querySelector('.modal-backdrop');
-        if(backDrop.classList.contains('show')) {
-            backDrop.remove();
-        }
+        // const backDrop = document.querySelector('.modal-backdrop');
+        // if(backDrop.classList.contains('show')) {
+        //     backDrop.remove();
+        // }
         if(!type) {
             allowToDice.current = true;
         }

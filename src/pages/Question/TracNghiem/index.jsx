@@ -1,4 +1,4 @@
-import React, {useState,useRef} from 'react';
+import React, {useState,useRef, useEffect} from 'react';
 import CountTime from '../../../components/CountTime';
 import './tracnghiem.css'
 function TracNghiem({onCloseModal,questions, onBackToPrev}) {
@@ -7,6 +7,15 @@ function TracNghiem({onCloseModal,questions, onBackToPrev}) {
     const [pick, setPick] = useState(false);
     const answer = useRef();
     const [stopTime, setStopTime] = useState(false);
+
+    useEffect(() => {
+      return () => {
+        const backDrop = document.querySelector('.modal-backdrop');
+        if(backDrop.classList.contains('show')) {
+            backDrop.remove();
+        }
+      }
+    }, [])
     const AreYouSureAboutThat = () => {
         return (
             <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
