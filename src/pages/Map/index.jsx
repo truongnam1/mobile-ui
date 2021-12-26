@@ -322,7 +322,14 @@ function MapComponent(props) {
     //filter event road
     useEffect(() => {
         if(!_.isEmpty(map)) {
-            
+            filterEventOfRoad.current = map.reduce((object,item) => {
+                if(itemRoad.current[item]) {
+                    const key = itemRoad.current[item]?.x + '-'+itemRoad.current[item]?.y;
+                    object[key] = [...object[key] || [], item];
+                    return object;
+                } else return object;
+                
+            }, {})
         }
     },[map, itemRoad.current])
     const draw = (layers, img) => {
@@ -356,10 +363,6 @@ function MapComponent(props) {
        
     }
     const handleCloseModal = (type) => {
-        // const backDrop = document.querySelector('.modal-backdrop');
-        // if(backDrop.classList.contains('show')) {
-        //     backDrop.remove();
-        // }
         if(!type) {
             allowToDice.current = true;
         }

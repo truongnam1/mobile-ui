@@ -11,9 +11,12 @@ function TracNghiem({onCloseModal,questions, onBackToPrev}) {
     useEffect(() => {
       return () => {
         const backDrop = document.querySelector('.modal-backdrop');
-        if(backDrop.classList.contains('show')) {
-            backDrop.remove();
+        if(backDrop) {
+          if(backDrop.classList.contains('show')) {
+              backDrop.remove();
+          }
         }
+        
       }
     }, [])
     const AreYouSureAboutThat = () => {
