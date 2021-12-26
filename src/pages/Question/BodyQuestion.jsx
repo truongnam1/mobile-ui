@@ -10,17 +10,17 @@ import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../Provider/UserContext';
 import { useGlobalState } from 'state-pool';
 function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
-    // var arrIndexQuestion = JSON.parse(sessionStorage.getItem('arrIndexQuestion'));
+    var arrIndexQuestion = JSON.parse(sessionStorage.getItem('arrIndexQuestion'));
 
-    // console.log(arrIndexQuestion);
-    // const indexQuestionRd =  arrIndexQuestion[Math.floor(Math.random()* arrIndexQuestion.length)];
-    // const typeQuestion = questions[indexQuestionRd];
+    console.log(arrIndexQuestion);
+    const indexQuestionRd =  arrIndexQuestion[Math.floor(Math.random()* arrIndexQuestion.length)];
+    const typeQuestion = questions[indexQuestionRd];
 
-    // arrIndexQuestion =  arrIndexQuestion.filter(indexQuestion => indexQuestion !== indexQuestionRd)
-    // sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
+    arrIndexQuestion =  arrIndexQuestion.filter(indexQuestion => indexQuestion !== indexQuestionRd)
+    sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
     console.log('set lai index');
 
-    const [typeQuestion, setTypeQuestion] = useState(questions[0]);
+    // const [typeQuestion, setTypeQuestion] = useState(questions[6]);
     const [refElMain] = useGlobalState("elMain");
     useEffect(() => {
         console.log('scroll top');

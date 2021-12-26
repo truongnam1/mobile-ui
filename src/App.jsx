@@ -9,7 +9,7 @@ import { BaseProvider } from './Provider/BaseContext';
 function App() {
   // var arr = [1,2,3,4,5];
   return (
-    <BaseProvider>
+    // <BaseProvider>
       <BrowserRouter>
         <Routes>
           {
@@ -21,7 +21,7 @@ function App() {
           }
         </Routes>
       </BrowserRouter>
-    </BaseProvider>
+    // </BaseProvider>
   );
 }
 

@@ -27,12 +27,6 @@ function Base({ isLoading, ...props }) {
             // console.log('dang scroll');
             setVisibleTopMain(true);
         })
-
-        setTimeout(() => {
-            console.log('scroll top');
-            elMain.current.scrollTop = 10;
-        }, 10000)
-
     }, [])
 
     if (visibleTopMain) {
