@@ -30,6 +30,7 @@ function MapComponent(props) {
     const filterEventOfRoad = useRef({});
     const beforeTypeEvent = useRef();
     const [currentMap, setCurrentMap] = useState({});
+    const [arrImage, setArrImage] = useState([]);
     const handleValidateMove = (time, dice) => {
         if(validateStep(map[currentPoint.current]) !== false) {
             currentPoint.current = currentPoint.current+validateStep(map[currentPoint.current]);
@@ -202,6 +203,9 @@ function MapComponent(props) {
         .then(jsonData => jsonData.json())
         .then(data => {
             setCodebeauty(data);
+            setArrImage(Object.values(data?.tileSets).map(item => {
+                return item?.src;
+            }))
             const keyMap = Object.keys(data?.maps);
             const randomMap = data?.maps[keyMap[Math.floor(Math.random() * (_.size(keyMap)))]];
             setCurrentMap(randomMap);
@@ -280,18 +284,35 @@ function MapComponent(props) {
             } else return false
         }
     }
-    useEffect(() => {
+    //Load anh
+    const loadImage =  url => {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = () => reject(new Error(`load ${url} fail`));
+          img.src = url;
+        });
         
-       
-        if(!_.isEmpty(codebeautty)) {   
-           
-            imageE.current.src='https://i.ibb.co/KzSwmBv/ztwPZOI.png?fbclid=IwAR0gBT_O7lVJ1gHYpvl7fnVG3S5Jyjdpt89lXby4L4CPi08Tqx1eV0SlUMc'
-            imageE.current.onload = function() {
-               draw(listPicture)
-            }
-        }
-       
+      };
+      const waitLoad = async () => {
+          const arr = arrImage.map(item => {
+              return loadImage(item);
+          })
+          return await Promise.all(arr);
+      }
+    useEffect(() => {
+        test(); 
     }, [codebeautty,listPicture]);
+
+    const test = async () => {
+        if(!_.isEmpty(codebeautty)) {   
+            // imageE.current.src = process.env.PUBLIC_URL + '/assets/images/map.png';
+            waitLoad().then(arr => {
+                draw(listPicture, arr)
+            })
+        }
+    }
+   //Tim chinh xacs map
     useEffect(() => {
         if(!_.isEmpty(currentMap)) {   
         setMap(sort([...Object.keys(currentMap?.layers[2].tiles)])); 
@@ -303,7 +324,7 @@ function MapComponent(props) {
             
         }
     },[map, itemRoad.current])
-    const draw = (layers) => {
+    const draw = (layers, img) => {
         try {
             let ctx = canvasRef.current.getContext("2d");
             ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
@@ -316,7 +337,7 @@ function MapComponent(props) {
                    const tilesheetX = layer?.tiles[key]?.x;
                     const tilesheetY = layer?.tiles[key]?.y;
                    ctx.drawImage(
-                      imageE.current,
+                        img[layer?.tiles[key]?.tilesetIdx],
                       tilesheetX * 32,
                       tilesheetY * 32,
                       size_of_crop,
@@ -334,6 +355,10 @@ function MapComponent(props) {
        
     }
     const handleCloseModal = (type) => {
+        const backDrop = document.querySelector('.modal-backdrop');
+        if(backDrop.classList.contains('show')) {
+            backDrop.remove();
+        }
         if(!type) {
             allowToDice.current = true;
         }
@@ -379,7 +404,7 @@ function MapComponent(props) {
             </>
             }
             
-            <img ref={imageE} hidden/>
+            {/* <img ref={imageE} hidden/> */}
             {showQuestion && PopupQuestion()}
 
             </>
