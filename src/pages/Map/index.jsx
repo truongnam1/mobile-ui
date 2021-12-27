@@ -95,10 +95,10 @@ function MapComponent(props) {
 
     //kiem tra xem co boom
     const validateStep = (toado) => {
-        if (_.isEmpty(dataMap.layers[toado])) return false;
+        if (_.isEmpty(dataMap.layers['item-road'][toado])) return false;
         else {
             const typeEvent = eventOfRoad.current.reduce((object, item) => {
-                if (item?.tileSymbol == dataMap.layers[toado]?.tileSymbol) return item;
+                if (item?.tileSymbol == dataMap.layers['item-road'][toado]?.tileSymbol) return item;
                 else return object;
             }, {})
             if (typeEvent?.effect.split(' ')[0] == 'back_forward') {
@@ -112,7 +112,7 @@ function MapComponent(props) {
             else if (typeEvent?.effect.split(' ')[0] == 'tele') {
                 beforeTypeEvent.current = 'tele';
                 const numberTele = Number(typeEvent?.effect.split(' ')[1]);
-                const typeFilterEvent = dataMap.layers[toado]?.x + '-' + dataMap.layers[toado]?.y;
+                const typeFilterEvent = dataMap.layers['item-road'][toado]?.x + '-' + dataMap.layers['item-road'][toado]?.y;
                 const currentTele = filterEventOfRoad[typeFilterEvent].indexOf(toado);
                 if (currentTele + numberTele > (_.size(filterEventOfRoad[typeFilterEvent]) - 1)) {
                     const valueTeleToJump = map.indexOf((filterEventOfRoad[typeFilterEvent])[_.size(filterEventOfRoad[typeFilterEvent]) - 1]);
@@ -169,6 +169,7 @@ function MapComponent(props) {
         try {
             allowToDice.current = false;
             const dice = Math.floor(Math.random() * 6) + 1;
+            // Math.floor(Math.random() * 6) + 1;
 
             randomDice.current = dice;
             if (currentPoint.current + dice < (_.size(map) - 1)) {
@@ -317,8 +318,8 @@ function MapComponent(props) {
             currentMap: randomMap
         });
     }
-
-    useEffect(() => {
+    //Load anh map
+    const loadImage = async () => {
         const loadImage = url => {
             return new Promise((resolve, reject) => {
                 const img = new Image();
@@ -334,11 +335,17 @@ function MapComponent(props) {
             })
             return await Promise.all(arr);
         }
+
+        return  waitLoad();
+    }
+    const loadImageMemo = useMemo(loadImage, [arrImage]);
+
+    useEffect(() => {
         const test = async () => {
-            waitLoad().then(arr => {
+            loadImageMemo.then(arr => {
                 setSrcImage(arr);
-                // draw(listPicture, arr);
                 draw2(arr);
+                // draw(listPicture, arr);
             })
 
         }
@@ -346,6 +353,7 @@ function MapComponent(props) {
         if (!isEmpty(dataMap)) {
             test();
         }
+        
     }, [dataMap])
 
     //Tim chinh xacs map
@@ -401,7 +409,6 @@ function MapComponent(props) {
 
     const draw2 = (img) => {
         console.log(`status map`, dataMap.status);
-
         for (const key in dataMap.layers) {
             drawLayer2(refLayers.current[key], key, img);
         }
@@ -456,7 +463,7 @@ function MapComponent(props) {
                             hidden={!allowToDice.current}
                         />
                         {/* </button> */}
-                        <div style={{ position: 'absolute', right: '20px', zIndex: 1 }}>{showCountWrong()}</div>
+                        <div style={{ position: 'absolute', right: '20px', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
 
                         {/* <canvas id='canvas1' style={{ width: '100%' , height: '100%', position: "absolute" }} width={currentMap?.width * currentMap?.mapWidth / 10} height={currentMap?.height * currentMap?.mapHeight / 10}></canvas> */}
                         <div id="canvasesdiv" style={{

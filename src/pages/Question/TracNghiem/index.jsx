@@ -100,7 +100,7 @@ function TracNghiem({ onCloseModal, questions, onBackToPrev }) {
                 <div key={index} data-bs-toggle="modal" data-bs-target="#exampleModal"
                   className='row content-select'
                 >
-                  <div className={`text-select col-10 shadow-sm ${isChoose == index ? 'choose' : ''} ${answer.current == index ? answer.current == questions?.answer ? 'blink-text' : 'wrong' : ''}`}
+                  <div className={`text-select col-10 shadow-sm ${isChoose == index ? 'choose' : ''} ${answer.current == index && isChoose == 5 ? answer.current == questions?.answer ? 'blink-text' : 'wrong' : ''}`}
                     onClick={() => {
                       setIsChoose(index);
                       const pick = setTimeout(() => {
