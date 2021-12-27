@@ -7,6 +7,8 @@ import _ from 'lodash';
 import Dice from './dice';
 import BodyQuestion from '../Question/BodyQuestion';
 import {useNavigate} from 'react-router-dom'
+import { RobotModel } from './robot';
+
 function MapComponent(props) {
     const imageE = useRef();
     const canvasRef = useRef();
@@ -58,6 +60,8 @@ function MapComponent(props) {
             
         }
     }
+    console.log(map[currentPoint.current]);
+
     const handleMove = () => {
         try {
             allowToDice.current = false;
@@ -259,7 +263,6 @@ function MapComponent(props) {
         }
     }
     useEffect(() => {
-        
        
         if(!_.isEmpty(codebeautty)) {   
            
@@ -323,9 +326,9 @@ function MapComponent(props) {
         )
     }
     const showCountWrong = () => {
-       return countWrong.map(item => {
+       return countWrong.map((item,index) => {
             return (
-                <img src="https://img.icons8.com/stickers/20/000000/like.png"/>
+                <img src="https://img.icons8.com/stickers/20/000000/like.png" key = {index}/>
                 ) 
         })
         
@@ -334,6 +337,7 @@ function MapComponent(props) {
     const excuterEventRoad = () => {
 
     }
+
     return (
         <Base body={
             <>
@@ -348,7 +352,8 @@ function MapComponent(props) {
                     />
                 {/* </button> */}
                 <div style={{position: 'absolute', right: '20px'}}>{showCountWrong()}</div>
-                <canvas style={{width: '100%', height: '100%'}} ref={canvasRef} width={currentMap?.width*currentMap?.mapWidth/10} height={currentMap?.height*currentMap?.mapHeight/10}></canvas>
+                <canvas style={{width: '100%', height: '100%'}} ref={canvasRef} width={currentMap?.width*currentMap?.mapWidth/10} height={currentMap?.height*currentMap?.mapHeight/10} id='map-canvas'></canvas>
+                <RobotModel canvasRef={canvasRef} currentPoint={{pos: map[currentPoint.current]}}/>
             </>
             }
             
