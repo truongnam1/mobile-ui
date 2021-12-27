@@ -47,7 +47,7 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
             'touchAction': 'none'
         }}>
             <div className="row">
-                <CountTime firstValue={40} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} />
+                <CountTime firstValue={10} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} />
             </div>
             <div className="row">
                 <span className='text-center'>Trò chơi ghép hình</span>
