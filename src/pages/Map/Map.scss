@@ -1,0 +1,25 @@
+.layer-map {
+    width: 100%;
+    min-height: 100%;
+    position: absolute;
+}
+
+.layer--base {
+    // z-index: 1;
+}
+
+.layer--item-base {
+    // z-index: 2;
+}
+
+.layer--road {
+    // z-index: 3;
+}
+
+.layer--item-road {
+    // z-index: 4;
+}
+
+.layer--character {
+    // z-index: 5;
+}

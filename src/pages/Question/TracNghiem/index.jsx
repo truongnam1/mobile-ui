@@ -75,10 +75,10 @@ function TracNghiem({ onCloseModal, questions, onBackToPrev }) {
 
   return (
     <>
-      <div className="container-sm">
+     
         <div className="count-time">
         <i class="bi bi-alarm-fill"></i>
-          <CountTime firstValue={20} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime} />
+          <CountTime firstValue={60} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime} />
            
         </div>
 
@@ -123,7 +123,7 @@ function TracNghiem({ onCloseModal, questions, onBackToPrev }) {
         </div> */}
         {AreYouSureAboutThat()}
         {modalSuggest()}
-      </div>
+     
     </>
 
   );

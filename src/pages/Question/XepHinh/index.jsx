@@ -43,11 +43,11 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
         //     </div>
         // </div>
 
-        <div className="container-sm border" style={{
+        <div className="border" style={{
             'touchAction': 'none'
         }}>
             <div className="row">
-                <CountTime firstValue={10} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} />
+                <CountTime firstValue={60} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} />
             </div>
             <div className="row">
                 <span className='text-center'>Trò chơi ghép hình</span>

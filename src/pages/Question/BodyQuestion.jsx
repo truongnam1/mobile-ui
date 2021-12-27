@@ -20,12 +20,13 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
     sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
     console.log('set lai index');
 
-    // const [typeQuestion, setTypeQuestion] = useState(questions[6]);
+    // const [typeQuestion, setTypeQuestion] = useState(questions[9]);
+
     const [refElMain] = useGlobalState("elMain");
     useEffect(() => {
         console.log('scroll top');
         refElMain.current.scrollTop = 1;
-    },[])
+    }, [])
 
 
     const questionItem = () => {
@@ -61,11 +62,13 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
 
 
     }
-    
+
     return (
         <>
             <div className={clsx(styleQuestion['main-question'])}>
-                {questionItem()}
+                <div className={clsx(styleQuestion['body-question'], "container-sm")}>
+                    {questionItem()}
+                </div>
             </div>
         </>
     );

@@ -16,7 +16,7 @@ function Scan({onCloseModal,questions, onBackToPrev,...props}) {
         <BodyScan questions={questions} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}>
 
         </BodyScan>
-         <CountTime firstValue={20} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
+         <CountTime firstValue={60} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
         </>
         // <Base {...config} >
         //     <CountTime firstValue={600} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
