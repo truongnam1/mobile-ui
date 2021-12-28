@@ -10,7 +10,6 @@ export const RobotModel = ({canvasRef, currentPoint, map}) => {
     const [posArr, setPosArr] = useState([...map[currentPoint].split('-')])
     const [oldPoint, setOldPoint] = useState(currentPoint);
 
-    const [unitSize, setUnitSize] = useState(window.innerWidth / 10);
     
     const [dir, setDir] = useState(0);
     const [_robot, setRobot] = useState(null);
@@ -145,8 +144,8 @@ export const RobotModel = ({canvasRef, currentPoint, map}) => {
 
     useEffect(()=>{
         const myCanvas = document.getElementById('myCanvas');
-        myCanvas.style.left = `${posArr[0] * unitSize}px`;
-        myCanvas.style.top = `${posArr[1] * unitSize - unitSize}px`;
+        myCanvas.style.left = `${posArr[0] * CELL_SIZE}px`;
+        myCanvas.style.top = `${posArr[1] * CELL_SIZE - CELL_SIZE}px`;
         console.log(myCanvas.style.left);
 
         let scene = new THREE.Scene();
