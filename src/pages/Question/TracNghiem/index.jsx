@@ -5,7 +5,7 @@ function TracNghiem({ onCloseModal, questions, onBackToPrev }) {
   const [isChoose, setIsChoose] = useState();
   const toast = useRef();
   const [pick, setPick] = useState(false);
-  const answer = useRef();
+  const answer = useRef(5);
   const [stopTime, setStopTime] = useState(false);
 
 
@@ -78,7 +78,7 @@ function TracNghiem({ onCloseModal, questions, onBackToPrev }) {
      
         <div className="count-time">
         <i class="bi bi-alarm-fill"></i>
-          <CountTime firstValue={60} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime} />
+          <CountTime firstValue={65} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime} />
            
         </div>
 
@@ -97,16 +97,19 @@ function TracNghiem({ onCloseModal, questions, onBackToPrev }) {
           <div className="question-item content-selects">
             {questions.selects.map((item, index) => {
               return (
-                <div key={index} data-bs-toggle="modal" data-bs-target="#exampleModal"
+                <div key={index} data-bs-toggle="modal" data-bs-target={answer.current == 5 ?"#exampleModal" : ""}
                   className='row content-select'
                 >
                   <div className={`text-select col-10 shadow-sm ${isChoose == index ? 'choose' : ''} ${answer.current == index && isChoose == 5 ? answer.current == questions?.answer ? 'blink-text' : 'wrong' : ''}`}
                     onClick={() => {
-                      setIsChoose(index);
-                      const pick = setTimeout(() => {
-                        answer.current = index;
-                        clearTimeout(pick)
-                      }, 0)
+                      if(answer.current == 5) {
+                        setIsChoose(index);
+                        const pick = setTimeout(() => {
+                          answer.current = index;
+                          clearTimeout(pick)
+                        }, 0)
+                      }
+                      
                     }}
                   >
                     {item}

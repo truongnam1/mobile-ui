@@ -49,9 +49,9 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
                 'touchAction': 'none'
             }}>
 
-                <div className="count-time">
+                <div className="count-time" >
                     <i class="bi bi-alarm-fill"></i>
-                    <CountTime firstValue={600} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} />
+                    <CountTime firstValue={60} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} />
 
                 </div>
 

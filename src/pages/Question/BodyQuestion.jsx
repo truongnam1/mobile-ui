@@ -21,7 +21,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
     // sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
     // console.log('set lai index');
 
-    const [typeQuestion, setTypeQuestion] = useState(questions[6]);
+    const [typeQuestion, setTypeQuestion] = useState(questions[0]);
 
     const [refElMain] = useGlobalState("elMain");
     useEffect(() => {
@@ -35,7 +35,6 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
         switch (typeQuestion.type) {
             case 'trac_nghiem':
                 const rd = Math.random();
-                console.log('rd', rd);
                 return (<TracNghiem
                     onCloseModal={onCloseModal}
                     questions={typeQuestion}
@@ -66,7 +65,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
 
     return (
         <>
-            <div className={clsx(styleQuestion['main-question'])}>
+            <div className={clsx(styleQuestion['main-question'])} >
                 <div className={clsx(styleQuestion['body-question'], "container-sm")}>
                     {questionItem()}
                 </div>

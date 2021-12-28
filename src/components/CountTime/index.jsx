@@ -31,9 +31,15 @@ function CountTime({firstValue, onClearTime, onBackToPrev, onChangeStatusTime}) 
         if(onChangeStatusTime) {
             stopTime();
         }
-    },[onChangeStatusTime])
+    },[onChangeStatusTime]);
+
+    const caculatorTime = (time) => {
+        const second = time % 60 >=10 ?  time % 60 : `0${ time % 60}`;
+        const minute = Math.floor(time / 60)  >=10 ?  Math.floor(time / 60) : `0${ Math.floor(time / 60)}`;
+        return `${minute}:${second}`;
+    }
     return (
-        <div className='time_count'>{`00:${count >=10 ? count : `0${count}`}`}</div>   
+        <div className='time_count'>{caculatorTime(count)}</div>   
     );
 }
 

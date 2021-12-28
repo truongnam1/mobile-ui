@@ -20,8 +20,20 @@
   // z-index: 999;
   top: 0;
   background-color: #e0e7ff;
+  animation: tranformS 0.5s ease-in;
+  transform-origin: left;
+  will-change: opacity, transform;
 }
-
+@keyframes tranformS {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
 .clock-goiy {
   position: absolute;
   bottom: -19px;

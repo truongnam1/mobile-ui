@@ -446,6 +446,7 @@ function MapComponent(props) {
         return (
 
             <BodyQuestion
+                
                 questions={listQuestion.current}
                 onCloseModal={handleCloseModal}
                 onBackToPrev={backToPreviousStep}
