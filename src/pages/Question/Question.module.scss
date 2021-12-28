@@ -22,7 +22,7 @@
   background-color: #e0e7ff;
   animation: tranformS 0.5s ease-in;
   transform-origin: left;
-  will-change: opacity, transform;
+  // will-change: opacity, transform;
 }
 @keyframes tranformS {
   from {
