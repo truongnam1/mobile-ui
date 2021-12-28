@@ -65,15 +65,18 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
                         </div>
                     </div>
 
-                    <div className="question-item" 
-                    className={clsx('question-item', styleXepHinh['box-xepHinh'])}
-                  >
-                        {urlImage && <JigsawPuzzle
+                    <div
+                        className={clsx('question-item row', styleXepHinh['box-xepHinh'])}
+                    >
+                         <div className='col-10' style={{margin: 'auto', border: '1px solid black', padding: 0}}>
+                         {urlImage && <JigsawPuzzle
                             imageSrc={urlImage}
                             rows={2}
                             columns={3}
                             onSolved={() => onCloseModal()}
                         />}
+                         </div>
+                        
                     </div>
                 </div>
 

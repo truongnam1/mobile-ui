@@ -78,7 +78,7 @@ function TracNghiem({ onCloseModal, questions, onBackToPrev }) {
      
         <div className="count-time">
         <i class="bi bi-alarm-fill"></i>
-          <CountTime firstValue={65} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime} />
+          <CountTime firstValue={60} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime} />
            
         </div>
 
