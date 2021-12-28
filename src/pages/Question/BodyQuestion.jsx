@@ -12,16 +12,16 @@ import { useGlobalState } from 'state-pool';
 function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
     var arrIndexQuestion = JSON.parse(sessionStorage.getItem('arrIndexQuestion'));
 
-    console.log(arrIndexQuestion);
-    const indexQuestionRd =  arrIndexQuestion[Math.floor(Math.random()* arrIndexQuestion.length)];
+    // console.log(arrIndexQuestion);
+    // const indexQuestionRd =  arrIndexQuestion[Math.floor(Math.random()* arrIndexQuestion.length)];
     // const typeQuestion = questions[indexQuestionRd];
-    const typeQuestion = questions[0];
+  
 
-    arrIndexQuestion =  arrIndexQuestion.filter(indexQuestion => indexQuestion !== indexQuestionRd)
-    sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
-    console.log('set lai index');
+    // arrIndexQuestion =  arrIndexQuestion.filter(indexQuestion => indexQuestion !== indexQuestionRd)
+    // sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
+    // console.log('set lai index');
 
-    // const [typeQuestion, setTypeQuestion] = useState(questions[9]);
+    const [typeQuestion, setTypeQuestion] = useState(questions[6]);
 
     const [refElMain] = useGlobalState("elMain");
     useEffect(() => {

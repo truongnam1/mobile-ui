@@ -6,7 +6,7 @@ import './robot.css'
 
 
 export const RobotModel = ({canvasRef, currentPoint, map}) => {
-
+    console.log(`currentPoint robot`, currentPoint);
     const [posArr, setPosArr] = useState([...map[currentPoint].split('-')])
     const [oldPoint, setOldPoint] = useState(currentPoint);
 
@@ -91,7 +91,7 @@ export const RobotModel = ({canvasRef, currentPoint, map}) => {
     }
 
     const move = (dir, rec) => {
-        console.log("dir: ", dir);
+        // console.log("dir: ", dir);
         console.log("rec pos: ", rec.style.left, rec.style.top);
         switch(dir) {
             case RIGHT:

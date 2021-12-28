@@ -236,6 +236,7 @@ function MapComponent(props) {
         } catch (err) {
             console.log(err);
         }
+        console.log(`map`, map);
 
 
     }
@@ -339,7 +340,7 @@ function MapComponent(props) {
             return await Promise.all(arr);
         }
 
-        return  waitLoad();
+        return waitLoad();
     }
     const loadImageMemo = useMemo(loadImage, [arrImage]);
 
@@ -356,7 +357,7 @@ function MapComponent(props) {
         if (!isEmpty(dataMap)) {
             test();
         }
-        
+
     }, [dataMap])
 
     //Tim chinh xacs map
@@ -365,7 +366,7 @@ function MapComponent(props) {
             // var dataRoad = findRoad([...Object.keys(arrLayer['road'])], dataMap.mapHeight);
             var dataRoad = findRoad(Object.keys(dataMap.layers['road']), dataMap.mapHeight);
 
-            // console.log(dataRoad);
+            console.log('dataRoad', dataRoad);
             setMap(dataRoad);
 
         }
@@ -402,6 +403,10 @@ function MapComponent(props) {
                     size_of_crop
                 );
             }
+
+
+
+
         }
         // setBufferLayers((oldbuffer) => {
         //     console.log('ve lai ' + nameLayer);
@@ -415,6 +420,14 @@ function MapComponent(props) {
         for (const key in dataMap.layers) {
             drawLayer2(refLayers.current[key], key, img);
         }
+
+       
+        // console.log('ve xong');
+        // var crt = refLayers.current['charater'];
+        // var road = refLayers.current['road'];
+        // crt.getContext('2d').fillRect(0,0,10,10);
+        // crt.getContext('2d').drawImage(road, 17 * 32, 17 * 32, 100, 100);
+
 
 
     }
@@ -453,6 +466,8 @@ function MapComponent(props) {
     }
     const widthCanvas = dataMap?.width * dataMap?.mapWidth / 10;
     const heightCanvas = dataMap?.height * dataMap?.mapHeight / 10;
+    console.log(`currentPoint.current`, currentPoint.current);
+
     return (
         <Base body={
             <>
@@ -536,7 +551,11 @@ function MapComponent(props) {
                                 height={heightCanvas}
                             >
                             </canvas>
-                            <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}/>
+                            <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}
+
+                                width={widthCanvas}
+                                height={heightCanvas}
+                            />
                         </div>
 
 
