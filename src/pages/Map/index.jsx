@@ -32,6 +32,8 @@ function MapComponent(props) {
     const filterEventOfRoad = useRef({});
     const beforeTypeEvent = useRef();
     const [currentMap, setCurrentMap] = useState({});
+
+
     const handleValidateMove = (time, dice) => {
         if(validateStep(map[currentPoint.current]) !== false) {
             currentPoint.current = currentPoint.current+validateStep(map[currentPoint.current]);
@@ -60,7 +62,6 @@ function MapComponent(props) {
             
         }
     }
-    console.log(map[currentPoint.current]);
 
     const handleMove = () => {
         try {
@@ -353,7 +354,7 @@ function MapComponent(props) {
                 {/* </button> */}
                 <div style={{position: 'absolute', right: '20px'}}>{showCountWrong()}</div>
                 <canvas style={{width: '100%', height: '100%'}} ref={canvasRef} width={currentMap?.width*currentMap?.mapWidth/10} height={currentMap?.height*currentMap?.mapHeight/10} id='map-canvas'></canvas>
-                <RobotModel canvasRef={canvasRef} currentPoint={{pos: map[currentPoint.current]}}/>
+                <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}/>
             </>
             }
             
