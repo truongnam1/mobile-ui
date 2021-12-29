@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // import './App.css';
-
+import 'animate.css';
 import routes from './pages/routes';
 import { BaseProvider } from './Provider/BaseContext';
 

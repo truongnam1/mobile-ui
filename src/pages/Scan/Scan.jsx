@@ -2,7 +2,7 @@ import React from 'react';
 import CountTime from '../../components/CountTime';
 import { Base } from '../Base';
 import BodyScan from './BodyScan';
-
+import  './scan.scss';
 function Scan({onCloseModal,questions, onBackToPrev,...props}) {
 
     const config = {
@@ -18,14 +18,12 @@ function Scan({onCloseModal,questions, onBackToPrev,...props}) {
         </BodyScan>
         <div style={{position: 'absolute', top: 0, right: 0, color: 'white'}}>
             <CountTime firstValue={60} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
+            <div className="popup-suggest_scan border" data-bs-toggle="modal" data-bs-target="#modalSuggest">
+                <i class="bi bi-question"></i>
+              </div>
         </div>
          
         </>
-        // <Base {...config} >
-        //     <CountTime firstValue={600} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
-        // </Base>
-
-
     );
 }
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-
+import AnimationText from '../Text';
+import './counttime.scss'
 function CountTime({firstValue, onClearTime, onBackToPrev, onChangeStatusTime}) {
     const [count, setCount] = useState(firstValue);
     const time = useRef();
@@ -20,10 +21,14 @@ function CountTime({firstValue, onClearTime, onBackToPrev, onChangeStatusTime}) 
        return () => clearInterval(time.current)
     },[])
     useEffect(() => {
+        
         if(count == 0) {
             clearInterval(time.current);
+           const timeOut = setTimeout(() => {
             onBackToPrev && onBackToPrev();
             onClearTime && onClearTime('timeover');
+            clearTimeout(timeOut)
+           }, 1500)
         }
     }, [count]);
     //dung thoi gian
@@ -39,7 +44,10 @@ function CountTime({firstValue, onClearTime, onBackToPrev, onChangeStatusTime}) 
         return `${minute}:${second}`;
     }
     return (
-        <div className='time_count'>{caculatorTime(count)}</div>   
+        <div className={`time_count ${Math.floor(count / 60) == 0 && count % 60 <= 5 ? "blink-text-count-time": ""}`} >
+            {caculatorTime(count)}
+            {count == 0 &&  <AnimationText text={"Hết giờ"} top={'30%'} left={'38%'} size={'100px'}/>}
+        </div>   
     );
 }
 

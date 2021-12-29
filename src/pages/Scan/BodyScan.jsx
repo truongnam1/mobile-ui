@@ -38,6 +38,25 @@ function BodyScan({ ...props }) {
     },[])
 
 
+    const modalSuggest = () => {
+        return (
+          <div className="modal fade" tabIndex="-1" id="modalSuggest" aria-labelledby="modalSuggest" aria-hidden="true">
+            <div className="modal-dialog">
+              <div className="modal-content">
+                {/* <div className="modal-header">
+                  <h5 className="modal-title">Gợi ý</h5>
+                </div> */}
+                <div className="modal-body d-flex align-items-center justify-content-center" style={{ minHeight: "100px" }}>
+                  {/* <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> */}
+                  Gợi ý: {questions?.suggest}
+                </div>
+    
+              </div>
+            </div>
+          </div>
+        );
+      }
+
 
     return (
         <div className={clsx(styleScan['camera'])}>
@@ -62,7 +81,7 @@ function BodyScan({ ...props }) {
                     </i>
                     {/* <i className={clsx('bi', 'bi-camera-fill',)}></i> */}
                 </div>
-
+                {modalSuggest()}
             </div>
         </div>
     );

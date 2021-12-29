@@ -6,10 +6,11 @@ import FetchData from '../../../assets/js/fetchData';
 
 import styleXepHinh from './XepHinh.module.scss'
 import clsx from 'clsx';
+import AnimationText from '../../../components/Text';
 function XepHinh({ onCloseModal, questions, onBackToPrev }) {
 
     const [urlImage, setUrlImage] = useState(false);
-
+    const [isDone, setIsDone] = useState(false);
     useEffect(() => {
         FetchData.urlItem(questions.image_id, (urlImage) => {
             setUrlImage(urlImage);
@@ -54,7 +55,7 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
                     <CountTime firstValue={60} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} />
 
                 </div>
-
+                 {isDone && <AnimationText text={"Hoàn thành"} top={'30%'} left={'38%'} size={'80px'}/>} 
                 <div className="question-box">
                     <div className="row question-item content-question">
                         <div className='text-question col-10 shadow'>
@@ -73,7 +74,13 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
                             imageSrc={urlImage}
                             rows={2}
                             columns={3}
-                            onSolved={() => onCloseModal()}
+                            onSolved={() => {
+                                setIsDone(true);
+                                const timeOut = setTimeout(() => {
+                                    onCloseModal();
+                                    clearTimeout(timeOut)
+                                },1500)
+                            }}
                         />}
                          </div>
                         

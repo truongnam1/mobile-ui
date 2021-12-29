@@ -12,6 +12,7 @@ import { RobotModel } from './robot';
 import { useNavigate } from 'react-router-dom'
 import { useGlobalState } from 'state-pool';
 import findRoad from './findRoad';
+import AnimationText from '../../components/Text';
 function MapComponent(props) {
     const imageE = useRef();
     const canvasRef = useRef();
@@ -19,9 +20,6 @@ function MapComponent(props) {
     // const [listPicture, setListPicture] = useState([]);
     const [map, setMap] = useState([]);
     const [onDice, setOnDice] = useState(false);
-    // const charactor = useRef();
-    // const [charactor, setCharactor] = useState({});
-
     const currentPoint = useRef(0);
     const randomDice = useRef();
     const [isDice, setIsDice] = useState(false);
@@ -32,7 +30,7 @@ function MapComponent(props) {
     const previousStep = useRef();
     // const [countWrong, setCountWrong] = useState([1, 2, 3]);
     const [wrong, setWrong] = useState({})
-
+    const [showText, setShowText] = useState(false);
     const itemRoad = useRef([]);
 
     const eventOfRoad = useRef([]);
@@ -130,9 +128,10 @@ function MapComponent(props) {
         }
     }
 
-    const handleValidateMove = (time, dice) => {
+    const   handleValidateMove = (time, dice) => {
         if (validateStep(map[currentPoint.current]) !== false) {
-            currentPoint.current = currentPoint.current + validateStep(map[currentPoint.current]);
+            const step = validateStep(map[currentPoint.current]);
+            currentPoint.current = currentPoint.current + step;
 
             // const pictureCha = Object.values(charactor);
             const pictureCha = Object.values(dataMap.layers.charater);
@@ -148,21 +147,37 @@ function MapComponent(props) {
             const timeOut = setTimeout(() => {
                 // const pewpew = [...listPicture];
                 allowToDice.current = true;
-                actionDataMap({
-                    type: "UPDATE_LAYER_CHARACTER",
-                    newLayerCharacter: newCha
-                })
+                if(beforeTypeEvent.current == 'forward') {
+                    console.log("ao that day", step);
+                    if(step < 0) setShowText("Lùi"); 
+                    else setShowText("Tiến");
+                } else if(beforeTypeEvent.current == 'tele') {
+                    setShowText("Dịch chuyển");
+                }
+                const timeOut1 = setTimeout(() => {
+                   
+                    actionDataMap({
+                        type: "UPDATE_LAYER_CHARACTER",
+                        newLayerCharacter: newCha
+                    });
+                    setShowText(false);
+                    
+                    if (beforeTypeEvent.current == 'forward') handleValidateMove(1000, false);
+                    clearTimeout(timeOut1);
+                    clearTimeout(timeOut);
+                }, 1000)
+               
 
-                if (beforeTypeEvent.current == 'forward') handleValidateMove(1000, false);
-                clearTimeout(timeOut);
+                
+                
             }, time);
         } else {
             if (dice) {
                 const timeShowQues = setTimeout(() => {
-                    console.log('show questionnnnnnnnnnnnn');
+                    
                     setShowQuestion(true);
                     clearTimeout(timeShowQues);
-                }, 2400)
+                }, 400)
             }
 
         }
@@ -171,7 +186,7 @@ function MapComponent(props) {
     const handleMove = () => {
         try {
             allowToDice.current = false;
-            const dice = Math.floor(Math.random() * 6) + 1;
+            const dice = 4;
             // Math.floor(Math.random() * 6) + 1;
 
             randomDice.current = dice;
@@ -194,17 +209,23 @@ function MapComponent(props) {
                 // const pewpew = [...listPicture];
 
                 const timeOut = setTimeout(() => {
-                    // setListPicture(newArr);
-                    actionDataMap({
-                        type: "UPDATE_LAYER_CHARACTER",
-                        newLayerCharacter: newCha
-                    });
+                    setShowText("Tiến")
+                    const timeOut1 = setTimeout(() => {
+                        actionDataMap({
+                            type: "UPDATE_LAYER_CHARACTER",
+                            newLayerCharacter: newCha
+                        });
+                        setShowText(false);
+                        handleValidateMove(1000, true);
+                        clearTimeout(timeOut1);
+                    }, 1000)
+                    
 
                     setIsDice(false);
                     clearTimeout(timeOut);
                 }, 2000);
 
-                handleValidateMove(3000, true);
+                
 
             } else {
                 const a = map[(_.size(map) - 1)];
@@ -219,10 +240,15 @@ function MapComponent(props) {
 
                 }
                 const timeOut = setTimeout(() => {
-                    actionDataMap({
-                        type: "UPDATE_LAYER_CHARACTER",
-                        newLayerCharacter: newCha
-                    })
+                    setShowText("Tiến")
+                    const timeOut1 = setTimeout(() => {
+                        actionDataMap({
+                            type: "UPDATE_LAYER_CHARACTER",
+                            newLayerCharacter: newCha
+                        });
+                        setShowText(false);
+                        clearTimeout(timeOut1);
+                    }, 1000)
                     // setListPicture(newArr);
                     setIsDice(false);
                     clearTimeout(timeOut);
@@ -261,14 +287,19 @@ function MapComponent(props) {
             }
 
             const timeOut = setTimeout(() => {
-                actionDataMap({
-                    type: "UPDATE_LAYER_CHARACTER",
-                    newLayerCharacter: newCha
-                })
+                setShowText("Trừ 1 mạng")
+                const timeOut1 = setTimeout(() => {
+                    actionDataMap({
+                        type: "UPDATE_LAYER_CHARACTER",
+                        newLayerCharacter: newCha
+                    });
+                    setShowText(false);
+                    clearTimeout(timeOut1);
+                }, 1000)
                 allowToDice.current = true;
                 // setListPicture(newArr);
                 clearTimeout(timeOut);
-            }, 2000)
+            }, 1000)
 
         }
 
@@ -313,7 +344,8 @@ function MapComponent(props) {
     }
     function setCurMap(maps) {
         const keyMap = Object.keys(maps);
-        const randomMap = maps[keyMap[Math.floor(Math.random() * (_.size(keyMap)))]];
+        // const randomMap = maps[keyMap[Math.floor(Math.random() * (_.size(keyMap)))]];
+        const randomMap = maps[keyMap[1]];
         setCurrentMap(randomMap);
         // setListPicture(randomMap?.layers);
 
@@ -467,20 +499,27 @@ function MapComponent(props) {
     }
     const widthCanvas = dataMap?.width * dataMap?.mapWidth / 10;
     const heightCanvas = dataMap?.height * dataMap?.mapHeight / 10;
-    console.log(`currentPoint.current`, currentPoint.current);
+    
+    const handleShowText = (text) => {
+        return (
+            <AnimationText text={text} top={'10%'} left={'32%'} size={'50px'}/>
+        )
+    }
 
     return (
         <Base body={
             <>
                 {isDice && <Dice status={onDice} randomAngle={randomDice.current} isDice={isDice} />}
-                {!_.isEmpty(map) &&
-                    <>
-                        {/* <button onClick={handleMove}> */}
-                        <img src='https://i.ibb.co/m4pX7dW/unnamed.png'
+                {showText && handleShowText(showText) }
+                <img src='https://i.ibb.co/m4pX7dW/unnamed.png'
                             style={{ backgroundImage: 'tra', height: '20px', width: '20px', position: 'fixed', zIndex: 2000 }}
                             onClick={handleMove}
                             hidden={!allowToDice.current}
                         />
+                {!_.isEmpty(map) &&
+                    <>
+                        {/* <button onClick={handleMove}> */}
+                        
                         {/* </button> */}
                         <div style={{ position: 'absolute', right: '20px', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
 
@@ -552,11 +591,11 @@ function MapComponent(props) {
                                 height={heightCanvas}
                             >
                             </canvas>
-                            <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}
+                            {/* <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}
 
                                 width={widthCanvas}
                                 height={heightCanvas}
-                            />
+                            /> */}
                         </div>
 
 

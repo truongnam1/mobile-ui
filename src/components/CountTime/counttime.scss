@@ -1,0 +1,21 @@
+.blink-text-count-time {
+  color: #000;
+  animation: blinkingText 0.5s infinite;
+}
+@keyframes blinkingText {
+  0% {
+    color: pink;
+  }
+  25% {
+    color: red;
+  }
+  50% {
+    color: pink;
+  }
+  75% {
+    color: red;
+  }
+  100% {
+    color: pink;
+  }
+}
