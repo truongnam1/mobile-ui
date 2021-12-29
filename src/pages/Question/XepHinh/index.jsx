@@ -60,7 +60,7 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
 
                 <div className="count-time" >
                     <i class="bi bi-alarm-fill"></i>
-                    <CountTime firstValue={60} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} />
+                    <CountTime firstValue={30} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} />
 
                 </div>
                  {isDone && <AnimationText text={"Hoàn thành"} top={'30%'} left={'38%'} size={'80px'}/>} 

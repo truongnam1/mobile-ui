@@ -22,8 +22,9 @@ function CountTime({firstValue, onClearTime, onBackToPrev, onChangeStatusTime}) 
     },[])
     useEffect(() => {
         if(count == 0) {
-           const timeOut = setTimeout(() => {
             clearInterval(time.current);
+           const timeOut = setTimeout(() => {
+            
             onBackToPrev && onBackToPrev();
             onClearTime && onClearTime('timeover');
             clearTimeout(timeOut)
@@ -43,9 +44,9 @@ function CountTime({firstValue, onClearTime, onBackToPrev, onChangeStatusTime}) 
         return `${minute}:${second}`;
     }
     return (
-        <div className={`time_count ${Math.floor(count / 60) == 0 && count % 60 < 5 ? "blink-text-count-time": ""}`} >
+        <div className={`time_count ${count <= 5 ? "blink-text-count-time": ""}`} >
             {caculatorTime(count)}
-            {count == 0 &&  <AnimationText text={"Hết giờ"} top={'30%'} left={'38%'} size={'75px'}/>}
+            {count == 0 &&  <AnimationText text={"Hết giờ"} top={'25%'} left={'40%'} size={'100px'}/>}
         </div>   
     );
 }

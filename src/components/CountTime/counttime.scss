@@ -1,8 +1,8 @@
 .blink-text-count-time {
   color: #000;
-  animation: blinkingText 0.5s infinite;
+  animation: blinkingTextTime 0.5s infinite;
 }
-@keyframes blinkingText {
+@keyframes blinkingTextTime {
   0% {
     color: pink;
   }
