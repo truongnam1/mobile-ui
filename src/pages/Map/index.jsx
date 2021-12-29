@@ -185,7 +185,7 @@ function MapComponent(props) {
     const handleMove = () => {
         try {
             allowToDice.current = false;
-            const dice = 4;
+            const dice = 6;
             // Math.floor(Math.random() * 6) + 1;
 
             randomDice.current = dice;
@@ -382,11 +382,10 @@ function MapComponent(props) {
     const loadImageMemo = useMemo(loadImage, [arrImage]);
 
     useEffect(() => {
-        const test = async () => {
+        const test = () => {
             loadImageMemo.then(arr => {
+                console.log('load anh src');
                 setSrcImage(arr);
-                draw2(arr);
-                // draw(listPicture, arr);
             })
 
         }
@@ -396,6 +395,13 @@ function MapComponent(props) {
         }
 
     }, [dataMap])
+
+    //sau khi ảnh src load xong
+    useEffect(() => {
+        if (!isEmpty(srcImage)) {
+            draw2(srcImage);
+        }
+    }, [srcImage])
 
     //Tim chinh xacs map
     useEffect(() => {
@@ -482,7 +488,7 @@ function MapComponent(props) {
     const PopupQuestion = () => {
         return (
             <CacheImageProvider
-            imagesCache= {cacheImageXepHinh.current}
+                imagesCache={cacheImageXepHinh.current}
             >
                 <BodyQuestion
                     questions={listQuestion.current}
