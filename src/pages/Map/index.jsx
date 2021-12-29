@@ -74,8 +74,11 @@ function MapComponent(props) {
                 if (!isEmpty(layersMap)) {
                     setToaDo(layersMap);
                 }
-
+                loadImage();
                 console.log('khoi tao map');
+
+
+
                 return { ...oldState, layers: layersMap, ...infoMap, status: action.type };
 
             case 'UPDATE_LAYER_CHARACTER':
@@ -127,7 +130,7 @@ function MapComponent(props) {
         }
     }
 
-    const   handleValidateMove = (time, dice) => {
+    const handleValidateMove = (time, dice) => {
         if (validateStep(map[currentPoint.current]) !== false) {
             const step = validateStep(map[currentPoint.current]);
             currentPoint.current = currentPoint.current + step;
@@ -146,34 +149,34 @@ function MapComponent(props) {
             const timeOut = setTimeout(() => {
                 // const pewpew = [...listPicture];
                 allowToDice.current = true;
-                if(beforeTypeEvent.current == 'forward') {
+                if (beforeTypeEvent.current == 'forward') {
                     console.log("ao that day", step);
-                    if(step < 0) setShowText("Lùi"); 
+                    if (step < 0) setShowText("Lùi");
                     else setShowText("Tiến");
-                } else if(beforeTypeEvent.current == 'tele') {
+                } else if (beforeTypeEvent.current == 'tele') {
                     setShowText("Dịch chuyển");
                 }
                 const timeOut1 = setTimeout(() => {
-                   
+
                     actionDataMap({
                         type: "UPDATE_LAYER_CHARACTER",
                         newLayerCharacter: newCha
                     });
                     setShowText(false);
-                    
+
                     if (beforeTypeEvent.current == 'forward') handleValidateMove(1000, false);
                     clearTimeout(timeOut1);
                     clearTimeout(timeOut);
                 }, 1000)
-               
 
-                
-                
+
+
+
             }, time);
         } else {
             if (dice) {
                 const timeShowQues = setTimeout(() => {
-                    
+
                     setShowQuestion(true);
                     clearTimeout(timeShowQues);
                 }, 400)
@@ -185,7 +188,7 @@ function MapComponent(props) {
     const handleMove = () => {
         try {
             allowToDice.current = false;
-            const dice = 3;
+            const dice = 6;
             // Math.floor(Math.random() * 6) + 1;
 
             randomDice.current = dice;
@@ -218,13 +221,13 @@ function MapComponent(props) {
                         handleValidateMove(1000, true);
                         clearTimeout(timeOut1);
                     }, 1000)
-                    
+
 
                     setIsDice(false);
                     clearTimeout(timeOut);
                 }, 2000);
 
-                
+
 
             } else {
                 const a = map[(_.size(map) - 1)];
@@ -337,6 +340,9 @@ function MapComponent(props) {
                     }
                 })
 
+
+
+
                 setIsLoading(false);
             }).catch(err => {
                 console.log(err);
@@ -360,7 +366,7 @@ function MapComponent(props) {
         });
     }
     //Load anh map
-    const loadImage = async () => {
+    function loadImage() {
         const loadImage = url => {
             return new Promise((resolve, reject) => {
                 const img = new Image();
@@ -374,24 +380,31 @@ function MapComponent(props) {
             const arr = arrImage.map(item => {
                 return loadImage(item);
             })
-            return await Promise.all(arr);
+
+            Promise.all(arr).then((imgs) => {
+                setSrcImage(imgs);
+            })
+            // return await Promise.all(arr);
         }
 
-        return waitLoad();
+        waitLoad();
     }
-    const loadImageMemo = useMemo(loadImage, [arrImage]);
+    // const loadImageMemo = useMemo(loadImage, [arrImage]);
 
     useEffect(() => {
-        const test = () => {
-            loadImageMemo.then(arr => {
-                console.log('load anh src');
-                setSrcImage(arr);
-            })
+        // const test = () => {
+        //     loadImageMemo.then(arr => {
+        //         console.log('load anh src');
+        //         setSrcImage(arr);
+        //     })
 
-        }
+        // }
 
-        if (!isEmpty(dataMap)) {
-            test();
+        // if (!isEmpty(dataMap)) {
+        //     test();
+        // }
+        if (!isEmpty(srcImage) && !isEmpty(dataMap)) {
+            draw2(srcImage);
         }
 
     }, [dataMap])
@@ -402,6 +415,8 @@ function MapComponent(props) {
             draw2(srcImage);
         }
     }, [srcImage])
+
+
 
     //Tim chinh xacs map
     useEffect(() => {
@@ -511,27 +526,27 @@ function MapComponent(props) {
     }
     const widthCanvas = dataMap?.width * dataMap?.mapWidth / 10;
     const heightCanvas = dataMap?.height * dataMap?.mapHeight / 10;
-    
+
     const handleShowText = (text) => {
         return (
-            <AnimationText text={text} top={'10%'} left={'32%'} size={'50px'}/>
+            <AnimationText text={text} top={'10%'} left={'32%'} size={'50px'} />
         )
     }
-
+    console.log(`curentPoint`, currentPoint.current);
     return (
         <Base body={
             <>
                 {isDice && <Dice status={onDice} randomAngle={randomDice.current} isDice={isDice} />}
-                {showText && handleShowText(showText) }
+                {showText && handleShowText(showText)}
                 <img src='https://i.ibb.co/m4pX7dW/unnamed.png'
-                            style={{ backgroundImage: 'tra', height: '20px', width: '20px', position: 'fixed', zIndex: 2000 }}
-                            onClick={handleMove}
-                            hidden={!allowToDice.current}
-                        />
+                    style={{ backgroundImage: 'tra', height: '20px', width: '20px', position: 'fixed', zIndex: 2000 }}
+                    onClick={handleMove}
+                    hidden={!allowToDice.current}
+                />
                 {!_.isEmpty(map) &&
                     <>
                         {/* <button onClick={handleMove}> */}
-                        
+
                         {/* </button> */}
                         <div style={{ position: 'absolute', right: '20px', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
 
