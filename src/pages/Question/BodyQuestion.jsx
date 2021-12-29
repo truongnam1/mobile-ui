@@ -10,7 +10,7 @@ import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../Provider/UserContext';
 import { useGlobalState } from 'state-pool';
 import { CacheImageContext } from '../../Provider/CacheImageContext';
-function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
+function BodyQuestion({ questions, onCloseModal, onBackToPrev }) {
     var arrIndexQuestion = JSON.parse(sessionStorage.getItem('arrIndexQuestion'));
 
     // console.log(arrIndexQuestion);

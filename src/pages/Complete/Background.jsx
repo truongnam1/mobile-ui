@@ -1,4 +1,3 @@
-import React, { useEffect, useRef, useState } from 'react';
 import styleComplete from './Complete.module.scss';
 import clsx from 'clsx';
 

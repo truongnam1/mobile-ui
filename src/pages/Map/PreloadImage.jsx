@@ -1,6 +1,4 @@
-import { useState } from "react";
 import FetchData from "../../assets/js/fetchData";
-
 
 async function PreloadImage({ questions, ...props }, callbackDone) {
     // const loadImageMemo = useMemo(loadImage, [arrImage]);

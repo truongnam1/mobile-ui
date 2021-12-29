@@ -1,7 +1,4 @@
-import React, { useContext, useEffect, useMemo, useReducer, useRef, useState } from 'react';
-import clsx from 'clsx';
-// import codebeautty from './codebeautify.json'
-import styleBase from '../Base/Base.module.scss';
+import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react';
 import './Map.scss'
 import Base from '../Base/Base'
 import _, { forIn, isEmpty } from 'lodash';
@@ -10,7 +7,6 @@ import BodyQuestion from '../Question/BodyQuestion';
 import { RobotModel } from './robot';
 
 import { useNavigate } from 'react-router-dom'
-import { useGlobalState } from 'state-pool';
 import findRoad from './findRoad';
 import PreloadImage from './PreloadImage';
 import 'animate.css';
@@ -19,11 +15,8 @@ function MapComponent(props) {
     const imageE = useRef();
     const canvasRef = useRef();
     const [codebeautty, setCodebeauty] = useState({});
-    // const [listPicture, setListPicture] = useState([]);
     const [map, setMap] = useState([]);
     const [onDice, setOnDice] = useState(false);
-    // const charactor = useRef();
-    // const [charactor, setCharactor] = useState({});
 
     const currentPoint = useRef(0);
     const randomDice = useRef();
@@ -33,7 +26,6 @@ function MapComponent(props) {
     const navigation = useNavigate();
     const listQuestion = useRef([]);
     const previousStep = useRef();
-    // const [countWrong, setCountWrong] = useState([1, 2, 3]);
     const [wrong, setWrong] = useState({})
 
     const itemRoad = useRef([]);
@@ -462,7 +454,6 @@ function MapComponent(props) {
                     questions={listQuestion.current}
                     onCloseModal={handleCloseModal}
                     onBackToPrev={backToPreviousStep}
-                    randomAngle={randomDice.current}
                 />
             </CacheImageProvider>
 
