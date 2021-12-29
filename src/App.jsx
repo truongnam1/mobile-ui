@@ -3,13 +3,10 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // import './App.css';
 import 'animate.css';
 import routes from './pages/routes';
-import { BaseProvider } from './Provider/BaseContext';
 
 
 function App() {
-  // var arr = [1,2,3,4,5];
   return (
-    // <BaseProvider>
       <BrowserRouter>
         <Routes>
           {
@@ -21,7 +18,6 @@ function App() {
           }
         </Routes>
       </BrowserRouter>
-    // </BaseProvider>
   );
 }
 

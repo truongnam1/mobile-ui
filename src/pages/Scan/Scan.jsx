@@ -1,5 +1,5 @@
-import React from 'react';
 import CountTime from '../../components/CountTime';
+import { CacheImageContext } from '../../Provider/CacheImageContext';
 import { Base } from '../Base';
 import BodyScan from './BodyScan';
 import  './scan.scss';
@@ -9,7 +9,6 @@ function Scan({onCloseModal,questions, onBackToPrev,...props}) {
         propsHeader: { RemoveHQ: true },
         body: <BodyScan questions={questions}></BodyScan>
     }
-
 
     return (
         <>

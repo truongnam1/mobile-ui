@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import React, { useEffect, useRef } from 'react';
+// import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styleBase from './Base.module.scss';
@@ -10,7 +10,7 @@ function Header({ children, visibleTopMain, ...props }) {
     // console.log(`propsHeader`, props);
     const { RemoveHQ, removeBack } = props;
 
-    const elTop = useRef();
+    // const elTop = useRef();
     // console.log(`visibleTopMain`, visibleTopMain);
 
     return (
@@ -27,7 +27,7 @@ function Header({ children, visibleTopMain, ...props }) {
 
                 )
             }>
-            <div className="" className={clsx(
+            <div className={clsx(
                 {
                     [styleBase['display-none']]: removeBack
                 }

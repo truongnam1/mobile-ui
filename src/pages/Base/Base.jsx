@@ -5,7 +5,7 @@ import styleBase from './Base.module.scss';
 import Body from './Body';
 import Header from './Header';
 import Overlay from './Overlay';
-import { store, useGlobalState } from 'state-pool';
+import { store } from 'state-pool';
 
 
 

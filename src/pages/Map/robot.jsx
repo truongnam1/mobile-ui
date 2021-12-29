@@ -92,7 +92,7 @@ export const RobotModel = ({canvasRef, currentPoint, map}) => {
 
     const move = (dir, rec) => {
         // console.log("dir: ", dir);
-        console.log("rec pos: ", rec.style.left, rec.style.top);
+        // console.log("rec pos: ", rec.style.left, rec.style.top);
         switch(dir) {
             case RIGHT:
                 rec.style.left = increasePixel(rec.style.left);

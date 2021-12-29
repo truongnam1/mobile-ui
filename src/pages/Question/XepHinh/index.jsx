@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CountTime from '../../../components/CountTime';
 import { JigsawPuzzle } from 'react-jigsaw-puzzle/lib'
 import 'react-jigsaw-puzzle/lib/jigsaw-puzzle.css'
@@ -7,15 +7,23 @@ import FetchData from '../../../assets/js/fetchData';
 import styleXepHinh from './XepHinh.module.scss'
 import clsx from 'clsx';
 import AnimationText from '../../../components/Text';
-function XepHinh({ onCloseModal, questions, onBackToPrev }) {
+import { CacheImageContext } from '../../../Provider/CacheImageContext';
 
+
+    
+
+function XepHinh({ onCloseModal, questions, onBackToPrev }) {
     const [urlImage, setUrlImage] = useState(false);
     const [isDone, setIsDone] = useState(false);
+    const dataImagesCache = useContext(CacheImageContext);
+
     useEffect(() => {
-        FetchData.urlItem(questions.image_id, (urlImage) => {
-            setUrlImage(urlImage);
-        }
-        )
+        // FetchData.urlItem(questions.image_id, (urlImage) => {
+        //     setUrlImage(urlImage);
+        // }
+        // )
+        const urlImage = dataImagesCache.imagesCache[questions.image_id];
+        setUrlImage(urlImage.src);
     }, [])
     const modalSuggest = () => {
         return (
