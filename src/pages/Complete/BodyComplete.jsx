@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styleComplete from './Complete.module.scss';
 import styleBase from '../Base/Base.module.scss';
 import clsx from 'clsx';
@@ -6,12 +6,21 @@ import { useNavigate } from 'react-router-dom';
 import './complete.css'
 function BodyComplete(props) {
 
+    const [totalTime, setTotalTime] = useState(0);
+    useEffect(() => {
+        setTotalTime(JSON.parse(sessionStorage.getItem('totalTime')));
+    }, [sessionStorage.getItem('totalTime')])
+    const caculatorTime = (time) => {
+        const second = time % 60 >=10 ?  time % 60 : `0${ time % 60}`;
+        const minute = Math.floor(time / 60)  >=10 ?  Math.floor(time / 60) : `0${ Math.floor(time / 60)}`;
+        return `${minute}:${second}`;
+    }
     const navigate = useNavigate();
     return (
         <>
         <div className={clsx('row', styleComplete['container-winner-content'])} >
             <div className={clsx(styleComplete['done-clock'])}>
-                <p className={clsx('text-center', 'fw-normal', 'fs-3', styleComplete['done-clock-text'])}>00:30</p>
+                <p className={clsx('text-center', 'fw-normal', 'fs-3', styleComplete['done-clock-text'])}>{caculatorTime(totalTime)}</p>
             </div>
             <div>
                 <p className={clsx('text-center', 'fw-bolder', 'fs-4')}>KẺ HỦY DIỆT LỊCH SỬ</p>

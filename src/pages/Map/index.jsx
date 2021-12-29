@@ -12,6 +12,7 @@ import AnimationText from '../../components/Text';
 import PreloadImage from './PreloadImage';
 import 'animate.css';
 import { CacheImageProvider } from '../../Provider/CacheImageContext';
+import TotalTime from '../../components/CountTime/totalTime';
 function MapComponent(props) {
     const imageE = useRef();
     const canvasRef = useRef();
@@ -264,7 +265,6 @@ function MapComponent(props) {
         } catch (err) {
             console.log(err);
         }
-        console.log(`map`, map);
 
 
     }
@@ -392,17 +392,6 @@ function MapComponent(props) {
     // const loadImageMemo = useMemo(loadImage, [arrImage]);
 
     useEffect(() => {
-        // const test = () => {
-        //     loadImageMemo.then(arr => {
-        //         console.log('load anh src');
-        //         setSrcImage(arr);
-        //     })
-
-        // }
-
-        // if (!isEmpty(dataMap)) {
-        //     test();
-        // }
         if (!isEmpty(srcImage) && !isEmpty(dataMap)) {
             draw2(srcImage);
         }
@@ -532,24 +521,32 @@ function MapComponent(props) {
             <AnimationText text={text} top={'10%'} left={'32%'} size={'50px'} />
         )
     }
-    console.log(`curentPoint`, currentPoint.current);
+
+    //tong thoi gian choil 
+    // const totalTimePLay =  (total) => {
+    //     console.log('oi doi nha', total);
+    //     sessionStorage.setItem("totalTime", JSON.stringify(total));
+    // }
     return (
         <Base body={
             <>
                 {isDice && <Dice status={onDice} randomAngle={randomDice.current} isDice={isDice} />}
                 {showText && handleShowText(showText)}
-                <img src='https://i.ibb.co/m4pX7dW/unnamed.png'
-                    style={{ backgroundImage: 'tra', height: '20px', width: '20px', position: 'fixed', zIndex: 2000 }}
-                    onClick={handleMove}
-                    hidden={!allowToDice.current}
-                />
                 {!_.isEmpty(map) &&
                     <>
-                        {/* <button onClick={handleMove}> */}
-
-                        {/* </button> */}
+                        <TotalTime />
+                        <button
+                        type="button" className="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left" title="Tung xúc sắc"
+                        style={{ background: 'transparent', position: 'fixed', zIndex: 2000, bottom: '20%', right: '31%', opacity: 0.8, border: 'none', outline: 'none    ' }}
+                        hidden={!allowToDice.current}
+                        >
+                            <img src='https://i.ibb.co/m4pX7dW/unnamed.png'
+                                style={{ height: '25px', width: '25px'}}
+                                onClick={handleMove}
+                                
+                            />
+                        </button>
                         <div style={{ position: 'absolute', right: '20px', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
-
                         {/* <canvas id='canvas1' style={{ width: '100%' , height: '100%', position: "absolute" }} width={currentMap?.width * currentMap?.mapWidth / 10} height={currentMap?.height * currentMap?.mapHeight / 10}></canvas> */}
                         <div id="canvasesdiv" style={{
                             width: '100%', minHeight: '100%',
@@ -618,11 +615,11 @@ function MapComponent(props) {
                                 height={heightCanvas}
                             >
                             </canvas>
-                            {/* <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}
+                                {/* <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}
 
-                                width={widthCanvas}
-                                height={heightCanvas}
-                            /> */}
+                                    width={widthCanvas}
+                                    height={heightCanvas}
+                                /> */}
                         </div>
 
 

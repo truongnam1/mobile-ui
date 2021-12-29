@@ -34,3 +34,14 @@
   color: orange;
   font-size: 30px;
 }
+.total_time_play_lose {
+  position: absolute;
+  top: 64%;
+  left: 6%;
+  font-family: cursive;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: orange;
+  font-size: 30px;
+}
