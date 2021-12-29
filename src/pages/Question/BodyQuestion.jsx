@@ -9,13 +9,14 @@ import Scan from '../Scan/Scan';
 import { useContext, useEffect, useState } from 'react';
 import UserContext from '../../Provider/UserContext';
 import { useGlobalState } from 'state-pool';
+import { CacheImageContext } from '../../Provider/CacheImageContext';
 function BodyQuestion({ questions, onCloseModal, onBackToPrev, randomAngle }) {
     var arrIndexQuestion = JSON.parse(sessionStorage.getItem('arrIndexQuestion'));
 
     // console.log(arrIndexQuestion);
     // const indexQuestionRd =  arrIndexQuestion[Math.floor(Math.random()* arrIndexQuestion.length)];
     // const typeQuestion = questions[indexQuestionRd];
-  
+
 
     // arrIndexQuestion =  arrIndexQuestion.filter(indexQuestion => indexQuestion !== indexQuestionRd)
     // sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);

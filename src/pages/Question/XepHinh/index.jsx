@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import CountTime from '../../../components/CountTime';
 import { JigsawPuzzle } from 'react-jigsaw-puzzle/lib'
 import 'react-jigsaw-puzzle/lib/jigsaw-puzzle.css'
@@ -6,15 +6,19 @@ import FetchData from '../../../assets/js/fetchData';
 
 import styleXepHinh from './XepHinh.module.scss'
 import clsx from 'clsx';
+import { CacheImageContext } from '../../../Provider/CacheImageContext';
 function XepHinh({ onCloseModal, questions, onBackToPrev }) {
 
     const [urlImage, setUrlImage] = useState(false);
+    const dataImagesCache = useContext(CacheImageContext);
 
     useEffect(() => {
-        FetchData.urlItem(questions.image_id, (urlImage) => {
-            setUrlImage(urlImage);
-        }
-        )
+        // FetchData.urlItem(questions.image_id, (urlImage) => {
+        //     setUrlImage(urlImage);
+        // }
+        // )
+        const urlImage = dataImagesCache.imagesCache[questions.image_id];
+        setUrlImage(urlImage.src);
     }, [])
     const modalSuggest = () => {
         return (
@@ -68,15 +72,15 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
                     <div
                         className={clsx('question-item row', styleXepHinh['box-xepHinh'])}
                     >
-                         <div className='col-10' style={{margin: 'auto', border: '1px solid black', padding: 0}}>
-                         {urlImage && <JigsawPuzzle
-                            imageSrc={urlImage}
-                            rows={2}
-                            columns={3}
-                            onSolved={() => onCloseModal()}
-                        />}
-                         </div>
-                        
+                        <div className='col-10' style={{ margin: 'auto', border: '1px solid black', padding: 0 }}>
+                            {urlImage && <JigsawPuzzle
+                                imageSrc={urlImage}
+                                rows={2}
+                                columns={3}
+                                onSolved={() => onCloseModal()}
+                            />}
+                        </div>
+
                     </div>
                 </div>
 

@@ -12,6 +12,9 @@ import { RobotModel } from './robot';
 import { useNavigate } from 'react-router-dom'
 import { useGlobalState } from 'state-pool';
 import findRoad from './findRoad';
+import PreloadImage from './PreloadImage';
+import 'animate.css';
+import { CacheImageProvider } from '../../Provider/CacheImageContext';
 function MapComponent(props) {
     const imageE = useRef();
     const canvasRef = useRef();
@@ -50,6 +53,7 @@ function MapComponent(props) {
     const [bufferLayers, setBufferLayers] = useState({});
 
     const [dataMap, actionDataMap] = useReducer(controlDataMap, {})
+    const cacheImageXepHinh = useRef();
 
     const filterEventOfRoad = useMemo(() => {
         if (!_.isEmpty(map) && !_.isEmpty(dataMap)) {
@@ -78,6 +82,7 @@ function MapComponent(props) {
                 if (!isEmpty(layersMap)) {
                     setToaDo(layersMap);
                 }
+
                 console.log('khoi tao map');
                 return { ...oldState, layers: layersMap, ...infoMap, status: action.type };
 
@@ -284,6 +289,12 @@ function MapComponent(props) {
                     return item?.src;
                 }))
 
+
+                PreloadImage({ questions: data.questions }, (images) => {
+                    console.log(images);
+                    cacheImageXepHinh.current = images;
+                })
+
                 setCurMap(data?.maps)
                 eventOfRoad.current = data?.define_item_map;
                 listQuestion.current = data?.questions;
@@ -421,7 +432,7 @@ function MapComponent(props) {
             drawLayer2(refLayers.current[key], key, img);
         }
 
-       
+
         // console.log('ve xong');
         // var crt = refLayers.current['charater'];
         // var road = refLayers.current['road'];
@@ -444,14 +455,16 @@ function MapComponent(props) {
     }
     const PopupQuestion = () => {
         return (
-
-            <BodyQuestion
-                
-                questions={listQuestion.current}
-                onCloseModal={handleCloseModal}
-                onBackToPrev={backToPreviousStep}
-                randomAngle={randomDice.current}
-            />
+            <CacheImageProvider
+            imagesCache= {cacheImageXepHinh.current}
+            >
+                <BodyQuestion
+                    questions={listQuestion.current}
+                    onCloseModal={handleCloseModal}
+                    onBackToPrev={backToPreviousStep}
+                    randomAngle={randomDice.current}
+                />
+            </CacheImageProvider>
 
         )
     }
@@ -460,7 +473,7 @@ function MapComponent(props) {
         if (!isEmpty(wrong)) {
             let wrongConLai = wrong.maxWrong - wrong.quantityWrongCur;
             return Array.from(new Array(wrongConLai), () => {
-                return <img src="https://img.icons8.com/stickers/20/000000/like.png" />
+                return <img className='animate__animated animate__bounce' src="https://img.icons8.com/stickers/20/000000/like.png" />
             });
         }
 
