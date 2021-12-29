@@ -179,7 +179,7 @@ function MapComponent(props) {
 
                     setShowQuestion(true);
                     clearTimeout(timeShowQues);
-                }, 400)
+                }, 400) 
             }
 
         }
@@ -188,7 +188,7 @@ function MapComponent(props) {
     const handleMove = () => {
         try {
             allowToDice.current = false;
-            const dice = 6;
+            const dice = Math.floor(Math.random() * 6) + 1;
             // Math.floor(Math.random() * 6) + 1;
 
             randomDice.current = dice;

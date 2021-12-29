@@ -16,7 +16,7 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
     const [urlImage, setUrlImage] = useState(false);
     const [isDone, setIsDone] = useState(false);
     const dataImagesCache = useContext(CacheImageContext);
-
+    const [stopTime, setStopTime] = useState(false);
     useEffect(() => {
         // FetchData.urlItem(questions.image_id, (urlImage) => {
         //     setUrlImage(urlImage);
@@ -60,7 +60,7 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
 
                 <div className="count-time" >
                     <i class="bi bi-alarm-fill"></i>
-                    <CountTime firstValue={30} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} />
+                    <CountTime firstValue={30} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime}/>
 
                 </div>
                  {isDone && <AnimationText text={"Hoàn thành"} top={'30%'} left={'38%'} size={'80px'}/>} 
@@ -84,6 +84,7 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
                             columns={3}
                             onSolved={() => {
                                 setIsDone(true);
+                                setStopTime(true)
                                 const timeOut = setTimeout(() => {
                                     onCloseModal();
                                     clearTimeout(timeOut)
