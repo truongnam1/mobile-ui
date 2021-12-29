@@ -185,7 +185,7 @@ function MapComponent(props) {
     const handleMove = () => {
         try {
             allowToDice.current = false;
-            const dice = 6;
+            const dice = 3;
             // Math.floor(Math.random() * 6) + 1;
 
             randomDice.current = dice;
