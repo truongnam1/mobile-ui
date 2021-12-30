@@ -1,25 +1,38 @@
 .layer-map {
-    width: 100%;
-    min-height: 100%;
-    position: absolute;
+  width: 100%;
+  min-height: 100%;
+  position: absolute;
 }
 
 .layer--base {
-    // z-index: 1;
+  // z-index: 1;
 }
 
 .layer--item-base {
-    // z-index: 2;
+  // z-index: 2;
 }
 
 .layer--road {
-    // z-index: 3;
+  // z-index: 3;
 }
 
 .layer--item-road {
-    // z-index: 4;
+  // z-index: 4;
 }
 
 .layer--character {
-    // z-index: 5;
+  // z-index: 5;
+}
+
+//modal intro map
+.modal_map_intro {
+  position: fixed;
+  z-index: 2001;
+}
+.text_modal_map {
+  font-size: 14px;
+  font-family: cursive;
+}
+.border_map_modal {
+  border: 1px solid #e5d7d7;
 }
