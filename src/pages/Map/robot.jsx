@@ -10,7 +10,7 @@ export const RobotModel = ({canvasRef, currentPoint, map}) => {
     const [posArr, setPosArr] = useState([...map[currentPoint].split('-')])
     const [oldPoint, setOldPoint] = useState(currentPoint);
 
-    const [CELL_SIZE, setCellSize] = useState(32);
+    const [CELL_SIZE, setCellSize] = useState(window.innerWidth/10);
 
     
     const [dir, setDir] = useState('face-up');
@@ -135,9 +135,9 @@ export const RobotModel = ({canvasRef, currentPoint, map}) => {
     }
 
     useEffect(()=>{
-        window.addEventListener('resize', ()=>setCellSize(window.innerWidth/10));
+        window.addEventListener('resize', ()=>{if(window.innerWidth <= 576) setCellSize(window.innerWidth/10)});
 
-        return ()=>{window.removeEventListener('resize', ()=>setCellSize(window.innerWidth/10))}
+        return ()=>{window.removeEventListener('resize', ()=>{if(window.innerWidth <= 576) setCellSize(window.innerWidth/10)})}
     },[])
 
     useEffect(()=>{
