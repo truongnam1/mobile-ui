@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import styleBase from './Base.module.scss';
 
 
-function Header({ children, visibleTopMain, ...props }) {
+function Header({ children, visibleTopMain,onSetTypeModal, ...props }) {
     let navigate = useNavigate();
     // console.log(`propsHeader`, props);
     const { RemoveHQ, removeBack } = props;
@@ -49,7 +49,9 @@ function Header({ children, visibleTopMain, ...props }) {
                 )}
             >
                 <i onClick={() => navigate('/start')} className={clsx('bi', 'bi-house-fill')}></i>
-                <i className={clsx('bi', 'bi-patch-question-fill')}></i>
+                <i className={clsx('bi', 'bi-patch-question-fill')} onClick={() => {
+                    onSetTypeModal('map');
+                }}></i>
             </div>
             {children}
         </div>

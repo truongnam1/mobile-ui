@@ -9,7 +9,7 @@ import { store } from 'state-pool';
 
 
 
-function Base({ isLoading, ...props }) {
+function Base({ isLoading, onSetTypeModal, ...props }) {
     // console.log(`styleBase`, styleBase);
     
 
@@ -35,6 +35,7 @@ function Base({ isLoading, ...props }) {
         }, 2000)
     }
     
+   
     useLayoutEffect(() => {
         store.setState('elMain', elMain);
     },[])
@@ -43,7 +44,7 @@ function Base({ isLoading, ...props }) {
         <>
             <div ref={elMain} className={clsx('container-sm', 'border', styleBase.main)}>
                 {top}
-                <Header {...propsHeader} visibleTopMain={visibleTopMain}>
+                <Header {...propsHeader} visibleTopMain={visibleTopMain} onSetTypeModal={onSetTypeModal}>
                     {header}
                 </Header>
                 {headerBody}

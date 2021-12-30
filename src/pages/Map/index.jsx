@@ -13,6 +13,7 @@ import PreloadImage from './PreloadImage';
 import 'animate.css';
 import { CacheImageProvider } from '../../Provider/CacheImageContext';
 import TotalTime from '../../components/CountTime/totalTime';
+import Canvas from '../../components/Canvas';
 function MapComponent(props) {
     const imageE = useRef();
     const canvasRef = useRef();
@@ -30,7 +31,7 @@ function MapComponent(props) {
     const [wrong, setWrong] = useState({})
     const [showText, setShowText] = useState(false);
     const itemRoad = useRef([]);
-
+    const [typeModal, setTypeModal] = useState(false);
     const eventOfRoad = useRef([]);
     const allowToDice = useRef(true);
     // const filterEventOfRoad = useRef({});
@@ -47,10 +48,10 @@ function MapComponent(props) {
 
     const [dataMap, actionDataMap] = useReducer(controlDataMap, {})
     const cacheImageXepHinh = useRef();
-
+    const itemModal = useRef([]);
     const filterEventOfRoad = useMemo(() => {
         if (!_.isEmpty(map) && !_.isEmpty(dataMap)) {
-            return map.reduce((object, item) => {
+            const result =  map.reduce((object, item) => {
                 if (dataMap.layers['item-road'][item]) {
                     const key = dataMap.layers['item-road'][item]?.x + '-' + dataMap.layers['item-road'][item]?.y;
                     object[key] = [...object[key] || [], item];
@@ -58,10 +59,26 @@ function MapComponent(props) {
                 } else return object;
 
             }, {})
+            
+
+           
+            for (const item of codebeautty.define_item_map) {
+
+                const temp = Object.entries(codebeautty.tileSets[item.tilesetIdx].tileData).filter((tile) => {
+                    // console.log(tile[1].tileSymbol, tile[1].tileSymbol);
+                    return item.tileSymbol == tile[1].tileSymbol;
+                })
+                const newItem = {...item, td: (temp[0])[0]};
+                itemModal.current = [...itemModal.current || [], newItem ];
+            //    console.log("temp", (temp[0])[0]);    
+            }
+            console.log(" itemModal.current",  itemModal.current);
+            return result;
 
         }
-    }, [map, dataMap])
+    }, [map, dataMap]);
 
+    console.log(filterEventOfRoad);
     function controlDataMap(oldState, action) {
         switch (action.type) {
             case 'INIT_MAP':
@@ -355,8 +372,8 @@ function MapComponent(props) {
     }
     function setCurMap(maps) {
         const keyMap = Object.keys(maps);
-        // const randomMap = maps[keyMap[Math.floor(Math.random() * (_.size(keyMap)))]];
-        const randomMap = maps[keyMap[1]];
+        const randomMap = maps[keyMap[Math.floor(Math.random() * (_.size(keyMap)))]];   
+        // const randomMap = maps[keyMap[1]];
         setCurrentMap(randomMap);
         // setListPicture(randomMap?.layers);
 
@@ -522,11 +539,130 @@ function MapComponent(props) {
         )
     }
 
-    //tong thoi gian choil 
-    // const totalTimePLay =  (total) => {
-    //     console.log('oi doi nha', total);
-    //     sessionStorage.setItem("totalTime", JSON.stringify(total));
-    // }
+    //show modal huong dan
+    const handleShowModalIntroduction = (type) => {
+        console.log("type", type);
+        setTypeModal(type);
+    }
+ 
+
+
+
+    const ModalIntroductionMap = () => {
+        
+        return (
+            <div className='modal_map_intro container-sm border Base_main__3GwWY'>  
+                    <div className="row">
+                   
+                        <div className="col-sm-12">
+                            <i className="far fa-times-circle" style={{float: 'right'}} onClick={() => {
+                                 setTypeModal(false);
+                            }}></i>
+                        </div>
+                        <div className="col-sm-12">
+                            <div className="row">
+                                <div className="col-sm-3" style={{margin: 'auto', fontSize: '18px !important', color: 'orangered'}}>
+                                    <span className='text_modal_map'>
+                                        Mô tả
+                                    </span>
+                                </div>
+
+                                <div className="col-sm-11" style={{margin: 'auto'}}>
+                                    <span className='text_modal_map'>
+                                        Đây là bản đồ dẫn tới kho báu Rồng. Có rất nhiều chướng ngại vật, thử thách khó khăn trên đường đi tìm kho báu. Một số chướng ngại vật có thể cản trở bạn hoặc có thể giúp bạn đến kho báu nhanh hơn. Dưới đây là một vài chú thích:
+                                    </span>
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                        <div className="col-sm-12 border_map_modal animate__zoomInDown animate__animated">
+                            <div className="row" style={{alignItems: 'center'}}>
+                                <div className="col-sm-1">
+                                    <img 
+                                    src={process.env.PUBLIC_URL + '/assets/images/khobau.png'}
+                                    style={{width: '32px', height: '32px'}}
+                                    />
+                                </div>
+                                <div className="col-sm-11">
+                                    <span className='text_modal_map'>Đây chính là kho báu Rồng. Nếu lấy được nó bạn sẽ được ban thưởng một phần thưởng</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-sm-12 border_map_modal animate__zoomInDown animate__animated">
+                            <div className="row" style={{alignItems: 'center'}}>
+                                <div className="col-sm-1">
+                                    <img 
+                                    src={process.env.PUBLIC_URL + '/assets/images/dice.png'}
+                                    style={{width: '32px', height: '32px'}}
+                                    />
+                                </div>
+                                <div className="col-sm-11">
+                                    <span className='text_modal_map'>Ấn vào đây để có thể di chuyển </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-sm-12 border_map_modal animate__zoomInDown animate__animated">
+                            <div className="row" style={{alignItems: 'center'}}>
+                                <div className="col-sm-1">
+                                    <img 
+                                    src={process.env.PUBLIC_URL + '/assets/images/heart.png'}
+                                    style={{width: '32px', height: '32px'}}
+                                    />
+                                </div>
+                                <div className="col-sm-11">
+                                    <span className='text_modal_map'>Số lượt chơi của bạn là giới hạn nên hãy thận trọng với những câu hỏi. Nó sẽ được hiển thị tại góc trên cùng bên phải của màn hình</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="col-sm-12 border_map_modal animate__zoomInDown animate__animated">
+                            <div className="row" style={{alignItems: 'center'}}>
+                                <div className="col-sm-1">
+                                    <img 
+                                    src={process.env.PUBLIC_URL + '/assets/images/time.png'}
+                                    style={{width: '32px', height: '32px'}}
+                                    />
+                                </div>
+                                <div className="col-sm-11">
+                                    <span className='text_modal_map'>Tại góc trên cùng bên trái màn hình. Đây là nơi hiển thị tổng thời gian từ ban đầu cho tới khi bạn tìm được kho báu.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {itemModal.current.map(item => {
+                            if(item?.effect.includes("back_forward")) {
+                                item.des = "Đây là .....Khi bước vào đây bạn sẽ được tiến thêm một số ô nhất định"
+                            } else if(item?.effect.includes("forward")) {
+                                item.des = "Khi bước vào đây bạn sẽ phải lùi về sau"
+                            } else if(item?.effect.includes("tele")) {
+                                item.des = "Cổng không gian, bạn sẽ bị dịch chuyển tới một nơi bất kì nào đó trong bản đồ khi bước vào nó."
+                            }
+
+                            return (
+                                <div className="col-sm-12 border_map_modal animate__zoomInDown animate__animated">
+                                    <div className="row" style={{alignItems: 'center'}}>
+                                        <div className="col-sm-1">
+                                            <Canvas keys={item?.td} img={srcImage[item?.tilesetIdx || 0]}/>
+                                        </div>
+                                        <div className="col-sm-11">
+                                            <span className='text_modal_map'>{item?.des}</span>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            )
+                        })}
+                        
+                    </div>
+            </div>
+  
+        )
+    }
+
+
     return (
         <Base body={
             <>
@@ -630,9 +766,10 @@ function MapComponent(props) {
                 {/* <img ref={imageE} hidden/> */}
 
                 {showQuestion && PopupQuestion()}
+                {typeModal && ModalIntroductionMap()}
             </>
 
-        } isLoading={isLoading} text={"Đang tải bản đồ"} />
+        } isLoading={isLoading} text={"Đang tải bản đồ"} onSetTypeModal={handleShowModalIntroduction}/>
 
 
     );
