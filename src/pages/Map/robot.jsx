@@ -10,8 +10,10 @@ export const RobotModel = ({canvasRef, currentPoint, map}) => {
     const [posArr, setPosArr] = useState([...map[currentPoint].split('-')])
     const [oldPoint, setOldPoint] = useState(currentPoint);
 
+    const [CELL_SIZE, setCellSize] = useState(32);
+
     
-    const [dir, setDir] = useState(0);
+    const [dir, setDir] = useState('face-up');
     const [_robot, setRobot] = useState(null);
     const [actionControl, setActionControl] = useState(null);
     
@@ -30,7 +32,6 @@ export const RobotModel = ({canvasRef, currentPoint, map}) => {
         });
         promise
             .then(() => {
-
                 const directionArr = [];
                 // get direction
                 if (oldPoint < currentPoint) {
@@ -53,12 +54,12 @@ export const RobotModel = ({canvasRef, currentPoint, map}) => {
             .then(directionArr => {
                 console.log(directionArr);
                 const timePerStep = TIME_PER_MOVEMENT / directionArr.length;
-                const robotRec = document.getElementById('myCanvas');
+                const robotRec = document.getElementById('character-container');
                 console.log(actionControl);
                 if(actionControl) actionControl.timeScale = directionArr.length;
                 const moveLoop = async () => {
                     for (let i = 0; i < directionArr.length; i++){
-                        moveDirection(directionArr[i], _robot);
+                        moveDirection(directionArr[i]);
                         let frame = timePerStep / CELL_SIZE;
                         console.log("frame: ", frame);
                         const doIt = async () => {
@@ -117,92 +118,49 @@ export const RobotModel = ({canvasRef, currentPoint, map}) => {
         });
       }
 
-    const moveDirection = (dir, robot) => {
-        console.log(robot);
+    const moveDirection = (dir) => {
         switch(dir) {
             case RIGHT:
-                robot.position.y = -1
-                robot.rotation.x = (Math.PI/2)
-                robot.rotation.y = (Math.PI/2)
+                setDir('face-right')
                 return;
             case LEFT:
-                robot.position.y=(-1);
-                robot.rotation.x=(Math.PI/2)
-                robot.rotation.y=(-Math.PI/2)
+                setDir('face-left')
                 return;
             case DOWN:
-                robot.rotation.x=(2*Math.PI/3)
-                robot.rotation.y=0
-                robot.position.y=(-1);
+                setDir('face-down')
                 return;
             default:
-                robot.position.y=(-1);
-                robot.rotation.y=(Math.PI);
-                robot.rotation.x=(Math.PI/3);
+                setDir('face-up')
         }
     }
 
     useEffect(()=>{
-        const myCanvas = document.getElementById('myCanvas');
-        myCanvas.style.left = `${posArr[0] * CELL_SIZE}px`;
-        myCanvas.style.top = `${posArr[1] * CELL_SIZE - CELL_SIZE}px`;
-        console.log(myCanvas.style.left);
+        window.addEventListener('resize', ()=>setCellSize(window.innerWidth/10));
 
-        let scene = new THREE.Scene();
-    
-        let renderer = new THREE.WebGL1Renderer({canvas: myCanvas, alpha: true });
-        renderer.setSize(32, 64);
-        renderer.setPixelRatio(window.devicePixelRatio);
-        renderer.setClearColor(0xffffff, 0);
-
-        let light = new THREE.AmbientLight();
-        scene.add(light);
-    
-        let camera = new THREE.PerspectiveCamera(8, 1, 0.1, 1000);
-        camera.position.z = 60;
-    
-        let loader = new GLTFLoader();
-        let clock = new THREE.Clock();
-    
-        let mixer;
-        let action;
-    
-        loader.load(
-            `${process.env.PUBLIC_URL}/assets/models/Robot.glb`,
-            (glb) => {
-                const robot = glb.scene;
-                console.log(robot);
-                setRobot({...robot});
-                console.log(dir);
-                moveDirection(dir, robot);
-                robot.scale.x =  5;
-                robot.scale.y =  5;
-                robot.scale.z =  5;
-                glb.scene.children[0].material.metalness = 0;
-                const robotHead = glb.scene.children[1].children;
-                for (let i in robotHead) {
-                    robotHead[i].material.metalness = 0;
-                }
-                mixer = new THREE.AnimationMixer(glb.scene)
-                action = mixer.clipAction(glb.animations[0])
-                setActionControl({...action})
-                action.play();
-                scene.add(glb.scene);
-                animate();
-            }
-        )
-    
-        let animate = function() {
-            requestAnimationFrame(animate);
-            if (camera) {
-                mixer.update(clock.getDelta())
-                renderer.render(scene,camera);
-            }
-        }
+        return ()=>{window.removeEventListener('resize', ()=>setCellSize(window.innerWidth/10))}
     },[])
 
+    useEffect(()=>{
+        const character = document.getElementById('character-container');
+        
+        console.log(CELL_SIZE);
+        const ratioPixel = CELL_SIZE / 32;
+        document.documentElement.style.setProperty('--pixel-size', `${ratioPixel}`);
+        character.style.top = `${CELL_SIZE * posArr[1] - CELL_SIZE}px`;
+        character.style.left = `${CELL_SIZE * posArr[0] - CELL_SIZE/2}px`;
+    },[CELL_SIZE])
     return(
-        <canvas id='myCanvas'></canvas>
+        // <canvas id='myCanvas'></canvas>
+
+        <div id='character-container'>
+            <div className="Character">
+            
+                <img className="Character_shadow pixelart" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/21542/DemoRpgCharacterShadow.png" alt="Shadow" />
+                
+                <img className={`Character_spritesheet pixelart ${dir}`} src={`${process.env.PUBLIC_URL}/assets/images/sprite-sheet.png`} alt="Character" />
+            
+            </div>
+        </div>
     )
 }
 
@@ -211,4 +169,3 @@ const RIGHT = 1;
 const DOWN = 2;
 const LEFT = 3;
 const TIME_PER_MOVEMENT = 2000;
-const CELL_SIZE = 32;
