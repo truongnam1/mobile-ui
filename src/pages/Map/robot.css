@@ -1,6 +1,6 @@
 :root {
     --pixel-size: 1;
- }
+}
 
 #character-container {
     position: absolute;
@@ -15,39 +15,44 @@
     height: calc(64px * var(--pixel-size));
     overflow: hidden;
     position: relative;
- }
- 
- .Character_spritesheet {
-    animation: moveSpritesheet 1s steps(9) infinite;
+}
+
+.Character_spritesheet {
     width: calc(576px * var(--pixel-size));
     position: absolute;
-    
- }
- .Character_shadow {
+}
+
+.animation_crt {
+    animation: moveSpritesheet 1s steps(9) infinite;
+}
+
+.Character_shadow {
     position: absolute;
     width: calc(64px * var(--pixel-size));
     height: calc(64px * var(--pixel-size));
- }
- 
- .pixelart {
-    image-rendering: pixelated;
- }
- 
- .face-left {
-    top: calc(-64px * var(--pixel-size));
- }
- .face-down {
-    top: calc(-128px * var(--pixel-size));
- }
- .face-right {
-    top: calc(-196px * var(--pixel-size));
- }
+}
 
- @keyframes moveSpritesheet {
+.pixelart {
+    image-rendering: pixelated;
+}
+
+.face-left {
+    top: calc(-64px * var(--pixel-size));
+}
+
+.face-down {
+    top: calc(-128px * var(--pixel-size));
+}
+
+.face-right {
+    top: calc(-196px * var(--pixel-size));
+}
+
+@keyframes moveSpritesheet {
     from {
-       transform: translate3d(0px,0,0)
+        transform: translate3d(0px, 0, 0)
     }
     to {
-       transform: translate3d(-100%,0,0)
+        transform: translate3d(-100%, 0, 0)
     }
- }
+}
