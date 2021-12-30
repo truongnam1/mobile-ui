@@ -10,7 +10,10 @@ export const RobotModel = ({canvasRef, currentPoint, map}) => {
     const [posArr, setPosArr] = useState([...map[currentPoint].split('-')])
     const [oldPoint, setOldPoint] = useState(currentPoint);
 
-    const [CELL_SIZE, setCellSize] = useState(window.innerWidth/10);
+    const [CELL_SIZE, setCellSize] = useState(()=>{
+        const height = window.innerWidth <= 576 ? window.innerWidth : 576;
+        return height / 10;
+    });
 
     
     const [dir, setDir] = useState('face-up');
