@@ -1,151 +1,147 @@
-.containerByT {
-    /* perspective: 1000px; */
-    /* perspective-origin: 50% 50%; */
-    font-family: "fontawesome";
-    position: fixed;
-    top: 50%;
-    right: 45%;
-    /* height: 100vh;s */
-    z-index: 10;
+.game {
+  position: relative;
+  width: auto;
+  height: 100%;
 }
 
-.containerByT .cube {
-    position: relative;
-    left: 45%;
-    top: 40%;
-    height: 50px;
-    width: 50px;
-    transform-style: preserve-3d;
-    cursor: pointer;
-    transform: rotateX(135deg) rotateY(-217deg) rotateZ(-88deg);
+.container {
+  position: relative;
+  display: inline-block;
+  top: 200px;
 }
 
-.containerByT .cube div {
-    position: absolute;
-    box-sizing: border-box;
-    padding: 10px;
-    height: 100%;
-    width: 100%;
-    border: 2px solid #eee;
-    color: #fff;
+.dice {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+  transition: transform 1s;
 }
 
-.containerByT .cube div span {
-    font-size: 8px;
-    font-family: "fontawesome";
+.dot {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  margin: -10px 5px 5px -10px;
+  border-radius: 20px;
+  background-color: #f25f5c;
+  box-shadow: inset 2px 2px #d90429;
 }
 
-.containerByT .cube .front {
-    background: #000;
-    transform: translateZ(-51px);
+.dice-one {
+  position: absolute;
+  left: 150px;
 }
 
-.containerByT .cube .back {
-    background: #000;
-    transform: translateZ(-100px) rotateY(180deg);
+.dice-two {
+  position: absolute;
+  left: -50px;
 }
 
-.containerByT .cube .right {
-    background: #000;
-    transform-origin: top right;
-    transform: rotateY(-270deg) translateX(100px);
+.side {
+  position: absolute;
+  background-color: #fff;
+  border-radius: 5px;
+  width: 100px;
+  height: 100px;
+  border: 1px solid #e5e5e5;
+  text-align: center;
+  line-height: 2em;
 }
 
-.containerByT .cube .left {
-    background: #000;
-    transform-origin: center left;
-    transform: rotateY(270deg) translateX(-100px);
+.side:nth-child(1) {
+  transform: translateZ(3.1em);
 }
 
-.containerByT .cube .top {
-    background: #000;
-    transform-origin: top center;
-    transform: rotateX(-270deg) translateY(-100px);
+.side:nth-child(6) {
+  transform: rotateY(90deg) translateZ(3.1em);
 }
 
-.containerByT .cube .bottom {
-    background: #000;
-    transform-origin: bottom center;
-    transform: rotateX(270deg) translateY(100px);
+.side:nth-child(3) {
+  transform: rotateY(-90deg) translateZ(3.1em);
 }
 
-
-/*DOT ALIGNMENT */
-
-.containerByT .cube .front span,
-.containerByT .cube .left span:nth-child(1),
-.containerByT .cube .right span:nth-child(1) {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+.side:nth-child(4) {
+  transform: rotateX(90deg) translateZ(3.1em);
 }
 
-.containerByT .cube .top span:nth-child(1),
-.containerByT .cube .left span:nth-child(2),
-.containerByT .cube .right span:nth-child(2),
-.containerByT .cube .bottom span:nth-child(1) {
-    position: absolute;
-    top: 35px;
-    left: 35px;
+.side:nth-child(5) {
+  transform: rotateX(-90deg) translateZ(3.1em);
 }
 
-.containerByT .cube .top span:nth-child(2),
-.containerByT .cube .left span:nth-child(3),
-.containerByT .cube .right span:nth-child(3),
-.containerByT .cube .bottom span:nth-child(2) {
-    position: absolute;
-    bottom: 35px;
-    right: 35px;
+.side:nth-child(2) {
+  transform: rotateY(-180deg) translateZ(3.1em);
 }
 
-.containerByT .cube .right span:nth-child(4),
-.containerByT .cube .bottom span:nth-child(3) {
-    position: absolute;
-    top: 35px;
-    right: 35px;
+.show-1 {
+  transform: rotateX(720deg) rotateZ(-720deg);
 }
 
-.containerByT .cube .right span:nth-child(5),
-.containerByT .cube .bottom span:nth-child(4) {
-    position: absolute;
-    bottom: 35px;
-    left: 35px;
+.show-6 {
+  transform: rotateX(-900deg) rotateZ(1080deg);
 }
 
-.containerByT .cube .back pre {
-    font-size: 8px;
-    font-family: "fontawesome";
-    margin: 0;
+.show-3 {
+  transform: rotateY(-450deg) rotateZ(-1440deg);
 }
 
-.containerByT .cube .back .firstPre {
-    position: absolute;
-    top: 29px;
-    left: 7px;
+.show-4 {
+  transform: rotateY(810deg) rotateZ(720deg);
 }
 
-.containerByT .cube .back .secondPre {
-    position: absolute;
-    bottom: 27px;
-    right: 3px;
+.show-5 {
+  transform: rotateX(-810deg) rotateZ(-1080deg);
 }
 
-@keyframes animate {
-    25% {
-        transform: rotateX(45deg) rotateY(65deg) rotateZ(35deg);
-        top: 0%;
-    }
-    50% {
-        transform: rotateX(145deg) rotateY(165deg) rotateZ(135deg);
-        top: 30%;
-    }
-    75% {
-        transform: rotateX(276deg) rotateY(256deg) rotateZ(246deg);
-        top: 45%;
-    }
-    100% {
-        transform: rotateX(376deg) rotateY(356deg) rotateZ(346deg);
-        top: 60%;
-    }
+.show-2 {
+  transform: rotateX(450deg) rotateZ(-720deg);
+}
+
+.two-1,
+.three-1,
+.four-1,
+.five-1,
+.six-1 {
+  top: 20%;
+  left: 20%;
+}
+
+.four-3,
+.five-3,
+.six-4 {
+  top: 20%;
+  left: 80%;
+}
+
+.one-1,
+.three-2,
+.five-5 {
+  top: 50%;
+  left: 50%;
+}
+
+.four-2,
+.five-2,
+.six-3 {
+  top: 80%;
+  left: 20%;
+}
+
+.two-2,
+.three-3,
+.four-4,
+.five-4,
+.six-6 {
+  top: 80%;
+  left: 80%;
+}
+
+.six-2 {
+  top: 50%;
+  left: 20%;
+}
+
+.six-5 {
+  top: 50%;
+  left: 80%;
 }

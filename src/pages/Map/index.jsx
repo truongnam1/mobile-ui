@@ -196,7 +196,6 @@ function MapComponent(props) {
         } else {
             if (dice) {
                 const timeShowQues = setTimeout(() => {
-
                     setShowQuestion(true);
                     clearTimeout(timeShowQues);
                 }, 400)
@@ -214,14 +213,14 @@ function MapComponent(props) {
             randomDice.current = dice;
             const pictureCha = Object.values(dataMap.layers.charater);
 
-            if (currentPoint.current + dice + 16 < (_.size(map) - 1)) {
+            if (currentPoint.current + dice < (_.size(map) - 1)) {
                 previousStep.current = currentPoint.current;
                 // const a = map[(currentPoint.current + dice) > (_.size(map) - 1) ? (_.size(map) - 1) : currentPoint.current + dice + 16];
-                const a = map[currentPoint.current + dice + 16];
+                const a = map[currentPoint.current + dice ];
                 
                 setOnDice(!onDice);
                 setIsDice(true);
-                currentPoint.current = currentPoint.current + dice + 16;
+                currentPoint.current = currentPoint.current + dice ;
                 // console.log(`charactor.current`, charactor);
                 // const pictureCha = Object.values(charactor);
                 // const pictureCha = Object.values(dataMap.layers.charater);
