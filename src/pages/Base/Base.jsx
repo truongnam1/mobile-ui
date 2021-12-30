@@ -11,7 +11,7 @@ import { store } from 'state-pool';
 
 function Base({ isLoading, onSetTypeModal, ...props }) {
     // console.log(`styleBase`, styleBase);
-    
+
 
 
     var { propsHeader, propsBody, propsOverlay } = props;
@@ -21,12 +21,14 @@ function Base({ isLoading, onSetTypeModal, ...props }) {
     const [visibleTopMain, setVisibleTopMain] = useState(false);
 
     useEffect(() => {
-        
-        elMain.current.addEventListener('scroll', () => {
-            // isVisible = true;s
-            // console.log('dang scroll');
+        function handleVisibleTopMain() {
             setVisibleTopMain(true);
-        })
+        }
+
+        elMain.current.addEventListener('scroll', handleVisibleTopMain);
+
+        return () => elMain.current?.removeEventListener('scroll', handleVisibleTopMain);
+
     }, [])
 
     if (visibleTopMain) {
@@ -34,11 +36,11 @@ function Base({ isLoading, onSetTypeModal, ...props }) {
             setVisibleTopMain(false);
         }, 2000)
     }
-    
-   
+
+
     useLayoutEffect(() => {
         store.setState('elMain', elMain);
-    },[])
+    }, [])
 
     return (
         <>

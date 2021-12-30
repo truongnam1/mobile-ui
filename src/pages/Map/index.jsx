@@ -212,15 +212,19 @@ function MapComponent(props) {
             // Math.floor(Math.random() * 6) + 1;
 
             randomDice.current = dice;
-            if (currentPoint.current + dice < (_.size(map) - 1)) {
+            const pictureCha = Object.values(dataMap.layers.charater);
+
+            if (currentPoint.current + dice + 16 < (_.size(map) - 1)) {
                 previousStep.current = currentPoint.current;
-                const a = map[(currentPoint.current + dice) > (_.size(map) - 1) ? (_.size(map) - 1) : currentPoint.current + dice];
+                // const a = map[(currentPoint.current + dice) > (_.size(map) - 1) ? (_.size(map) - 1) : currentPoint.current + dice + 16];
+                const a = map[currentPoint.current + dice + 16];
+                
                 setOnDice(!onDice);
                 setIsDice(true);
-                currentPoint.current = currentPoint.current + dice;
+                currentPoint.current = currentPoint.current + dice + 16;
                 // console.log(`charactor.current`, charactor);
                 // const pictureCha = Object.values(charactor);
-                const pictureCha = Object.values(dataMap.layers.charater);
+                // const pictureCha = Object.values(dataMap.layers.charater);
 
                 const newCha = {
                     [`${a.split('-')[0]}-${a.split('-')[1] - 1}`]: pictureCha[0],
@@ -252,7 +256,7 @@ function MapComponent(props) {
             } else {
                 const a = map[(_.size(map) - 1)];
                 // const pictureCha = Object.values(charactor);
-                const pictureCha = Object.values(dataMap.layers.charater);
+                // const pictureCha = Object.values(dataMap.layers.charater);
 
                 setOnDice(!onDice);
                 setIsDice(true);

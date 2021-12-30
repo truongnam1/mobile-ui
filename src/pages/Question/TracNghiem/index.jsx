@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import CountTime from '../../../components/CountTime';
 import './tracnghiem.scss'
-function TracNghiem({ onCloseModal, questions, onBackToPrev }) {
+function TracNghiem({ onCloseModal, questions, onBackToPrev, countdown }) {
   const [isChoose, setIsChoose] = useState();
   const toast = useRef();
   const [pick, setPick] = useState(false);
@@ -78,7 +78,7 @@ function TracNghiem({ onCloseModal, questions, onBackToPrev }) {
      
         <div className="count-time">
         <i class="bi bi-alarm-fill"></i>
-          <CountTime firstValue={1} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime} />
+          <CountTime firstValue={countdown} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime} />
            
         </div>
 

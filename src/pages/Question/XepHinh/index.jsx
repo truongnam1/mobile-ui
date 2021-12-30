@@ -12,7 +12,7 @@ import { CacheImageContext } from '../../../Provider/CacheImageContext';
 
     
 
-function XepHinh({ onCloseModal, questions, onBackToPrev }) {
+function XepHinh({ onCloseModal, questions, onBackToPrev,countdown }) {
     const [urlImage, setUrlImage] = useState(false);
     const [isDone, setIsDone] = useState(false);
     const dataImagesCache = useContext(CacheImageContext);
@@ -60,7 +60,7 @@ function XepHinh({ onCloseModal, questions, onBackToPrev }) {
 
                 <div className="count-time" >
                     <i class="bi bi-alarm-fill"></i>
-                    <CountTime firstValue={30} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime}/>
+                    <CountTime firstValue={countdown} onClearTime={onCloseModal} onBackToPrev={onBackToPrev} onChangeStatusTime={stopTime}/>
 
                 </div>
                  {isDone && <AnimationText text={"Hoàn thành"} top={'30%'} left={'38%'} size={'80px'}/>} 
