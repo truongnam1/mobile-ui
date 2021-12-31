@@ -1,34 +1,23 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './dice.css'
 function Dice({status, randomAngle, isDice}) {
-    const cube = useRef();
+    const [numberDice, setNumberDice] = useState('');
     const handleDice = (randomAngle) => {
-		// const angleArray = [[0,0,0],[-310,-362,-38],[-400,-320,-2],[135,-217,-88],[-224,-317,5],[-47,-219,-81],[-133,-360,-53]];
-		// //this array of degree that show the deffrent number 1 2 3 4 5 6 on cube ie
-		// 	/*ANIMATION */
-		// 	cube.current.style.animation = 'animate 1.4s linear';
-		// 	cube.current.style.transform = 'rotateX('+angleArray[randomAngle][0]+'deg) rotateY('+angleArray[randomAngle][1]+'deg) rotateZ('+angleArray[randomAngle][2]+'deg)';
-		// 	cube.current.style.transition = '1s linear'
-
-		// 	cube.current.addEventListener('animationend',function(e){
-		// 		cube.current.style.animation = '';
-		// 	});
-
-
-            let elDiceOne = document.getElementById('dice1');
-
-            
             const dice = setTimeout( () => {
-              
-                for (let i = 1; i <= 6; i++) {
-                    elDiceOne.classList.remove('show-' + i);
-                    if (randomAngle === i) {
-                    elDiceOne.classList.add('show-' + i);
-                    }
-                }
+                        if(randomAngle == 1) {
+                            setNumberDice('show-' + 1);
+                        } else if(randomAngle == 2) {
+                           setNumberDice('show-' + 6);
+                        } else if(randomAngle == 3) {
+                           setNumberDice('show-' + 4);
+                        } else if (randomAngle == 4) {
+                           setNumberDice('show-' + 5);
+                        } else if(randomAngle == 5) {
+                           setNumberDice('show-' + 2);
+                        } else  setNumberDice('show-' + 3);
                 clearTimeout(dice);
             }, 1000);
-
+            // ${randomAngle == 1 ? 'show-1' : randomAngle == 2 ? 'show-6' : randomAngle == 3 ? 'show-4' : randomAngle == 4 ? 'show-5' : randomAngle == 5 ? 'show-2' : randomAngle == 6 ? 'show-3' : ''}
     }
     useEffect(() => {
         if(isDice) {
@@ -39,7 +28,7 @@ function Dice({status, randomAngle, isDice}) {
     return (
         <div className="game" style={{zIndex: 20000, position: 'fixed', left: '38%'}}>
             <div className="container">
-            <div id='dice1' className="dice dice-one">
+            <div id='dice1' className={`dice dice-one ${numberDice}`}>
                 <div id="dice-one-side-one" className='side one'>
                 <div className="dot one-1"></div>
                 </div>

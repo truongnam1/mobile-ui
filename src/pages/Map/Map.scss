@@ -48,7 +48,7 @@
   border: 1px solid #e5d7d7;
   padding: 6px 8px;
 }
-.roll-button button {
+.roll-button .button_dice {
   position: relative;
   top: 80px;
   left: 10px;
@@ -63,8 +63,8 @@
   transition: 0.3s;
 }
 
-.roll-button button:hover,
-button:active {
+.roll-button .button_dice:hover,
+.button_dice:active {
   outline: none;
   background: #50514f;
   cursor: pointer;
