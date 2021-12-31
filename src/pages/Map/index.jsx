@@ -559,24 +559,11 @@ function MapComponent(props) {
                             <TotalTime />
                              <div id='roll' className='roll-button'  hidden={!allowToDice.current} onClick={handleMove}><button >Xúc xắc</button></div>
                             <div style={{ position: 'absolute', right: '20px', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
-                            {/* <canvas id='canvas1' style={{ width: '100%' , height: '100%', position: "absolute" }} width={currentMap?.width * currentMap?.mapWidth / 10} height={currentMap?.height * currentMap?.mapHeight / 10}></canvas> */}
                             <div id="canvasesdiv" style={{
                                 width: '100%', minHeight: '100%',
                                 position: "relative"
 
                             }}>
-                                {/* <canvas
-                                // style={{
-                                //     width: '100%', minHeight: '100%',
-                                //     position :"absolute"
-                                // }}
-                                className='layer-map'
-                                ref={canvasRef} width={currentMap?.width * currentMap?.mapWidth / 10}
-                                height={currentMap?.height * currentMap?.mapHeight / 10}
-                            >
-                            </canvas> */}
-
-
                                 <canvas
                                     ref={(ref) => {
 
@@ -595,9 +582,6 @@ function MapComponent(props) {
                                         refLayers.current['item-base'] = ref;
                                     }}
                                     className='layer-map layer--item-base'
-                                    // className={clsx('layer-map', 'layer--item-base', 'animate__animated', {
-                                    //     'animate__fadeIn': dataMap.status === 'INIT_MAP' && !isLoading
-                                    // })}
                                     width={widthCanvas}
                                     height={heightCanvas}
                                 >
@@ -618,11 +602,6 @@ function MapComponent(props) {
                                         refLayers.current['item-road'] = ref;
                                     }}
                                     className='layer-map layer--item-road'
-
-                                    // className={clsx('layer-map', 'layer--item-road', 'animate__animated', {
-                                    //     'animate__fadeIn': dataMap.status === 'INIT_MAP' && !isLoading
-                                    // })}
-
                                     width={widthCanvas}
                                     height={heightCanvas}
                                 >
@@ -648,11 +627,7 @@ function MapComponent(props) {
 
                         </>
                     }
-
-                    {/* <img ref={imageE} hidden/> */}
-
                     {showQuestion && PopupQuestion()}
-                    {/* {typeModal && ModalIntroductionMap()} */}
                     {typeModal && <GuideMap {...{ itemModal: itemModal.current, srcImage, setTypeModal }} />
                     }
 
