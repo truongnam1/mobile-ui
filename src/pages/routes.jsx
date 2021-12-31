@@ -6,6 +6,7 @@ import MapComponent from './Map/index'
 import { Start } from "./Start";
 import Lose from "./lose";
 import Test from "./Test";
+import { Loading } from "../components/Loading";
 
 export default [
     {
@@ -43,6 +44,10 @@ export default [
     },  {
         path : '/test',
         element : <Test/>,
+        name : 'lose'
+    }, {
+        path : '/loading',
+        element : <Loading/>,
         name : 'lose'
     },
 ]

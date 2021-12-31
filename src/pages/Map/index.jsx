@@ -15,6 +15,8 @@ import { CacheImageProvider } from '../../Provider/CacheImageContext';
 import TotalTime from '../../components/CountTime/totalTime';
 import Canvas from '../../components/Canvas';
 import GuideMap from './GuideMap';
+import { Loading } from '../../components/Loading';
+import clsx from 'clsx';
 function MapComponent(props) {
     const imageE = useRef();
     const canvasRef = useRef();
@@ -335,6 +337,7 @@ function MapComponent(props) {
         fetch('https://api.npoint.io/6a4c897196b39197353e')
             .then(jsonData => jsonData.json())
             .then(data => {
+
                 setCodebeauty(data);
                 setArrImage(Object.values(data?.tileSets).map(item => {
                     return item?.src;
@@ -344,21 +347,23 @@ function MapComponent(props) {
                     console.log(images);
                     cacheImageXepHinh.current = images;
                 })
+                setTimeout(() => {
 
-                setCurMap(data?.maps)
-                eventOfRoad.current = data?.define_item_map;
-                listQuestion.current = data?.questions;
+                    setCurMap(data?.maps)
+                    eventOfRoad.current = data?.define_item_map;
+                    listQuestion.current = data?.questions;
 
-                sessionStorage.setItem('arrIndexQuestion', `[${Object.keys(listQuestion.current).toString()}]`);
+                    sessionStorage.setItem('arrIndexQuestion', `[${Object.keys(listQuestion.current).toString()}]`);
 
-                setWrong(() => {
-                    return {
-                        'maxWrong': data.max_wrong >= 1 ? data.max_wrong : 2,
-                        'quantityWrongCur': 0
-                    }
-                })
+                    setWrong(() => {
+                        return {
+                            'maxWrong': data.max_wrong >= 1 ? data.max_wrong : 2,
+                            'quantityWrongCur': 0
+                        }
+                    })
 
-                setIsLoading(false);
+                    setIsLoading(false);
+                }, 3000);
             }).catch(err => {
                 console.log(err);
             })
@@ -544,32 +549,34 @@ function MapComponent(props) {
     }
 
     return (
-        <Base body={
-            <>
-                {isDice && <Dice status={onDice} randomAngle={randomDice.current} isDice={isDice} />}
-                {showText && handleShowText(showText)}
-                {!_.isEmpty(map) &&
-                    <>
-                        <TotalTime />
-                        <button
-                            type="button" className="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left" title="Tung xúc sắc"
-                            style={{ background: 'transparent', position: 'fixed', zIndex: 2000, bottom: '20%', right: '31%', opacity: 0.8, border: 'none', outline: 'none    ' }}
-                            hidden={!allowToDice.current}
-                        >
-                            <img src='https://i.ibb.co/m4pX7dW/unnamed.png'
-                                style={{ height: '25px', width: '25px' }}
-                                onClick={handleMove}
+        <Base
+            headerBody={isLoading && <Loading></Loading>}
+            body={
+                <>
+                    {isDice && <Dice status={onDice} randomAngle={randomDice.current} isDice={isDice} />}
+                    {showText && handleShowText(showText)}
+                    {!_.isEmpty(map) &&
+                        <>
+                            <TotalTime />
+                            <button
+                                type="button" className="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left" title="Tung xúc sắc"
+                                style={{ background: 'transparent', position: 'fixed', zIndex: 2000, bottom: '20%', right: '31%', opacity: 0.8, border: 'none', outline: 'none    ' }}
+                                hidden={!allowToDice.current}
+                            >
+                                <img src='https://i.ibb.co/m4pX7dW/unnamed.png'
+                                    style={{ height: '25px', width: '25px' }}
+                                    onClick={handleMove}
 
-                            />
-                        </button>
-                        <div style={{ position: 'absolute', right: '20px', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
-                        {/* <canvas id='canvas1' style={{ width: '100%' , height: '100%', position: "absolute" }} width={currentMap?.width * currentMap?.mapWidth / 10} height={currentMap?.height * currentMap?.mapHeight / 10}></canvas> */}
-                        <div id="canvasesdiv" style={{
-                            width: '100%', minHeight: '100%',
-                            position: "relative"
+                                />
+                            </button>
+                            <div style={{ position: 'absolute', right: '20px', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
+                            {/* <canvas id='canvas1' style={{ width: '100%' , height: '100%', position: "absolute" }} width={currentMap?.width * currentMap?.mapWidth / 10} height={currentMap?.height * currentMap?.mapHeight / 10}></canvas> */}
+                            <div id="canvasesdiv" style={{
+                                width: '100%', minHeight: '100%',
+                                position: "relative"
 
-                        }}>
-                            {/* <canvas
+                            }}>
+                                {/* <canvas
                                 // style={{
                                 //     width: '100%', minHeight: '100%',
                                 //     position :"absolute"
@@ -581,78 +588,90 @@ function MapComponent(props) {
                             </canvas> */}
 
 
-                            <canvas
-                                ref={(ref) => {
+                                <canvas
+                                    ref={(ref) => {
 
-                                    refLayers.current['base'] = ref;
-                                }}
-                                className='layer-map layer-base'
-                                width={widthCanvas}
-                                height={heightCanvas}
-                            >
-                            </canvas>
-                            <canvas
-                                ref={(ref) => {
-
-                                    refLayers.current['item-base'] = ref;
-                                }}
-                                className='layer-map layer--item-base'
-                                width={widthCanvas}
-                                height={heightCanvas}
-                            >
-                            </canvas>
-                            <canvas
-                                ref={(ref) => {
-
-                                    refLayers.current['road'] = ref;
-                                }}
-                                className='layer-map layer--road'
-                                width={widthCanvas}
-                                height={heightCanvas}
-                            >
-                            </canvas>
-                            <canvas
-                                ref={(ref) => {
-
-                                    refLayers.current['item-road'] = ref;
-                                }}
-                                className='layer-map layer--item-road'
-                                width={widthCanvas}
-                                height={heightCanvas}
-                            >
-                            </canvas>
-                            <canvas
-                                ref={(ref) => {
-
-                                    refLayers.current['charater'] = ref;
-                                }}
-                                className='layer-map layer--item-charater'
-                                width={widthCanvas}
-                                height={heightCanvas}
-                            >
-                            </canvas>
-                            <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}
-
-                                width={widthCanvas}
-                                height={heightCanvas}
-                            />
-                        </div>
+                                        refLayers.current['base'] = ref;
+                                    }}
+                                    className='layer-map layer-base'
 
 
+                                    width={widthCanvas}
+                                    height={heightCanvas}
+                                >
+                                </canvas>
+                                <canvas
+                                    ref={(ref) => {
 
-                    </>
-                }
+                                        refLayers.current['item-base'] = ref;
+                                    }}
+                                    className='layer-map layer--item-base'
+                                    // className={clsx('layer-map', 'layer--item-base', 'animate__animated', {
+                                    //     'animate__fadeIn': dataMap.status === 'INIT_MAP' && !isLoading
+                                    // })}
+                                    width={widthCanvas}
+                                    height={heightCanvas}
+                                >
+                                </canvas>
+                                <canvas
+                                    ref={(ref) => {
 
-                {/* <img ref={imageE} hidden/> */}
+                                        refLayers.current['road'] = ref;
+                                    }}
+                                    className='layer-map layer--road'
+                                    width={widthCanvas}
+                                    height={heightCanvas}
+                                >
+                                </canvas>
+                                <canvas
+                                    ref={(ref) => {
 
-                {showQuestion && PopupQuestion()}
-                {/* {typeModal && ModalIntroductionMap()} */}
-                {typeModal && <GuideMap {...{ itemModal: itemModal.current, srcImage, setTypeModal }} />
-                }
+                                        refLayers.current['item-road'] = ref;
+                                    }}
+                                    className='layer-map layer--item-road'
 
-            </>
+                                    // className={clsx('layer-map', 'layer--item-road', 'animate__animated', {
+                                    //     'animate__fadeIn': dataMap.status === 'INIT_MAP' && !isLoading
+                                    // })}
 
-        } isLoading={isLoading} text={"Đang tải bản đồ"} onSetTypeModal={handleShowModalIntroduction} />
+                                    width={widthCanvas}
+                                    height={heightCanvas}
+                                >
+                                </canvas>
+                                <canvas
+                                    ref={(ref) => {
+
+                                        refLayers.current['charater'] = ref;
+                                    }}
+                                    className='layer-map layer--item-charater'
+                                    width={widthCanvas}
+                                    height={heightCanvas}
+                                >
+                                </canvas>
+                                <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}
+
+                                    width={widthCanvas}
+                                    height={heightCanvas}
+                                />
+                            </div>
+
+
+
+                        </>
+                    }
+
+                    {/* <img ref={imageE} hidden/> */}
+
+                    {showQuestion && PopupQuestion()}
+                    {/* {typeModal && ModalIntroductionMap()} */}
+                    {typeModal && <GuideMap {...{ itemModal: itemModal.current, srcImage, setTypeModal }} />
+                    }
+
+                </>
+
+            }
+            // isLoading={isLoading} 
+            text={"Đang tải bản đồ"} onSetTypeModal={handleShowModalIntroduction} />
 
 
     );

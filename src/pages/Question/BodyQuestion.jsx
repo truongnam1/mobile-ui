@@ -35,7 +35,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev }) {
         const configCD = {
             "trac_nghiem": 60,
             "xep_hinh": 60,
-            "scan": 20,
+            "scan": 60,
         }
 
         const configQuestion = {
