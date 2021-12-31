@@ -9,7 +9,7 @@ function BodyStart(props) {
         <>
             <div className={clsx('row')}>
                 <div className={clsx(styleStart['image-start'])}>
-                    <img src="../assets/image/start.png" alt="" />
+                    <img src={process.env.PUBLIC_URL + "/assets/images/start.png"} alt="" />
                 </div>
             </div>
             <div className={clsx(styleBase['center-flex'], 'row', 'mt-2')}>

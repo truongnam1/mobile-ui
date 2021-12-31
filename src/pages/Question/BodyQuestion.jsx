@@ -22,7 +22,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev }) {
     // sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
     // console.log('set lai index');
 
-    const [typeQuestion, setTypeQuestion] = useState(questions[2]);
+    const [typeQuestion, setTypeQuestion] = useState(questions[8]);
 
     const [refElMain] = useGlobalState("elMain");
     useEffect(() => {
@@ -35,7 +35,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev }) {
         const configCD = {
             "trac_nghiem": 60,
             "xep_hinh": 60,
-            "scan": 20,
+            "scan": 60,
         }
 
         const configQuestion = {
