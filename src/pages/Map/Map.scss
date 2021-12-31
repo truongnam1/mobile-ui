@@ -34,6 +34,9 @@
 .modal_map_intro {
     position: fixed;
     z-index: 2001;
+    background: #b8b8ac;
+    height: 100%;
+    color: white;
 }
 
 .text_modal_map {
@@ -43,6 +46,7 @@
 
 .border_map_modal {
     border: 1px solid #e5d7d7;
+    padding: 6px 8px;
 }
 
 .roll-button button {
@@ -72,5 +76,5 @@ button:active {
     position: fixed;
     z-index: 2;
     bottom: 20%;
-    right: 20%;
+    right: 32.5%;
 }

@@ -1,5 +1,5 @@
 import Canvas from "../../components/Canvas";
-
+import './Map.scss'
 
 function GuideMap({ itemModal, srcImage, setTypeModal, ...props }) {
     console.log(itemModal);
@@ -14,8 +14,8 @@ function GuideMap({ itemModal, srcImage, setTypeModal, ...props }) {
                 </div>
                 <div className="col-sm-12">
                     <div className="row">
-                        <div className="col-sm-3" style={{ margin: 'auto', fontSize: '18px !important', color: 'orangered' }}>
-                            <span className='text_modal_map'>
+                        <div className="col-sm-3" style={{ margin: 'auto', fontSize: '18px !important', color: '#c66666' }}>
+                            <span className='text_modal_map' style={{  fontSize: '20px'}}>
                                 Mô tả
                             </span>
                         </div>
@@ -29,7 +29,7 @@ function GuideMap({ itemModal, srcImage, setTypeModal, ...props }) {
                     </div>
                 </div>
 
-                <div className="col-sm-12 border_map_modal animate__zoomInDown animate__animated">
+                <div className="col-sm-12 border_map_modal animate__zoomInDown animate__animated" style={{marginTop: '20px'}}>
                     <div className="row" style={{ alignItems: 'center' }}>
                         <div className="col-sm-1">
                             <img
