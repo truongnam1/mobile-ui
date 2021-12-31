@@ -22,12 +22,12 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev }) {
     // sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
     // console.log('set lai index');
 
-    const [typeQuestion, setTypeQuestion] = useState(questions[9]);
+    const [typeQuestion, setTypeQuestion] = useState(questions[0]);
 
     const [refElMain] = useGlobalState("elMain");
     useEffect(() => {
         console.log('scroll top');
-        refElMain.current.scrollTop = 1;
+        // refElMain.current.scrollTop = 1;
     }, [])
 
 

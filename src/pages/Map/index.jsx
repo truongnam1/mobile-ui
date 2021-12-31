@@ -65,16 +65,15 @@ function MapComponent(props) {
 
 
 
-            // for (const item of codebeautty.define_item_map) {
+            for (const item of codebeautty.define_item_map) {
 
-            //     const temp = Object.entries(codebeautty.tileSets[item.tilesetIdx].tileData).filter((tile) => {
-            //         // console.log(tile[1].tileSymbol, tile[1].tileSymbol);
-            //         return item.tileSymbol == tile[1].tileSymbol;
-            //     })
-            //     const newItem = {...item, td: (temp[0])[0]};
-            //     itemModal.current = [...itemModal.current || [], newItem ];
-            // //    console.log("temp", (temp[0])[0]);    
-            // }
+                const temp = Object.entries(codebeautty.tileSets[item.tilesetIdx].tileData).filter((tile) => {
+                    // console.log(tile[1].tileSymbol, tile[1].tileSymbol);
+                    return item.tileSymbol == tile[1].tileSymbol;
+                })
+                const newItem = {...item, td: (temp[0])[0]};
+                itemModal.current = [...itemModal.current || [], newItem ];
+            }
 
             console.log(" itemModal.current", itemModal.current);
             return result;
@@ -558,17 +557,7 @@ function MapComponent(props) {
                     {!_.isEmpty(map) &&
                         <>
                             <TotalTime />
-                            <button
-                                type="button" className="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="left" title="Tung xúc sắc"
-                                style={{ background: 'transparent', position: 'fixed', zIndex: 2000, bottom: '20%', right: '31%', opacity: 0.8, border: 'none', outline: 'none    ' }}
-                                hidden={!allowToDice.current}
-                            >
-                                <img src='https://i.ibb.co/m4pX7dW/unnamed.png'
-                                    style={{ height: '25px', width: '25px' }}
-                                    onClick={handleMove}
-
-                                />
-                            </button>
+                             <div id='roll' className='roll-button'  hidden={!allowToDice.current} onClick={handleMove}><button >Xúc xắc</button></div>
                             <div style={{ position: 'absolute', right: '20px', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
                             {/* <canvas id='canvas1' style={{ width: '100%' , height: '100%', position: "absolute" }} width={currentMap?.width * currentMap?.mapWidth / 10} height={currentMap?.height * currentMap?.mapHeight / 10}></canvas> */}
                             <div id="canvasesdiv" style={{
