@@ -6,8 +6,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import './robot.css'
 
 
-export const RobotModel = ({ canvasRef, currentPoint, map }) => {
-    console.log(`currentPoint robot`, currentPoint);
+export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving }) => {
     const [posArr, setPosArr] = useState([...map[currentPoint].split('-')])
     const [oldPoint, setOldPoint] = useState(currentPoint);
 
@@ -40,6 +39,9 @@ export const RobotModel = ({ canvasRef, currentPoint, map }) => {
         promise
             .then(() => {
                 setAnimationCrt(true);
+                setIsCrtMoving(true);
+                console.log(`currentPoint robot`, currentPoint);
+
                 console.warn('animation crt start');
 
                 const directionArr = [];
@@ -84,6 +86,7 @@ export const RobotModel = ({ canvasRef, currentPoint, map }) => {
                         await doIt();
                     }
                     setAnimationCrt(false);
+                    setIsCrtMoving(false);
                     console.warn('animation crt end');
                 }
                 moveLoop();

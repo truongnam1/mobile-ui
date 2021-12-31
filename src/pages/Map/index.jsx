@@ -52,6 +52,10 @@ function MapComponent(props) {
     const [dataMap, actionDataMap] = useReducer(controlDataMap, {})
     const cacheImageXepHinh = useRef();
     const itemModal = useRef([]);
+
+    const [isCrtMoving, setIsCrtMoving] = useState(false);
+    const arrStepPoint = useRef([]);
+
     const filterEventOfRoad = useMemo(() => {
         if (!_.isEmpty(map) && !_.isEmpty(dataMap)) {
             const result = map.reduce((object, item) => {
@@ -71,17 +75,17 @@ function MapComponent(props) {
                     // console.log(tile[1].tileSymbol, tile[1].tileSymbol);
                     return item.tileSymbol == tile[1].tileSymbol;
                 })
-                const newItem = {...item, td: (temp[0])[0]};
-                itemModal.current = [...itemModal.current || [], newItem ];
+                const newItem = { ...item, td: (temp[0])[0] };
+                itemModal.current = [...itemModal.current || [], newItem];
             }
 
             console.log(" itemModal.current", itemModal.current);
             return result;
 
         }
-    }, [map, dataMap]);
+    }, [map]);
 
-    console.log(filterEventOfRoad);
+    // console.log(filterEventOfRoad);
     function controlDataMap(oldState, action) {
         switch (action.type) {
             case 'INIT_MAP':
@@ -92,9 +96,7 @@ function MapComponent(props) {
                     layersMap[layer.name] = layer.tiles;
                 }
                 console.log('Layers', layers);
-                if (!isEmpty(layersMap)) {
-                    setToaDo(layersMap);
-                }
+
                 loadImage();
                 console.log('khoi tao map');
 
@@ -154,6 +156,8 @@ function MapComponent(props) {
     const handleValidateMove = (time, dice) => {
         if (validateStep(map[currentPoint.current]) !== false) {
             const step = validateStep(map[currentPoint.current]);
+
+            arrStepPoint.current = [...arrStepPoint.current, currentPoint.current + step];
             currentPoint.current = currentPoint.current + step;
 
             // const pictureCha = Object.values(charactor);
@@ -215,14 +219,18 @@ function MapComponent(props) {
             randomDice.current = dice;
             const pictureCha = Object.values(dataMap.layers.charater);
 
-            if (currentPoint.current + dice < (_.size(map) - 1)) {
+            const newPoint = currentPoint.current + dice;
+
+            if (newPoint < (_.size(map) - 1)) {
                 previousStep.current = currentPoint.current;
+                arrStepPoint.current = [...arrStepPoint.current, newPoint];
+
                 // const a = map[(currentPoint.current + dice) > (_.size(map) - 1) ? (_.size(map) - 1) : currentPoint.current + dice + 16];
-                const a = map[currentPoint.current + dice];
-                
+                const a = map[newPoint];
+
                 setOnDice(!onDice);
                 setIsDice(true);
-                currentPoint.current = currentPoint.current + dice;
+                currentPoint.current = newPoint;
                 // console.log(`charactor.current`, charactor);
                 // const pictureCha = Object.values(charactor);
                 // const pictureCha = Object.values(dataMap.layers.charater);
@@ -289,6 +297,7 @@ function MapComponent(props) {
         } catch (err) {
             console.log(err);
         }
+        console.log(`arrStepPoint`, arrStepPoint);
 
 
     }
@@ -346,20 +355,20 @@ function MapComponent(props) {
                     console.log(images);
                     cacheImageXepHinh.current = images;
                 })
+                setCurMap(data?.maps)
+                eventOfRoad.current = data?.define_item_map;
+                listQuestion.current = data?.questions;
+
+                sessionStorage.setItem('arrIndexQuestion', `[${Object.keys(listQuestion.current).toString()}]`);
+
+                setWrong(() => {
+                    return {
+                        'maxWrong': data.max_wrong >= 1 ? data.max_wrong : 2,
+                        'quantityWrongCur': 0
+                    }
+                })
                 setTimeout(() => {
 
-                    setCurMap(data?.maps)
-                    eventOfRoad.current = data?.define_item_map;
-                    listQuestion.current = data?.questions;
-
-                    sessionStorage.setItem('arrIndexQuestion', `[${Object.keys(listQuestion.current).toString()}]`);
-
-                    setWrong(() => {
-                        return {
-                            'maxWrong': data.max_wrong >= 1 ? data.max_wrong : 2,
-                            'quantityWrongCur': 0
-                        }
-                    })
 
                     setIsLoading(false);
                 }, 3000);
@@ -368,10 +377,6 @@ function MapComponent(props) {
             })
     }, [])
 
-    function setToaDo(data) {
-        // setCharactor(data['charater'])
-        // itemRoad.current = data['road'];
-    }
     function setCurMap(maps) {
         const keyMap = Object.keys(maps);
         const randomMap = maps[keyMap[Math.floor(Math.random() * (_.size(keyMap)))]];
@@ -415,7 +420,7 @@ function MapComponent(props) {
             draw2(srcImage);
         }
 
-    }, [dataMap])
+    }, [dataMap, srcImage])
 
     //sau khi ảnh src load xong
     useEffect(() => {
@@ -436,7 +441,7 @@ function MapComponent(props) {
             setMap(dataRoad);
 
         }
-    }, [dataMap]);
+    }, [isEmpty(dataMap)]);
 
     function drawLayer2(layerCanvas, nameLayer, img) {
         console.log('ve ' + nameLayer);
@@ -617,7 +622,7 @@ function MapComponent(props) {
                                 >
                                 </canvas>
                                 <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}
-
+                                    setIsCrtMoving={setIsCrtMoving}
                                     width={widthCanvas}
                                     height={heightCanvas}
                                 />
@@ -627,7 +632,11 @@ function MapComponent(props) {
 
                         </>
                     }
-                    {showQuestion && PopupQuestion()}
+
+                    {/* <img ref={imageE} hidden/> */}
+
+                    {!isCrtMoving && showQuestion && PopupQuestion()}
+                    {/* {typeModal && ModalIntroductionMap()} */}
                     {typeModal && <GuideMap {...{ itemModal: itemModal.current, srcImage, setTypeModal }} />
                     }
 
