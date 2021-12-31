@@ -1,74 +1,76 @@
 .layer-map {
-  width: 100%;
-  min-height: 100%;
-  position: absolute;
+    width: 100%;
+    min-height: 100%;
+    position: absolute;
 }
 
 .layer--base {
-  // z-index: 1;
+    // z-index: 1;
 }
 
 .layer--item-base {
-  // z-index: 2;
+    // z-index: 2;
 }
 
 .layer--road {
-  // z-index: 3;
+    // z-index: 3;
 }
 
 .layer--item-road {
-  // z-index: 4;
+    // z-index: 4;
 }
 
 .layer--character {
-  // z-index: 5;
+    // z-index: 5;
 }
 
 //modal intro map
 @media (min-width: 575.98px) {
-  .modal_map_intro {
-    width: 575.98px !important;
-  }
+    .modal_map_intro {
+        width: 575.98px !important;
+    }
 }
 
 .modal_map_intro {
-  position: fixed;
-  z-index: 2001;
+    position: fixed;
+    z-index: 2001;
 }
 
 .text_modal_map {
-  font-size: 14px;
-  font-family: cursive;
+    font-size: 14px;
+    font-family: cursive;
 }
 
 .border_map_modal {
-  border: 1px solid #e5d7d7;
+    border: 1px solid #e5d7d7;
 }
+
 .roll-button button {
-  position: relative;
-  top: 80px;
-  left: 10px;
-  padding: 4px 4px;
-  color: #fff;
-  background-color: #f4d35e;
-  border: none;
-  font-size: 13px;
-  border-radius: 20px;
-  box-shadow: 1px 3px #50514f;
-  outline: none;
-  transition: 0.3s;
+    position: relative;
+    top: 80px;
+    left: 10px;
+    padding: 4px 4px;
+    color: #fff;
+    background-color: #f4d35e;
+    border: none;
+    font-size: 13px;
+    border-radius: 20px;
+    box-shadow: 1px 3px #50514f;
+    outline: none;
+    transition: 0.3s;
 }
 
 .roll-button button:hover,
 button:active {
-  outline: none;
-  background: #50514f;
-  cursor: pointer;
-  transform: translateY(15px);
+    outline: none;
+    background: #50514f;
+    cursor: pointer;
+    // transform: translateY(15px);
 }
+
 #roll {
-  position: fixed;
-  z-index: 2;
-  bottom: 20%;
-  right: 20%;
+    position: fixed;
+    z-index: 2;
+    bottom: 20%;
+    right: 20%;
 }

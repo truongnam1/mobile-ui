@@ -16,9 +16,9 @@ function Scan({onCloseModal,questions, onBackToPrev,countdown ,...props}) {
 
         </BodyScan>
         <div style={{position: 'absolute', top: 0, right: 0, color: 'white'}}>
-            <CountTime firstValue={1000} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
+            <CountTime firstValue={countdown} onClearTime={onCloseModal} onBackToPrev={onBackToPrev}/>
             <div className="popup-suggest_scan border" data-bs-toggle="modal" data-bs-target="#modalSuggest">
-                <i class="bi bi-question"></i>
+                <i className="bi bi-question"></i>
               </div>
         </div>
          
