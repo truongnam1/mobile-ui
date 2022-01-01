@@ -61,18 +61,13 @@ ScanQr.prototype._displayCamera = function(cameraId) {
             },
             (decodedText, decodedResult) => {
                 // do something when code is read
-                console.log(`decodedText`, decodedText);
-                console.log(`decodedResult`, decodedResult);
+                // console.log(`decodedText`, decodedText);
+                // console.log(`decodedResult`, decodedResult);
+
                 this.callbackCorrect({ decodedText, tempTextRes });
                 tempTextRes = decodedText;
 
-                if (decodedText === '123456') {
 
-
-                    setTimeout(function() {
-                        // window.location.href = './done.html'     
-                    }, 2000);
-                }
 
             },
             (errorMessage) => {
@@ -108,21 +103,27 @@ ScanQr.prototype._checkIn = function() {
 
     })
 }
-ScanQr.prototype.question = function(answer, cbCorrect = {}) {
+ScanQr.prototype.question = function(answer, { cbCorrect = {}, cbWrong = {} }) {
     console.log('scan dap an queston');
+    let tempDate = new Date().getTime();
     this._start(() => {
         this.callbackCorrect = function(resQr) {
             if (resQr.tempTextRes != resQr.decodedText && answer === resQr.decodedText) {
                 // console.log('ok');
                 console.log('dap an chinh xac');
                 cbCorrect('right');
-            } else {
-                console.log('dap an ko chinh xac');
-                cbCorrect('wrong');
-            }
-        } 
+            } else if (answer !== resQr.decodedText) {
+                const timeWaiting = new Date().getTime() - tempDate;
 
-        
+                if (timeWaiting > 5 * 1000) {
+                    cbWrong();
+                    console.log(tempDate);
+                    tempDate = new Date().getTime();
+                }
+            }
+        }
+
+
         if (this.arrDeviceCamera) {
             this._displayCamera(this.arrDeviceCamera[0].id);
         }
