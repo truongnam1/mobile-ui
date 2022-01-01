@@ -18,22 +18,44 @@ function BodyScan({ ...props }) {
         console.log('khoi tao');
         return new ScanQr();
     }, []);
-
+    const preventSpamToast = useRef(0);
     useEffect(() => {
         // scanQr._start();
         return () => scanQr._stopCamera();
     }, []);
-
-    useEffect(() => {
-        if (questions) {
-
-            scanQr.question(questions.correct_answer, () => {
-                console.log('callback question');
-                setShowText(true);
-                setTimeout(() => {
+    console.log(typeof preventSpamToast);
+    const valueOfToast = (value) => {
+        console.log("value", value);
+        if(value == 'wrong') {
+            console.log("preventSpamToast", preventSpamToast.current);
+            if(preventSpamToast.current == 0) {
+                setShowText(value);
+                preventSpamToast.current = 1;  
+                const timeOut = setTimeout(() => {
+                    preventSpamToast.current = 0;
                     setShowText(false);
-                    onClearTime();
+                    clearTimeout(timeOut);
                 }, 3000)
+            }
+            
+        } else {
+            setShowText(value);
+            setTimeout(() => {
+                setShowText(false);
+                onClearTime();
+            }, 3000);
+        }
+       
+    }
+    useEffect(() => {
+        console.log("oi odi oi");
+        if (questions) {
+            console.log("preventSpamToast", preventSpamToast);
+            scanQr.question(questions.correct_answer, (value) => {
+                console.log('callback question');
+                
+               
+                return valueOfToast(value);
             });
         } else {
             console.log('wrong');
@@ -86,7 +108,10 @@ function BodyScan({ ...props }) {
                     </i>
                     {/* <i className={clsx('bi', 'bi-camera-fill',)}></i> */}
                     {/* {showText && <AnimationText text={"Chính xác"} size={'100px'} top={'30%'} left={'36%'} color={'green'}/>} */}
-                    {showText && <Toast text={"Hoàn toàn chính xác"} type={'suc'} top={'5%'} left={'46%'} time={2}/>}
+                    {showText == 'right' ? <Toast text={"Hoàn toàn chính xác"} type={'suc'} top={'5%'} left={'46%'} time={2}/>
+                        : showText == 'wrong' ? <Toast text={"Sai rồi"} type={'wrong'} top={'5%'} left={'46%'} time={2} /> : <></>
+                        
+                    }
                 </div>
                 {modalSuggest()}
             </div>

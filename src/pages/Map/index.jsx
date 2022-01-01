@@ -563,7 +563,7 @@ function MapComponent(props) {
                         <>
                             <TotalTime />
                              <div id='roll' className='roll-button'  hidden={!allowToDice.current} onClick={handleMove}><button className='button_dice'>Xúc xắc</button></div>
-                            <div style={{ position: 'absolute', right: '20px', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
+                            <div style={{ position: 'fixed', right: '32%', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
                             <div id="canvasesdiv" style={{
                                 width: '100%', minHeight: '100%',
                                 position: "relative"

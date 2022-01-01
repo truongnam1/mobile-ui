@@ -21,8 +21,9 @@ function Toast({ text, type, top, left, time }) {
 
     useEffect(() => {
         if (type == 'suc' && container.current) {
-            container.current.success(`Chúc mừng bạn đã tìm đúng địa điểm`);
-
+            container.current.success(text);
+        } else if (type == 'wrong' && container.current) {
+            container.current.error(text);
         }
     }, [type,container.current])
 

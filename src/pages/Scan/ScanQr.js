@@ -115,9 +115,14 @@ ScanQr.prototype.question = function(answer, cbCorrect = {}) {
             if (resQr.tempTextRes != resQr.decodedText && answer === resQr.decodedText) {
                 // console.log('ok');
                 console.log('dap an chinh xac');
-                cbCorrect();
+                cbCorrect('right');
+            } else {
+                console.log('dap an ko chinh xac');
+                cbCorrect('wrong');
             }
-        }
+        } 
+
+        
         if (this.arrDeviceCamera) {
             this._displayCamera(this.arrDeviceCamera[0].id);
         }
