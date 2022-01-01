@@ -50,6 +50,7 @@ function MapComponent(props) {
     const [bufferLayers, setBufferLayers] = useState({});
 
     const [dataMap, actionDataMap] = useReducer(controlDataMap, {})
+    const [dataCrtMove, actionDataCrtMove] = useReducer(controlDataCtrMove, {});
     const cacheImageXepHinh = useRef();
     const itemModal = useRef([]);
 
@@ -85,6 +86,48 @@ function MapComponent(props) {
         }
     }, [map]);
 
+    function controlDataCtrMove(oldState, action) {
+        // console.log(`action`, action);
+        // console.log(`oldState`, oldState);
+        switch (action.type) {
+            case 'INIT_DATA_CRT':
+
+                return { ...oldState, status: 'INIT_DATA_CRT', arrStep: [], nextPoint: 0, prePoint: 0 }
+            case 'ADD_STEP_MOVE':
+                return { ...oldState, status: 'ADD_STEP_MOVE', arrStep: [...oldState.arrStep, action.point] }
+            case 'FINISH_ADD_STEP':
+                return { ...oldState, status: action.type }
+
+            case 'NEXT_STEP':
+            case 'CRT_MOVING':
+                // console.group([action.type]);
+
+                // console.log(`dataStep`, oldState.arrStep);
+
+                const tempPrePoint = oldState.nextPoint !== null ? oldState.prePoint : oldState.nextPoint;
+
+                var nextPoint;
+                if (!_.isEmpty(oldState.arrStep)) {
+                    nextPoint = oldState.arrStep.shift();
+                }
+                else {
+                    console.log('mang rong');
+                    nextPoint = null;
+                }
+                // console.log(`nextPoint`, nextPoint);
+                // console.groupEnd();
+                return { ...oldState, nextPoint, prePoint: tempPrePoint, status: action.type }
+
+            case 'CRT_STOP_MOVING':
+                console.warn('crt stop');
+                return { ...oldState, status: action.type }
+
+            default:
+                throw new Error();
+
+        }
+    }
+
     // console.log(filterEventOfRoad);
     function controlDataMap(oldState, action) {
         switch (action.type) {
@@ -96,7 +139,6 @@ function MapComponent(props) {
                     layersMap[layer.name] = layer.tiles;
                 }
                 console.log('Layers', layers);
-
                 loadImage();
                 console.log('khoi tao map');
 
@@ -117,6 +159,9 @@ function MapComponent(props) {
                 break;
         }
     }
+
+
+
 
     //kiem tra xem co boom
     const validateStep = (toado) => {
@@ -158,7 +203,14 @@ function MapComponent(props) {
             const step = validateStep(map[currentPoint.current]);
 
             arrStepPoint.current = [...arrStepPoint.current, currentPoint.current + step];
+
+            actionDataCrtMove({
+                type: 'ADD_STEP_MOVE',
+                point: currentPoint.current + step,
+                hi: 'handleValidateMove'
+            });
             currentPoint.current = currentPoint.current + step;
+
 
             // const pictureCha = Object.values(charactor);
             const pictureCha = Object.values(dataMap.layers.charater);
@@ -206,24 +258,31 @@ function MapComponent(props) {
                     clearTimeout(timeShowQues);
                 }, 400)
             }
+            actionDataCrtMove({ type: 'CRT_MOVING' });
 
         }
     }
 
     const handleMove = () => {
+        console.warn('begin handleMove');
         try {
             allowToDice.current = false;
             const dice = Math.floor(Math.random() * 6) + 1;
             // Math.floor(Math.random() * 6) + 1;
-
+            // const dice = 2;
             randomDice.current = dice;
             const pictureCha = Object.values(dataMap.layers.charater);
-
+            console.warn('dice', dice);
             const newPoint = currentPoint.current + dice;
 
             if (newPoint < (_.size(map) - 1)) {
                 previousStep.current = currentPoint.current;
                 arrStepPoint.current = [...arrStepPoint.current, newPoint];
+                actionDataCrtMove({
+                    type: 'ADD_STEP_MOVE',
+                    point: newPoint,
+                    hi: 'handleMove'
+                });
 
                 // const a = map[(currentPoint.current + dice) > (_.size(map) - 1) ? (_.size(map) - 1) : currentPoint.current + dice + 16];
                 const a = map[newPoint];
@@ -246,17 +305,20 @@ function MapComponent(props) {
                 const timeOut = setTimeout(() => {
                     setShowText("Tiến")
                     const timeOut1 = setTimeout(() => {
+
                         actionDataMap({
                             type: "UPDATE_LAYER_CHARACTER",
                             newLayerCharacter: newCha
                         });
                         setShowText(false);
                         handleValidateMove(1000, true);
+
                         clearTimeout(timeOut1);
                     }, 1000)
 
 
                     setIsDice(false);
+
                     clearTimeout(timeOut);
                 }, 2000);
 
@@ -298,6 +360,8 @@ function MapComponent(props) {
             console.log(err);
         }
         console.log(`arrStepPoint`, arrStepPoint);
+        console.warn('end handleMove');
+
 
 
     }
@@ -311,6 +375,12 @@ function MapComponent(props) {
             setWrong((oldWrong) => ({ ...oldWrong, quantityWrongCur: oldWrong.quantityWrongCur + 1 }))
 
             const a = map[(previousStep.current) > (_.size(map) - 1) ? (_.size(map) - 1) : previousStep.current];
+            console.log('previousStep.current', previousStep.current);
+            actionDataCrtMove({
+                type: 'ADD_STEP_MOVE',
+                point: previousStep.current,
+                hi: 'backToPreviousStep'
+            });
             currentPoint.current = previousStep.current
             // const pictureCha = Object.values(charactor);
             const pictureCha = Object.values(dataMap.layers.charater);
@@ -321,6 +391,7 @@ function MapComponent(props) {
 
             }
 
+
             const timeOut = setTimeout(() => {
                 setShowText("Trừ 1 mạng")
                 const timeOut1 = setTimeout(() => {
@@ -328,6 +399,7 @@ function MapComponent(props) {
                         type: "UPDATE_LAYER_CHARACTER",
                         newLayerCharacter: newCha
                     });
+                    actionDataCrtMove({ type: 'CRT_MOVING' });
                     setShowText(false);
                     clearTimeout(timeOut1);
                 }, 1000)
@@ -346,6 +418,7 @@ function MapComponent(props) {
             .then(jsonData => jsonData.json())
             .then(data => {
 
+                actionDataCrtMove({ type: 'INIT_DATA_CRT' });
                 setCodebeauty(data);
                 setArrImage(Object.values(data?.tileSets).map(item => {
                     return item?.src;
@@ -562,7 +635,7 @@ function MapComponent(props) {
                     {!_.isEmpty(map) &&
                         <>
                             <TotalTime />
-                             <div id='roll' className='roll-button'  hidden={!allowToDice.current} onClick={handleMove}><button className='button_dice'>Xúc xắc</button></div>
+                            <div id='roll' className='roll-button' hidden={!allowToDice.current} onClick={handleMove}><button className='button_dice'>Xúc xắc</button></div>
                             <div style={{ position: 'fixed', right: '32%', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
                             <div id="canvasesdiv" style={{
                                 width: '100%', minHeight: '100%',
@@ -625,6 +698,7 @@ function MapComponent(props) {
                                     setIsCrtMoving={setIsCrtMoving}
                                     width={widthCanvas}
                                     height={heightCanvas}
+                                    {...{ dataCrtMove, actionDataCrtMove }}
                                 />
                             </div>
 
@@ -635,7 +709,7 @@ function MapComponent(props) {
 
                     {/* <img ref={imageE} hidden/> */}
 
-                    {!isCrtMoving && showQuestion && PopupQuestion()}
+                    {dataCrtMove.status === 'CRT_STOP_MOVING' && !isCrtMoving && showQuestion && PopupQuestion()}
                     {/* {typeModal && ModalIntroductionMap()} */}
                     {typeModal && <GuideMap {...{ itemModal: itemModal.current, srcImage, setTypeModal }} />
                     }
