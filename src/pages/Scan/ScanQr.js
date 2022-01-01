@@ -61,7 +61,7 @@ ScanQr.prototype._displayCamera = function(cameraId) {
             },
             (decodedText, decodedResult) => {
                 // do something when code is read
-                // console.log(`decodedText`, decodedText);
+                console.log(`decodedText`, decodedText);
                 // console.log(`decodedResult`, decodedResult);
 
                 this.callbackCorrect({ decodedText, tempTextRes });
@@ -89,13 +89,18 @@ ScanQr.prototype._checkIn = function(callBack = {}) {
     this._start(() => {
         this.callbackCorrect = function(resQr) {
 
-            console.log('getDataMuseum');
+            // console.log('getDataMuseum', Number.isInteger(parseInt(resQr.decodedText)));
             if (resQr.tempTextRes != resQr.decodedText) {
-                console.log('ok');
-                FetchData.dataMuseum(resQr.decodedText, (data) => {
-                    console.log(data);
-                    callBack(data)
-                });
+                console.log('ok', Number.isInteger(parseInt(resQr.decodedText)));
+                if (Number.isInteger(parseInt(resQr.decodedText))) {
+                    FetchData.dataMuseum(resQr.decodedText, (data) => {
+                        console.log(data);
+                        callBack(data)
+                    });
+
+                } else {
+                    callBack(false)
+                }
             }
         }
         if (this.arrDeviceCamera) {

@@ -10,10 +10,11 @@ import Toast from '../../components/Toast';
 import { useNavigate } from 'react-router-dom';
 function BodyScan({ ...props }) {
     const navigate = useNavigate();
-    let { questions, onClearTime,onBackToPrev } = props;
+    let { questions, onClearTime, onBackToPrev } = props;
 
     const [showText, setShowText] = useState(false);
     const [dataToast, setDataToast] = useState({});
+    const [showToastCheckIn, setShowToastCheckIn] = useState(false);
 
     const scanQr = useMemo(() => {
         console.log('khoi tao');
@@ -106,15 +107,28 @@ function BodyScan({ ...props }) {
         } else {
             scanQr._checkIn((data) => {
                 if (data) {
+                    setDataToast({ status: 'success', text: 'Check in địa điểm thành công' })
+                    setShowToastCheckIn(true);
                     const dataString = JSON.stringify(data);
                     // console.log(dataString);
                     sessionStorage.setItem('dataMap', dataString);
-                    navigate('/map')
+                    setTimeout(() => {
+                        setShowToastCheckIn(false);
+                        navigate('/map')
+                    }, 2000);
 
+                } else {
+                    setDataToast({ status: 'wrong', text: 'Địa điểm này không tồn tại' })
+                    setShowToastCheckIn(true);
+                    setTimeout(() => {
+                        setShowToastCheckIn(false);
+                    }, 2000);
                 }
             });
         }
     }, [])
+
+
 
 
     const modalSuggest = () => {
@@ -139,37 +153,40 @@ function BodyScan({ ...props }) {
 
 
     return (
-        <div className={clsx(styleScan['camera'])}>
-            <div className={clsx('row')}>
-                <div className={clsx('col', styleScan['view-camera'])} >
-                    <div className={clsx('w-100')} id="reader"></div>
+        <>
+            {showToastCheckIn ? <Toast {...{ dataToast }}></Toast> : <></>}
+            <div className={clsx(styleScan['camera'])}>
+                <div className={clsx('row')}>
+                    <div className={clsx('col', styleScan['view-camera'])} >
+                        <div className={clsx('w-100')} id="reader"></div>
+                    </div>
                 </div>
-            </div>
-            <div className={clsx('row', 'flex-grow-1', styleScan['control-camera'])} >
-                <div className={clsx('text-center', 'col-6', styleScan['item-control-camera'])} >
-                    <i className={clsx('bi', 'bi-brightness-high')} ></i>
-                </div>
-                <div
-                    className={clsx('text-center', 'col-6', styleScan['item-control-camera'], styleScan['switch-camera'])} >
-                    <i
-                        onClick={() => {
-                            scanQr._changeCamera();
-                        }}
-                        className={clsx('bi', 'bi-camera')}
-                    >
-                    </i>
-                    {/* <i className={clsx('bi', 'bi-camera-fill',)}></i> */}
-                    {/* {showText && <AnimationText text={"Chính xác"} size={'100px'} top={'30%'} left={'36%'} color={'green'}/>} */}
-                    {/* {showText == 'right' ? <Toast text={"Hoàn toàn chính xác"} type={'suc'} top={'5%'} left={'46%'} time={3} />
+                <div className={clsx('row', 'flex-grow-1', styleScan['control-camera'])} >
+                    <div className={clsx('text-center', 'col-6', styleScan['item-control-camera'])} >
+                        <i className={clsx('bi', 'bi-brightness-high')} ></i>
+                    </div>
+                    <div
+                        className={clsx('text-center', 'col-6', styleScan['item-control-camera'], styleScan['switch-camera'])} >
+                        <i
+                            onClick={() => {
+                                scanQr._changeCamera();
+                            }}
+                            className={clsx('bi', 'bi-camera')}
+                        >
+                        </i>
+                        {/* <i className={clsx('bi', 'bi-camera-fill',)}></i> */}
+                        {/* {showText && <AnimationText text={"Chính xác"} size={'100px'} top={'30%'} left={'36%'} color={'green'}/>} */}
+                        {/* {showText == 'right' ? <Toast text={"Hoàn toàn chính xác"} type={'suc'} top={'5%'} left={'46%'} time={3} />
                         : showText == 'wrong' ? <Toast text={"Sai rồi"} type={'wrong'} top={'5%'} left={'46%'} time={3} /> : <></>
 
                     } */}
 
-                    {showText ? <Toast {...{ dataToast }} /> : <></>}
+                        {showText ? <Toast {...{ dataToast }} /> : <></>}
+                    </div>
+                    {modalSuggest()}
                 </div>
-                {modalSuggest()}
             </div>
-        </div>
+        </>
     );
 }
 

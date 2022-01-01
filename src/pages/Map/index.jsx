@@ -527,9 +527,9 @@ function MapComponent(props) {
     // const loadImageMemo = useMemo(loadImage, [arrImage]);
 
     useEffect(() => {
-        if (!isEmpty(srcImage) && !isEmpty(dataMap)) {
-            draw2(srcImage);
-        }
+        // if (!isEmpty(srcImage) && !isEmpty(dataMap)) {
+        //     draw2(srcImage);
+        // }
 
     }, [dataMap, srcImage])
 
@@ -738,6 +738,8 @@ function MapComponent(props) {
                                     className='layer-map layer--item-charater'
                                     width={widthCanvas}
                                     height={heightCanvas}
+
+                                    style={{display : "none"}}
                                 >
                                 </canvas>
                                 <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}

@@ -1,4 +1,5 @@
 import CountTime from '../../components/CountTime';
+import Toast from '../../components/Toast';
 import { CacheImageContext } from '../../Provider/CacheImageContext';
 import { Base } from '../Base';
 import BodyScan from './BodyScan';
@@ -7,7 +8,8 @@ function Scan({ onCloseModal, questions, onBackToPrev, countdown, ...props }) {
 
     const config = {
         propsHeader: { RemoveHQ: true },
-        body: <BodyScan questions={questions}></BodyScan>
+        body: <BodyScan questions={questions}></BodyScan>,
+        
     }
 
     return (

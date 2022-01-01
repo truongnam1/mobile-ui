@@ -20,7 +20,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev }) {
     // sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
     // console.log('set lai index');
 
-    const [typeQuestion, setTypeQuestion] = useState(questions[1]);
+    const [typeQuestion, setTypeQuestion] = useState(questions[9]);
 
     const [refElMain] = useGlobalState("elMain");
     useEffect(() => {
