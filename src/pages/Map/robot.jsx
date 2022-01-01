@@ -1,14 +1,15 @@
 import clsx from 'clsx';
-import { countBy } from 'lodash';
+import { countBy, isEmpty } from 'lodash';
 import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import './robot.css'
 
 
-export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving }) => {
+export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving, dataCrtMove, actionDataCrtMove }) => {
     const [posArr, setPosArr] = useState([...map[currentPoint].split('-')])
     const [oldPoint, setOldPoint] = useState(currentPoint);
+    const [currentPoint1, setCurrentPoint1] = useState(currentPoint);
 
     const [CELL_SIZE, setCellSize] = useState(() => {
         const height = window.innerWidth <= 576 ? window.innerWidth : 576;
@@ -32,7 +33,8 @@ export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving }) => 
         return RIGHT;
     }
 
-    useEffect(() => {
+
+    const handleMoveCrt = (currentPoint1) => {
         const promise = new Promise(resolve => {
             resolve();
         });
@@ -40,14 +42,15 @@ export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving }) => 
             .then(() => {
                 setAnimationCrt(true);
                 setIsCrtMoving(true);
-                console.log(`currentPoint robot`, currentPoint);
+                console.log(`currentPoint1 robot`, currentPoint1);
 
                 console.warn('animation crt start');
 
                 const directionArr = [];
                 // get direction
-                if (oldPoint < currentPoint) {
-                    for (let i = oldPoint; i < currentPoint; i++) {
+                console.log(`point`, { oldPoint, currentPoint1 });
+                if (oldPoint < currentPoint1) {
+                    for (let i = oldPoint; i < currentPoint1; i++) {
                         const currentStep = [...map[i].split('-')]
                         const nextStep = [...map[i + 1].split('-')]
                         console.log(currentStep, nextStep);
@@ -55,7 +58,7 @@ export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving }) => 
                     }
                     return [...directionArr];
                 } else {
-                    for (let i = oldPoint; i > currentPoint; i--) {
+                    for (let i = oldPoint; i > currentPoint1; i--) {
                         const currentStep = [...map[i].split('-')]
                         const nextStep = [...map[i - 1].split('-')]
                         directionArr.push(checkDirection(currentStep, nextStep));
@@ -85,17 +88,114 @@ export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving }) => 
                         }
                         await doIt();
                     }
-                    setAnimationCrt(false);
-                    setIsCrtMoving(false);
+                    setTimeout(() => {
+                        setOldPoint(currentPoint1);
+                        setIsCrtMoving(false);
+                        actionDataCrtMove({ type: 'NEXT_STEP' })
+                        setAnimationCrt(false);
+
+                    }, 200)
                     console.warn('animation crt end');
                 }
                 moveLoop();
 
             });
 
+    }
 
-        setOldPoint(currentPoint);
-    }, [currentPoint])
+
+    // useEffect(() => {
+    //     const promise = new Promise(resolve => {
+    //         resolve();
+    //     });
+    //     promise
+    //         .then(() => {
+    //             setAnimationCrt(true);
+    //             setIsCrtMoving(true);
+    //             console.log(`currentPoint robot`, currentPoint);
+
+    //             console.warn('animation crt start');
+
+    //             const directionArr = [];
+    //             // get direction
+    //             if (oldPoint < currentPoint) {
+    //                 for (let i = oldPoint; i < currentPoint; i++) {
+    //                     const currentStep = [...map[i].split('-')]
+    //                     const nextStep = [...map[i + 1].split('-')]
+    //                     console.log(currentStep, nextStep);
+    //                     directionArr.push(checkDirection(currentStep, nextStep));
+    //                 }
+    //                 return [...directionArr];
+    //             } else {
+    //                 for (let i = oldPoint; i > currentPoint; i--) {
+    //                     const currentStep = [...map[i].split('-')]
+    //                     const nextStep = [...map[i - 1].split('-')]
+    //                     directionArr.push(checkDirection(currentStep, nextStep));
+    //                 }
+    //                 return [...directionArr];
+    //             }
+    //         })
+    //         .then(directionArr => {
+    //             console.log(directionArr);
+    //             const timePerStep = TIME_PER_MOVEMENT / directionArr.length;
+    //             const robotRec = document.getElementById('character-container');
+    //             console.log(actionControl);
+    //             if (actionControl) actionControl.timeScale = directionArr.length;
+    //             const moveLoop = async () => {
+
+    //                 for (let i = 0; i < directionArr.length; i++) {
+    //                     moveDirection(directionArr[i]);
+    //                     let frame = timePerStep / CELL_SIZE;
+    //                     console.log("frame: ", frame);
+    //                     const doIt = async () => {
+    //                         let count = 0;
+    //                         while (count < timePerStep) {
+    //                             await delay(frame);
+    //                             move(directionArr[i], robotRec);
+    //                             count += frame;
+    //                         }
+    //                     }
+    //                     await doIt();
+    //                 }
+    //                 setAnimationCrt(false);
+    //                 setIsCrtMoving(false);
+    //                 console.warn('animation crt end');
+    //             }
+    //             moveLoop();
+
+    //         });
+
+
+    //     setOldPoint(currentPoint);
+
+    // }, [currentPoint]);
+
+    useEffect(() => {
+        // console.log(`dataCrtMove`, dataCrtMove);
+        if (dataCrtMove.status === 'CRT_MOVING' && dataCrtMove.nextPoint != null) {
+            console.log(`nextPoint`, dataCrtMove.nextPoint);
+            handleMoveCrt(dataCrtMove.nextPoint);
+
+        }
+    }, [dataCrtMove && dataCrtMove.status === 'CRT_MOVING'])
+
+    useEffect(() => {
+        // console.log(`dataCrtMove2`, dataCrtMove);
+
+        if (animationCrt === false && dataCrtMove.nextPoint != null && dataCrtMove.status === 'NEXT_STEP') {
+            console.log('chay 2 lan');
+            handleMoveCrt(dataCrtMove.nextPoint);
+            // actionDataCrtMove({ type: 'NEXT_STEP' })
+        } else if (animationCrt === false && dataCrtMove.nextPoint === null && dataCrtMove.status === 'NEXT_STEP') {
+            actionDataCrtMove({ type: 'CRT_STOP_MOVING' })
+
+        }
+    }, [animationCrt, dataCrtMove])
+
+
+
+
+
 
     function decreasePixel(pixel) {
         let num = pixel.split('px')[0];

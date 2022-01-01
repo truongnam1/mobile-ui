@@ -39,7 +39,7 @@ function Toast({ text, type, top, left, time }) {
         } else if (type == 'wrong' && !_.isEmpty(container.current)) {
             container.current.error(text);
         }
-    }, [type,container.current])
+    }, [container.current])
 
     // const render = () => {
 

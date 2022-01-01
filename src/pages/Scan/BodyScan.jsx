@@ -9,80 +9,122 @@ import AnimationText from '../../components/Text';
 import Toast from '../../components/Toast';
 function BodyScan({ ...props }) {
 
-    let { questions, onClearTime, onBackToPrev } = props;
-    console.log(`props`, props);
-    console.log(`question scan`, questions);
+    let { questions, onClearTime } = props;
+
     const [showText, setShowText] = useState(false);
+    const [dataToast, setDataToast] = useState({});
+
     const scanQr = useMemo(() => {
-        // const scanQr = new ScanQr();
         console.log('khoi tao');
         return new ScanQr();
     }, []);
-    const preventSpamToast = useRef(0);
+    // const preventSpamToast = useRef(0);
     useEffect(() => {
+        console.log(`props`, props);
+        console.log(`question scan`, questions);
         // scanQr._start();
         return () => scanQr._stopCamera();
     }, []);
-    console.log(typeof preventSpamToast);
-    const valueOfToast = (value) => {
-        console.log("value", value);
-        if(value == 'wrong') {
-            console.log("preventSpamToast", preventSpamToast.current);
-            if(preventSpamToast.current == 0) {
-                setShowText(value);
-                preventSpamToast.current = 1;  
-                const timeOut = setTimeout(() => {
-                    preventSpamToast.current = 0;
-                    setShowText(false);
-                    clearTimeout(timeOut);
-                }, 3000)
-            }
-            
-        } else {
-            setShowText(value);
-            setTimeout(() => {
-                setShowText(false);
-                onClearTime();
-            }, 3000);
-        }
-       
-    }
+
+    // console.log(typeof preventSpamToast);
+
+    // const valueOfToast = (value) => {
+    //     console.log("value", value);
+    //     if (value == 'wrong') {
+    //         console.log("preventSpamToast", preventSpamToast.current);
+    //         if (preventSpamToast.current == 0) {
+    //             setShowText(value);
+    //             preventSpamToast.current = 1;
+    //             const timeOut = setTimeout(() => {
+    //                 preventSpamToast.current = 0;
+    //                 setShowText(false);
+    //                 clearTimeout(timeOut);
+    //             }, 3000)
+    //         }
+
+    //     } else {
+    //         setShowText(value);
+    //         setTimeout(() => {
+    //             setShowText(false);
+    //             onClearTime();
+    //         }, 3000);
+    //     }
+
+    // }
+    // useEffect(() => {
+    //     // console.log("oi odi oi");
+    //     if (questions) {
+    //         console.log("preventSpamToast", preventSpamToast);
+    //         scanQr.question(questions.correct_answer, (value) => {
+    //             console.log('callback question');
+
+
+    //             return valueOfToast(value);
+    //         });
+    //     } else {
+    //         console.log('wrong');
+    //         scanQr._checkIn();
+    //     }
+    // }, [])
+
     useEffect(() => {
-        console.log("oi odi oi");
+        // console.log("oi odi oi");
         if (questions) {
-            console.log("preventSpamToast", preventSpamToast);
-            scanQr.question(questions.correct_answer, (value) => {
-                console.log('callback question');
-                
-               
-                return valueOfToast(value);
-            });
-        } else {
-            console.log('wrong');
-            scanQr._checkIn();
+            // console.log("preventSpamToast", preventSpamToast);
+            // scanQr.question(questions.correct_answer, () => {
+            //     console.log('dap an chinh xac');
+
+
+            //     // return valueOfToast(value);
+            // }, () => {
+            //     console.log('dap an sai');
+            // });
+
+            scanQr.question(questions.correct_answer, {
+                cbCorrect: () => {
+                    setShowText(true);
+                    console.log('dap an chinh xac');
+                    setDataToast({ status: 'success', text: 'Chúc mừng bạn đã tìm đúng địa điểm', })
+                    setTimeout(() => {
+                        setShowText(false);
+
+                    }, 2000)
+                },
+                cbWrong: () => {
+                    setShowText(true);
+                    console.log('dap an sai');
+                    setDataToast({ status: 'wrong', text: 'Địa điểm hiện tại không chính xác', hash: new Date() })
+                    const timeOut = setTimeout(() => {
+                        setShowText(false);
+                        clearTimeout(timeOut);
+                    }, 2000);
+
+                }
+            })
+
         }
-    },[])
+    }, [])
 
 
     const modalSuggest = () => {
         return (
-          <div className="modal fade" tabIndex="-1" id="modalSuggest" aria-labelledby="modalSuggest" aria-hidden="true">
-            <div className="modal-dialog">
-              <div className="modal-content">
-                {/* <div className="modal-header">
+            <div className="modal fade" tabIndex="-1" id="modalSuggest" aria-labelledby="modalSuggest" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        {/* <div className="modal-header">
                   <h5 className="modal-title">Gợi ý</h5>
                 </div> */}
-                
-                <div className="modal-body d-flex align-items-center justify-content-center" style={{ minHeight: "100px" }}>
-                  {/* <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> */}
-                  Gợi ý: {questions?.suggest}
+
+                        <div className="modal-body d-flex align-items-center justify-content-center" style={{ minHeight: "100px" }}>
+                            {/* <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> */}
+                            Gợi ý: {questions?.suggest}
+                        </div>
+
+                    </div>
                 </div>
-    
-              </div>
             </div>
-          </div>
         );
-      }
+    }
 
 
     return (
@@ -91,7 +133,6 @@ function BodyScan({ ...props }) {
                 <div className={clsx('col', styleScan['view-camera'])} >
                     <div className={clsx('w-100')} id="reader"></div>
                 </div>
-
             </div>
             <div className={clsx('row', 'flex-grow-1', styleScan['control-camera'])} >
                 <div className={clsx('text-center', 'col-6', styleScan['item-control-camera'])} >
