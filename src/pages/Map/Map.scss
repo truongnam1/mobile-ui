@@ -26,9 +26,28 @@
 
 //modal intro map
 @media (min-width: 575.98px) {
-    .modal_map_intro {
+    .modal_map_intro,
+    .tim {
         width: 575.98px !important;
     }
+}
+
+.text-black {
+    color: rgb(0, 0, 0);
+}
+
+.text-blue {
+    color: aqua;
+}
+
+.tim {
+    width: 100%;
+    position: fixed;
+    z-index: 1;
+    // right: 1px;
+    display: flex;
+    justify-content: end;
+    padding: 0 10px;
 }
 
 .modal_map_intro {

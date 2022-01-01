@@ -7,9 +7,10 @@ import ScanQr from './ScanQr.js';
 import 'animate.css';
 import AnimationText from '../../components/Text';
 import Toast from '../../components/Toast';
+import { useNavigate } from 'react-router-dom';
 function BodyScan({ ...props }) {
-
-    let { questions, onClearTime } = props;
+    const navigate = useNavigate();
+    let { questions, onClearTime,onBackToPrev } = props;
 
     const [showText, setShowText] = useState(false);
     const [dataToast, setDataToast] = useState({});
@@ -82,18 +83,18 @@ function BodyScan({ ...props }) {
 
             scanQr.question(questions.correct_answer, {
                 cbCorrect: () => {
-                    setShowText(true);
                     console.log('dap an chinh xac');
                     setDataToast({ status: 'success', text: 'Chúc mừng bạn đã tìm đúng địa điểm', })
+                    setShowText(true);
                     setTimeout(() => {
                         setShowText(false);
-
+                        onClearTime();
                     }, 2000)
                 },
                 cbWrong: () => {
-                    setShowText(true);
                     console.log('dap an sai');
                     setDataToast({ status: 'wrong', text: 'Địa điểm hiện tại không chính xác', hash: new Date() })
+                    setShowText(true);
                     const timeOut = setTimeout(() => {
                         setShowText(false);
                         clearTimeout(timeOut);
@@ -102,6 +103,16 @@ function BodyScan({ ...props }) {
                 }
             })
 
+        } else {
+            scanQr._checkIn((data) => {
+                if (data) {
+                    const dataString = JSON.stringify(data);
+                    // console.log(dataString);
+                    sessionStorage.setItem('dataMap', dataString);
+                    navigate('/map')
+
+                }
+            });
         }
     }, [])
 
@@ -149,10 +160,12 @@ function BodyScan({ ...props }) {
                     </i>
                     {/* <i className={clsx('bi', 'bi-camera-fill',)}></i> */}
                     {/* {showText && <AnimationText text={"Chính xác"} size={'100px'} top={'30%'} left={'36%'} color={'green'}/>} */}
-                    {showText == 'right' ? <Toast text={"Hoàn toàn chính xác"} type={'suc'} top={'5%'} left={'46%'} time={3}/>
+                    {/* {showText == 'right' ? <Toast text={"Hoàn toàn chính xác"} type={'suc'} top={'5%'} left={'46%'} time={3} />
                         : showText == 'wrong' ? <Toast text={"Sai rồi"} type={'wrong'} top={'5%'} left={'46%'} time={3} /> : <></>
-                        
-                    }
+
+                    } */}
+
+                    {showText ? <Toast {...{ dataToast }} /> : <></>}
                 </div>
                 {modalSuggest()}
             </div>

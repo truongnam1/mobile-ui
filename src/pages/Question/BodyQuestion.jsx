@@ -7,9 +7,7 @@ import TracNghiem from './TracNghiem';
 import XepHinh from './XepHinh';
 import Scan from '../Scan/Scan';
 import { useContext, useEffect, useState } from 'react';
-import UserContext from '../../Provider/UserContext';
 import { useGlobalState } from 'state-pool';
-import { CacheImageContext } from '../../Provider/CacheImageContext';
 function BodyQuestion({ questions, onCloseModal, onBackToPrev }) {
     var arrIndexQuestion = JSON.parse(sessionStorage.getItem('arrIndexQuestion'));
 
@@ -22,7 +20,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev }) {
     // sessionStorage.setItem('arrIndexQuestion', `[${arrIndexQuestion.toString()}]`);
     // console.log('set lai index');
 
-    const [typeQuestion, setTypeQuestion] = useState(questions[9]);
+    const [typeQuestion, setTypeQuestion] = useState(questions[1]);
 
     const [refElMain] = useGlobalState("elMain");
     useEffect(() => {
@@ -48,7 +46,7 @@ function BodyQuestion({ questions, onCloseModal, onBackToPrev }) {
         console.log(`question`, typeQuestion);
         switch (typeQuestion.type) {
             case 'trac_nghiem':
-                const rd = Math.random();
+               
                 return (<TracNghiem
                     {...configQuestion}
                     countdown={configCD['trac_nghiem']}

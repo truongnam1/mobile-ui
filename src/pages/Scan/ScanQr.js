@@ -83,7 +83,7 @@ ScanQr.prototype._displayCamera = function(cameraId) {
 }
 
 
-ScanQr.prototype._checkIn = function() {
+ScanQr.prototype._checkIn = function(callBack = {}) {
     console.log('check in');
 
     this._start(() => {
@@ -94,6 +94,7 @@ ScanQr.prototype._checkIn = function() {
                 console.log('ok');
                 FetchData.dataMuseum(resQr.decodedText, (data) => {
                     console.log(data);
+                    callBack(data)
                 });
             }
         }

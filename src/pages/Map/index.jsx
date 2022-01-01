@@ -27,7 +27,7 @@ function MapComponent(props) {
     const randomDice = useRef();
     const [isDice, setIsDice] = useState(false);
     const [showQuestion, setShowQuestion] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const navigation = useNavigate();
     const listQuestion = useRef([]);
     const previousStep = useRef();
@@ -414,40 +414,78 @@ function MapComponent(props) {
     //lay thong tin cua ban do
     useEffect(() => {
         setIsLoading(true);
-        fetch('https://api.npoint.io/6a4c897196b39197353e')
-            .then(jsonData => jsonData.json())
-            .then(data => {
 
-                actionDataCrtMove({ type: 'INIT_DATA_CRT' });
-                setCodebeauty(data);
-                setArrImage(Object.values(data?.tileSets).map(item => {
-                    return item?.src;
-                }))
+        // fetch('https://api.npoint.io/6a4c897196b39197353e')
+        //     .then(jsonData => jsonData.json())
+        //     .then(data => {
 
-                PreloadImage({ questions: data.questions }, (images) => {
-                    console.log(images);
-                    cacheImageXepHinh.current = images;
-                })
-                setCurMap(data?.maps)
-                eventOfRoad.current = data?.define_item_map;
-                listQuestion.current = data?.questions;
+        //         actionDataCrtMove({ type: 'INIT_DATA_CRT' });
+        //         setCodebeauty(data);
+        //         setArrImage(Object.values(data?.tileSets).map(item => {
+        //             return item?.src;
+        //         }))
 
-                sessionStorage.setItem('arrIndexQuestion', `[${Object.keys(listQuestion.current).toString()}]`);
+        //         PreloadImage({ questions: data.questions }, (images) => {
+        //             console.log(images);
+        //             cacheImageXepHinh.current = images;
+        //         })
+        //         setCurMap(data?.maps)
+        //         eventOfRoad.current = data?.define_item_map;
+        //         listQuestion.current = data?.questions;
 
-                setWrong(() => {
-                    return {
-                        'maxWrong': data.max_wrong >= 1 ? data.max_wrong : 2,
-                        'quantityWrongCur': 0
-                    }
-                })
-                setTimeout(() => {
+        //         sessionStorage.setItem('arrIndexQuestion', `[${Object.keys(listQuestion.current).toString()}]`);
+
+        //         setWrong(() => {
+        //             return {
+        //                 'maxWrong': data.max_wrong >= 1 ? data.max_wrong : 2,
+        //                 'quantityWrongCur': 0
+        //             }
+        //         })
+        //         setTimeout(() => {
 
 
-                    setIsLoading(false);
-                }, 3000);
-            }).catch(err => {
-                console.log(err);
+        //             setIsLoading(false);
+        //         }, 3000);
+        //     }).catch(err => {
+        //         console.log(err);
+        //     })
+
+
+
+        new Promise(resolve => {
+            resolve();
+        }).then(() => {
+            const dataMap = sessionStorage.getItem('dataMap');
+            console.log('lay data map', dataMap);
+
+            return JSON.parse(dataMap);
+        }).then((data) => {
+            actionDataCrtMove({ type: 'INIT_DATA_CRT' });
+            setCodebeauty(data);
+            setArrImage(Object.values(data?.tileSets).map(item => {
+                return item?.src;
+            }))
+
+            PreloadImage({ questions: data.questions }, (images) => {
+                console.log(images);
+                cacheImageXepHinh.current = images;
             })
+            setCurMap(data?.maps)
+            eventOfRoad.current = data?.define_item_map;
+            listQuestion.current = data?.questions;
+
+            sessionStorage.setItem('arrIndexQuestion', `[${Object.keys(listQuestion.current).toString()}]`);
+
+            setWrong(() => {
+                return {
+                    'maxWrong': data.max_wrong >= 1 ? data.max_wrong : 2,
+                    'quantityWrongCur': 0
+                }
+            })
+            setIsLoading(false);
+
+        })
+
     }, [])
 
     function setCurMap(maps) {
@@ -498,6 +536,7 @@ function MapComponent(props) {
     //sau khi ảnh src load xong
     useEffect(() => {
         if (!isEmpty(srcImage)) {
+
             draw2(srcImage);
         }
     }, [srcImage])
@@ -632,11 +671,18 @@ function MapComponent(props) {
                 <>
                     {isDice && <Dice status={onDice} randomAngle={randomDice.current} isDice={isDice} />}
                     {showText && handleShowText(showText)}
-                    {!_.isEmpty(map) &&
+                    { !_.isEmpty(map) &&
                         <>
-                            <TotalTime />
+                            <div className={clsx({ 'text-black': showQuestion }, { 'text-blue': !showQuestion })}>
+                                <TotalTime />
+
+                            </div>
                             <div id='roll' className='roll-button' hidden={!allowToDice.current} onClick={handleMove}><button className='button_dice'>Xúc xắc</button></div>
-                            <div style={{ position: 'fixed', right: '32%', zIndex: 1 }} hidden={showQuestion}>{showCountWrong()}</div>
+                            <div className='tim'
+                                // style={{ position: 'fixed', right: '32%', zIndex: 1 }} 
+                                hidden={showQuestion}>
+                                {showCountWrong()}
+                            </div>
                             <div id="canvasesdiv" style={{
                                 width: '100%', minHeight: '100%',
                                 position: "relative"
@@ -711,8 +757,7 @@ function MapComponent(props) {
 
                     {dataCrtMove.status === 'CRT_STOP_MOVING' && !isCrtMoving && showQuestion && PopupQuestion()}
                     {/* {typeModal && ModalIntroductionMap()} */}
-                    {typeModal && <GuideMap {...{ itemModal: itemModal.current, srcImage, setTypeModal }} />
-                    }
+                    {typeModal && <GuideMap {...{ itemModal: itemModal.current, srcImage, setTypeModal }} />}
 
                 </>
 
