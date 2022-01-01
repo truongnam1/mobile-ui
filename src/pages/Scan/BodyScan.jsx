@@ -108,8 +108,8 @@ function BodyScan({ ...props }) {
                     </i>
                     {/* <i className={clsx('bi', 'bi-camera-fill',)}></i> */}
                     {/* {showText && <AnimationText text={"Chính xác"} size={'100px'} top={'30%'} left={'36%'} color={'green'}/>} */}
-                    {showText == 'right' ? <Toast text={"Hoàn toàn chính xác"} type={'suc'} top={'5%'} left={'46%'} time={2}/>
-                        : showText == 'wrong' ? <Toast text={"Sai rồi"} type={'wrong'} top={'5%'} left={'46%'} time={2} /> : <></>
+                    {showText == 'right' ? <Toast text={"Hoàn toàn chính xác"} type={'suc'} top={'5%'} left={'46%'} time={3}/>
+                        : showText == 'wrong' ? <Toast text={"Sai rồi"} type={'wrong'} top={'5%'} left={'46%'} time={3} /> : <></>
                         
                     }
                 </div>
