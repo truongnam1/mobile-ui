@@ -15,7 +15,7 @@ function BodyStart(props) {
             <div className={clsx(styleBase['center-flex'], 'row', 'mt-2')}>
                 <div 
                 onClick={() => {
-                    navigate('/map');
+                    navigate('/scan');
                 }}
                 className={clsx('btn', 'col-4', styleBase['btn-mobile'], styleStart['btn-start'])}>
                     Bắt đầu1
