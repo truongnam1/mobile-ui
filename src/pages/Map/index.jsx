@@ -696,7 +696,7 @@ function MapComponent(props) {
                                 <TotalTime />
 
                             </div>
-                            <div id='roll' className='roll-button' hidden={!allowToDice.current} onClick={handleMove}><button className='button_dice'>Xúc xắc</button></div>
+                            <div id='roll' className='roll-button' hidden={!allowToDice.current} ><button className='button_dice' onClick={handleMove}>Xúc xắc</button></div>
                             <div className='tim'
                                 // style={{ position: 'fixed', right: '32%', zIndex: 1 }} 
                                 hidden={showQuestion}>
