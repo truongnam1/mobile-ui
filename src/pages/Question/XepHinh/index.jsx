@@ -35,7 +35,7 @@ function XepHinh({ onCloseModal, questions, onBackToPrev,countdown }) {
                 </div> */}
                         <div className="modal-body d-flex align-items-center justify-content-center" style={{ minHeight: "100px" }}>
                             {/* <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> */}
-                            <div className="container">
+                            <div className="d-flex flex-column">
                                 <div className="row mt-2">
                                     <span className='text-center'>Hình mẫu</span>
                                 </div>
