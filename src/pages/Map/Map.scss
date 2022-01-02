@@ -72,15 +72,17 @@
     position: relative;
     top: 80px;
     left: 10px;
-    padding: 4px 4px;
+    // padding: 4px 4px;
     color: #fff;
-    background-color: #f4d35e;
+    background-color: #464646a8;
     border: none;
     font-size: 13px;
-    border-radius: 20px;
+    border-radius: 50%;
     box-shadow: 1px 3px #50514f;
     outline: none;
     transition: 0.3s;
+    width: 50px;
+    height: 50px;
 }
 
 .roll-button .button_dice:hover,
@@ -94,6 +96,14 @@
 #roll {
     position: fixed;
     z-index: 2;
-    bottom: 20%;
-    right: 32.5%;
+    // bottom: 20%;
+    // right: 32.5%;
+    // right: 0;
+    width: 100%;
+}
+
+@media (min-width: 575.98px) {
+    #roll {
+        width: 575.98px !important;
+    }
 }
