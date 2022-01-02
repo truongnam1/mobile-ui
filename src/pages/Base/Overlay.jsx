@@ -6,7 +6,7 @@ function Overlay({ children, ...props }) {
     return (
         <div className={clsx(styleBase['overlay-main'])}>
             <div className={clsx(styleBase['guide'])}>
-                <img className={clsx(styleBase['item-guide'], styleBase['image-guide'])} src="./image/Bot-1 1.png" alt="" />
+                <img className={clsx(styleBase['item-guide'], styleBase['image-guide'])} src={process.env.PUBLIC_URL  + "/assets/images/Bot-1 1.png"} alt="" />
 
                 <div
                     className={clsx(styleBase['bg-main'], styleBase['item-guide'], styleBase['text-box-guide'])}>
