@@ -460,29 +460,34 @@ function MapComponent(props) {
 
             return JSON.parse(dataMap);
         }).then((data) => {
-            actionDataCrtMove({ type: 'INIT_DATA_CRT' });
-            setCodebeauty(data);
-            setArrImage(Object.values(data?.tileSets).map(item => {
-                return item?.src;
-            }))
+            if (isEmpty(data)) {
+                navigation('/')
+            } else {
 
-            PreloadImage({ questions: data.questions }, (images) => {
-                console.log(images);
-                cacheImageXepHinh.current = images;
-            })
-            setCurMap(data?.maps)
-            eventOfRoad.current = data?.define_item_map;
-            listQuestion.current = data?.questions;
+                actionDataCrtMove({ type: 'INIT_DATA_CRT' });
+                setCodebeauty(data);
+                setArrImage(Object.values(data?.tileSets).map(item => {
+                    return item?.src;
+                }))
 
-            sessionStorage.setItem('arrIndexQuestion', `[${Object.keys(listQuestion.current).toString()}]`);
+                PreloadImage({ questions: data.questions }, (images) => {
+                    console.log(images);
+                    cacheImageXepHinh.current = images;
+                })
+                setCurMap(data?.maps)
+                eventOfRoad.current = data?.define_item_map;
+                listQuestion.current = data?.questions;
 
-            setWrong(() => {
-                return {
-                    'maxWrong': data.max_wrong >= 1 ? data.max_wrong : 2,
-                    'quantityWrongCur': 0
-                }
-            })
-            setIsLoading(false);
+                sessionStorage.setItem('arrIndexQuestion', `[${Object.keys(listQuestion.current).toString()}]`);
+
+                setWrong(() => {
+                    return {
+                        'maxWrong': data.max_wrong >= 1 ? data.max_wrong : 2,
+                        'quantityWrongCur': 0
+                    }
+                })
+                setIsLoading(false);
+            }
 
         })
 
@@ -667,11 +672,12 @@ function MapComponent(props) {
     return (
         <Base
             headerBody={isLoading && <Loading></Loading>}
+            visibleNavbar= {!showQuestion}
             body={
                 <>
                     {isDice && <Dice status={onDice} randomAngle={randomDice.current} isDice={isDice} />}
                     {showText && handleShowText(showText)}
-                    { !_.isEmpty(map) &&
+                    {!_.isEmpty(map) &&
                         <>
                             <div className={clsx({ 'text-black': showQuestion }, { 'text-blue': !showQuestion })}>
                                 <TotalTime />
@@ -739,7 +745,7 @@ function MapComponent(props) {
                                     width={widthCanvas}
                                     height={heightCanvas}
 
-                                    style={{display : "none"}}
+                                    style={{ display: "none" }}
                                 >
                                 </canvas>
                                 <RobotModel canvasRef={canvasRef} currentPoint={currentPoint.current} map={map}

@@ -18,7 +18,7 @@ function BodyStart(props) {
                     navigate('/scan');
                 }}
                 className={clsx('btn', 'col-4', styleBase['btn-mobile'], styleStart['btn-start'])}>
-                    Bắt đầu1
+                    Bắt đầu
                 </div>
 
             </div>

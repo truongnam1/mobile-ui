@@ -42,13 +42,14 @@ function Header({ children, visibleTopMain,onSetTypeModal, ...props }) {
             </div>
             <div
                 className={clsx(
-                    styleBase['between-flex']
-                    , styleBase['container-home-and-question'],
+                    // styleBase['between-flex'],
+                     styleBase['container-home-and-question'],
                     { [styleBase['display-none']]: RemoveHQ }
 
                 )}
             >
-                <i onClick={() => navigate('/start')} className={clsx('bi', 'bi-house-fill')}></i>
+                {/* <i onClick={() => navigate('/start')} 
+                className={clsx('bi', 'bi-house-fill')}></i> */}
                 <i className={clsx('bi', 'bi-patch-question-fill')} onClick={() => {
                     onSetTypeModal('map');
                 }}></i>

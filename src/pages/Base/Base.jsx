@@ -9,7 +9,7 @@ import { store } from 'state-pool';
 
 
 
-function Base({ isLoading, onSetTypeModal, ...props }) {
+function Base({ isLoading, onSetTypeModal, visibleNavbar = true, ...props }) {
     // console.log(`styleBase`, styleBase);
 
 
@@ -46,7 +46,7 @@ function Base({ isLoading, onSetTypeModal, ...props }) {
         <>
             <div ref={elMain} className={clsx('container-sm', 'border', styleBase.main)}>
                 {top}
-                <Header {...propsHeader} visibleTopMain={visibleTopMain} onSetTypeModal={onSetTypeModal}>
+                <Header {...propsHeader} visibleTopMain={visibleTopMain && visibleNavbar} onSetTypeModal={onSetTypeModal}>
                     {header}
                 </Header>
                 {headerBody}
