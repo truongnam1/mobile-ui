@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import './robot.css'
 
 
-export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving, dataCrtMove, actionDataCrtMove }) => {
+export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving, dataCrtMove, actionDataCrtMove, onShowText }) => {
     const [posArr, setPosArr] = useState([...map[currentPoint].split('-')])
     const [oldPoint, setOldPoint] = useState(currentPoint);
     const [currentPoint1, setCurrentPoint1] = useState(currentPoint);
@@ -34,14 +34,17 @@ export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving, dataC
     }
 
 
-    const handleMoveCrt = (currentPoint1) => {
+    const handleMoveCrt = (currentPoint1, text) => {
+       
         const promise = new Promise(resolve => {
             resolve();
         });
         promise
             .then(() => {
+               
                 setAnimationCrt(true);
                 setIsCrtMoving(true);
+                
                 console.log(`currentPoint1 robot`, currentPoint1);
 
                 console.warn('animation crt start');
@@ -88,13 +91,15 @@ export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving, dataC
                         }
                         await doIt();
                     }
+                    onShowText(false);
                     setTimeout(() => {
                         setOldPoint(currentPoint1);
                         setIsCrtMoving(false);
+                        
                         actionDataCrtMove({ type: 'NEXT_STEP' })
                         setAnimationCrt(false);
 
-                    }, 200)
+                    }, 1000)
                     console.warn('animation crt end');
                 }
                 moveLoop();
@@ -174,8 +179,11 @@ export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving, dataC
         // console.log(`dataCrtMove`, dataCrtMove);
         if (dataCrtMove.status === 'CRT_MOVING' && dataCrtMove.nextPoint != null) {
             console.log(`nextPoint`, dataCrtMove.nextPoint);
-            handleMoveCrt(dataCrtMove.nextPoint);
-
+            onShowText(dataCrtMove?.nextTypeStep);
+            setTimeout(() => {
+                handleMoveCrt(dataCrtMove.nextPoint, dataCrtMove?.nextTypeStep);
+            }, 800)
+          
         }
     }, [dataCrtMove && dataCrtMove.status === 'CRT_MOVING'])
 
@@ -184,11 +192,14 @@ export const RobotModel = ({ canvasRef, currentPoint, map, setIsCrtMoving, dataC
 
         if (animationCrt === false && dataCrtMove.nextPoint != null && dataCrtMove.status === 'NEXT_STEP') {
             console.log('chay 2 lan');
-            handleMoveCrt(dataCrtMove.nextPoint);
+            onShowText(dataCrtMove?.nextTypeStep);
+            setTimeout(() => {
+                handleMoveCrt(dataCrtMove.nextPoint, dataCrtMove?.nextTypeStep);
+            }, 800)
             // actionDataCrtMove({ type: 'NEXT_STEP' })
         } else if (animationCrt === false && dataCrtMove.nextPoint === null && dataCrtMove.status === 'NEXT_STEP') {
             actionDataCrtMove({ type: 'CRT_STOP_MOVING' })
-
+            
         }
     }, [animationCrt, dataCrtMove])
 

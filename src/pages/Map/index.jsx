@@ -56,7 +56,6 @@ function MapComponent(props) {
 
     const [isCrtMoving, setIsCrtMoving] = useState(false);
     const arrStepPoint = useRef([]);
-
     const filterEventOfRoad = useMemo(() => {
         if (!_.isEmpty(map) && !_.isEmpty(dataMap)) {
             const result = map.reduce((object, item) => {
@@ -87,14 +86,14 @@ function MapComponent(props) {
     }, [map]);
 
     function controlDataCtrMove(oldState, action) {
-        // console.log(`action`, action);
-        // console.log(`oldState`, oldState);
+        console.log(`action`, action);
+        console.log(`oldState`, oldState);
         switch (action.type) {
             case 'INIT_DATA_CRT':
 
-                return { ...oldState, status: 'INIT_DATA_CRT', arrStep: [], nextPoint: 0, prePoint: 0 }
+                return { ...oldState, status: 'INIT_DATA_CRT', arrStep: [], nextPoint: 0, prePoint: 0, arrTypeStep: [], nextTypeStep: '', prevTypeStep: ''}
             case 'ADD_STEP_MOVE':
-                return { ...oldState, status: 'ADD_STEP_MOVE', arrStep: [...oldState.arrStep, action.point] }
+                return { ...oldState, status: 'ADD_STEP_MOVE', arrStep: [...oldState.arrStep, action.point], arrTypeStep: [...oldState.arrTypeStep, action?.typeStep] }
             case 'FINISH_ADD_STEP':
                 return { ...oldState, status: action.type }
 
@@ -105,18 +104,30 @@ function MapComponent(props) {
                 // console.log(`dataStep`, oldState.arrStep);
 
                 const tempPrePoint = oldState.nextPoint !== null ? oldState.prePoint : oldState.nextPoint;
-
+                const temPreTypeStep = oldState.nextTypeStep !== null ?  oldState.prevTypeStep : oldState.nextTypeStep;
                 var nextPoint;
+                let nextTypeStep;
+              
                 if (!_.isEmpty(oldState.arrStep)) {
                     nextPoint = oldState.arrStep.shift();
+                  
                 }
                 else {
                     console.log('mang rong');
                     nextPoint = null;
                 }
+
+                if (!_.isEmpty(oldState.arrTypeStep)) {
+                    nextTypeStep = oldState.arrTypeStep.shift();
+                  
+                }
+                else {
+                    console.log('mang rong');
+                    nextTypeStep = null;
+                }
                 // console.log(`nextPoint`, nextPoint);
                 // console.groupEnd();
-                return { ...oldState, nextPoint, prePoint: tempPrePoint, status: action.type }
+                return { ...oldState, nextPoint, prePoint: tempPrePoint, status: action.type, nextTypeStep, prevTypeStep: temPreTypeStep }
 
             case 'CRT_STOP_MOVING':
                 console.warn('crt stop');
@@ -186,11 +197,15 @@ function MapComponent(props) {
                 const currentTele = filterEventOfRoad[typeFilterEvent].indexOf(toado);
                 if (currentTele + numberTele > (_.size(filterEventOfRoad[typeFilterEvent]) - 1)) {
                     const valueTeleToJump = map.indexOf((filterEventOfRoad[typeFilterEvent])[_.size(filterEventOfRoad[typeFilterEvent]) - 1]);
+               
                     return valueTeleToJump - currentPoint.current;
                 } else if (currentTele + numberTele < 0) {
                     const valueTeleToJump = map.indexOf((filterEventOfRoad[typeFilterEvent])[0]);
+                   
+               
                     return valueTeleToJump - currentPoint.current;
                 } else {
+                    
                     const valueTeleToJump = map.indexOf((filterEventOfRoad[typeFilterEvent])[currentTele + numberTele]);
                     return valueTeleToJump - currentPoint.current;
                 }
@@ -198,16 +213,17 @@ function MapComponent(props) {
         }
     }
 
-    const handleValidateMove = (time, dice) => {
-        if (validateStep(map[currentPoint.current]) !== false) {
+    const handleValidateMove = (time, dice, typeIndexTele) => {
+        if (validateStep(map[currentPoint.current]) !== false && !typeIndexTele) {
             const step = validateStep(map[currentPoint.current]);
 
             arrStepPoint.current = [...arrStepPoint.current, currentPoint.current + step];
-
+            console.log("asdasdsadasd", beforeTypeEvent.current == 'forward');
             actionDataCrtMove({
                 type: 'ADD_STEP_MOVE',
                 point: currentPoint.current + step,
-                hi: 'handleValidateMove'
+                hi: 'handleValidateMove',
+                typeStep: beforeTypeEvent.current == 'forward' ? (step < 0 ? 'Lùi': 'Tiến') : 'Dịch chuyển',
             });
             currentPoint.current = currentPoint.current + step;
 
@@ -224,27 +240,29 @@ function MapComponent(props) {
             }
 
             const timeOut = setTimeout(() => {
-                // const pewpew = [...listPicture];
                 allowToDice.current = true;
-                if (beforeTypeEvent.current == 'forward') {
-                    console.log("ao that day", step);
-                    if (step < 0) setShowText("Lùi");
-                    else setShowText("Tiến");
-                } else if (beforeTypeEvent.current == 'tele') {
-                    setShowText("Dịch chuyển");
-                }
-                const timeOut1 = setTimeout(() => {
+                // if (beforeTypeEvent.current == 'forward') {
+                //     if (step < 0) setShowText("Lùi");
+                //     else setShowText("Tiến");
+                // } else if (beforeTypeEvent.current == 'tele') {
+                //     setShowText("Dịch chuyển");
+                // }
+                // const timeOut1 = setTimeout(() => {
 
                     actionDataMap({
                         type: "UPDATE_LAYER_CHARACTER",
                         newLayerCharacter: newCha
                     });
-                    setShowText(false);
+                    // setShowText(false);
 
-                    if (beforeTypeEvent.current == 'forward') handleValidateMove(1000, false);
-                    clearTimeout(timeOut1);
+                    if(beforeTypeEvent.current == 'tele' ) {
+
+                        actionDataCrtMove({ type: 'CRT_MOVING' });
+                    }
+                    if (beforeTypeEvent.current == 'forward') handleValidateMove(1000, false, false);
+                    // clearTimeout(timeOut1);
                     clearTimeout(timeOut);
-                }, 1000)
+                // }, 1000)
 
 
 
@@ -269,10 +287,9 @@ function MapComponent(props) {
             allowToDice.current = false;
             const dice = Math.floor(Math.random() * 6) + 1;
             // Math.floor(Math.random() * 6) + 1;
-            // const dice = 2;
+            // const dice = 4;
             randomDice.current = dice;
             const pictureCha = Object.values(dataMap.layers.charater);
-            console.warn('dice', dice);
             const newPoint = currentPoint.current + dice;
 
             if (newPoint < (_.size(map) - 1)) {
@@ -281,40 +298,34 @@ function MapComponent(props) {
                 actionDataCrtMove({
                     type: 'ADD_STEP_MOVE',
                     point: newPoint,
-                    hi: 'handleMove'
+                    hi: 'handleMove',
+                    typeStep: 'Tiến',
                 });
 
-                // const a = map[(currentPoint.current + dice) > (_.size(map) - 1) ? (_.size(map) - 1) : currentPoint.current + dice + 16];
                 const a = map[newPoint];
 
                 setOnDice(!onDice);
                 setIsDice(true);
                 currentPoint.current = newPoint;
-                // console.log(`charactor.current`, charactor);
-                // const pictureCha = Object.values(charactor);
-                // const pictureCha = Object.values(dataMap.layers.charater);
 
                 const newCha = {
                     [`${a.split('-')[0]}-${a.split('-')[1] - 1}`]: pictureCha[0],
                     [a]: pictureCha[1],
 
                 }
-                // listPicture.splice(listPicture.length - 1)
-                // const pewpew = [...listPicture];
-
                 const timeOut = setTimeout(() => {
-                    setShowText("Tiến")
-                    const timeOut1 = setTimeout(() => {
+                    // setShowText("Tiến")
+                    // const timeOut1 = setTimeout(() => {
 
                         actionDataMap({
                             type: "UPDATE_LAYER_CHARACTER",
                             newLayerCharacter: newCha
                         });
-                        setShowText(false);
-                        handleValidateMove(1000, true);
+                        // setShowText(false);
+                        handleValidateMove(1000, true, false);
 
-                        clearTimeout(timeOut1);
-                    }, 1000)
+                        // clearTimeout(timeOut1);
+                    // }, 1000)
 
 
                     setIsDice(false);
@@ -337,13 +348,13 @@ function MapComponent(props) {
 
                 }
                 const timeOut = setTimeout(() => {
-                    setShowText("Tiến")
+                    // setShowText("Tiến")
                     const timeOut1 = setTimeout(() => {
                         actionDataMap({
                             type: "UPDATE_LAYER_CHARACTER",
                             newLayerCharacter: newCha
                         });
-                        setShowText(false);
+                        // setShowText(false);
                         clearTimeout(timeOut1);
                     }, 1000)
                     // setListPicture(newArr);
@@ -379,7 +390,8 @@ function MapComponent(props) {
             actionDataCrtMove({
                 type: 'ADD_STEP_MOVE',
                 point: previousStep.current,
-                hi: 'backToPreviousStep'
+                hi: 'backToPreviousStep',
+                typeStep: 'Lùi'
             });
             currentPoint.current = previousStep.current
             // const pictureCha = Object.values(charactor);
@@ -401,9 +413,10 @@ function MapComponent(props) {
                     });
                     actionDataCrtMove({ type: 'CRT_MOVING' });
                     setShowText(false);
+                    allowToDice.current = true;
                     clearTimeout(timeOut1);
                 }, 1000)
-                allowToDice.current = true;
+             
                 // setListPicture(newArr);
                 clearTimeout(timeOut);
             }, 1000)
@@ -753,6 +766,8 @@ function MapComponent(props) {
                                     width={widthCanvas}
                                     height={heightCanvas}
                                     {...{ dataCrtMove, actionDataCrtMove }}
+                                    onShowText={setShowText}
+                                    valueShowText={showText}
                                 />
                             </div>
 

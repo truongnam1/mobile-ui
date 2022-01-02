@@ -1,13 +1,15 @@
 .game {
-  position: relative;
+  /* position: relative; */
   width: auto;
   height: 100%;
+  display: flex;
+  align-items: center;
 }
 
-.container {
+.containerT {
   position: relative;
   display: inline-block;
-  top: 200px;
+  /* top: 200px; */
 }
 
 .dice {

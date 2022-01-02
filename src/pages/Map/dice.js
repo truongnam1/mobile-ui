@@ -26,8 +26,8 @@ function Dice({status, randomAngle, isDice}) {
         
     }, [status])
     return (
-        <div className="game" style={{zIndex: 20000, position: 'fixed', left: '38%'}}>
-            <div className="container">
+        <div className="game" style={{zIndex: 20000, position: 'fixed'}}>
+            <div className="containerT">
             <div id='dice1' className={`dice dice-one ${numberDice}`}>
                 <div id="dice-one-side-one" className='side one'>
                 <div className="dot one-1"></div>
